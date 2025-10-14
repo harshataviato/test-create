@@ -1,0 +1,23 @@
+{
+  "name": "hello-world-node-app",
+  "version": "1.0.0",
+  "description": "A simple Hello World application in Node.js with MVC structure.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "hello",
+    "world",
+    "node",
+    "express",
+    "ejs",
+    "mvc"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  }
+}

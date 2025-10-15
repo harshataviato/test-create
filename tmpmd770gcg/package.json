@@ -1,0 +1,31 @@
+{
+  "name": "my-express-app-example",
+  "version": "1.0.0",
+  "description": "A minimal Node.js Express application for demonstrating automated tests.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --coverage --verbose"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "jest",
+    "supertest",
+    "testing"
+  ],
+  "author": "Google QA Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "index.js"
+    ]
+  }
+}

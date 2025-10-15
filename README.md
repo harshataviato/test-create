@@ -1,1 +1,4 @@
-# Auto-generated Repository
+node -v
+npm -v
+npm install
+npm start

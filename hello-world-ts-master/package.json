@@ -1,0 +1,27 @@
+{
+  "name": "hello-world-ts",
+  "version": "1.0.0",
+  "description": "A simple 'Hello World' web application using TypeScript and Express.js",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "db:setup": "echo 'No external database setup needed for this in-memory string data source.'",
+    "db:migrate": "echo 'No database migrations needed for this simple application.'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.16",
+    "nodemon": "^3.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

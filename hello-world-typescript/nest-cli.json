@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/bff/src",
+  "compilerOptions": {
+    "deleteOutDir": true
+  },
+  "projects": {
+    "bff": {
+      "type": "application",
+      "root": "apps/bff",
+      "entryFile": "main",
+      "sourceRoot": "apps/bff/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/bff/tsconfig.app.json"
+      }
+    }
+  }
+}

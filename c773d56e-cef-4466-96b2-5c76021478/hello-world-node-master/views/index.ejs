@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Node.js</title>
+    <style>
+        /* Basic styling for readability */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Make body at least full viewport height */
+            margin: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px 60px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--
+            EJS (Embedded JavaScript) syntax:
+            '<%= ... %>' is used to output the value of a variable to the HTML.
+            The 'greeting' variable is passed from the homeController.
+        -->
+        <h1><%= greeting %></h1>
+        <p>This message is rendered by an EJS template in a Node.js Express application.</p>
+    </div>
+</body>
+</html>

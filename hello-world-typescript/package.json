@@ -1,0 +1,25 @@
+{
+  "name": "hello-world-typescript",
+  "version": "1.0.0",
+  "description": "A simple 'Hello World' application in TypeScript demonstrating MVC pattern.",
+  "main": "dist/app.js",
+  "scripts": {
+    "dev": "ts-node src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "clean": "rm -rf dist node_modules"
+  },
+  "keywords": [
+    "hello-world",
+    "typescript",
+    "mvc",
+    "node"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.x",
+    "ts-node": "^10.x",
+    "typescript": "^5.x"
+  }
+}

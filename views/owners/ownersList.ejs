@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: '', menu: 'owners', noContent: true }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'ownersList_content', menu: 'owners', noContent: false,
+    listOwners: listOwners, currentPage: currentPage, totalPages: totalPages, totalItems: totalItems
+  }) %>
+</body>
+</html>
+
+<% /* This content block is included by the layout fragment */ %>
+<% /* filename: views/owners/ownersList.ejs (content block) */ %>
+<%- defineContent('ownersList_content', () => { %>
+  <h2><%= __('owners') %></h2>
+
+  <table id="owners" class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 150px;"><%= __('name') %></th>
+        <th style="width: 200px;"><%= __('address') %></th>
+        <th><%= __('city') %></th>
+        <th style="width: 120px"><%= __('telephone') %></th>
+        <th><%= __('pets') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% listOwners.forEach(owner => { %>
+        <tr>
+          <td>
+            <a href="/owners/<%= owner.id %>"><%= owner.firstName %> <%= owner.lastName %></a>
+          </td>
+          <td><%= owner.address %></td>
+          <td><%= owner.city %></td>
+          <td><%= owner.telephone %></td>
+          <td>
+            <% if (owner.pets && owner.pets.length > 0) { %>
+              <%= owner.pets.map(pet => pet.name).join(', ') %>
+            <% } else { %>
+              <%= __('none') %>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (totalPages > 1) { %>
+    <div>
+      <span><%= __('pages') %>:</span>
+      <span>[</span>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <span>
+          <% if (currentPage !== i) { %>
+            <a href="/owners?page=<%= i %>&lastName=<%= typeof owner !== 'undefined' ? owner.lastName : '' %>"><%= i %></a>
+          <% } else { %>
+            <span><%= i %></span>
+          <% } %>
+        </span>
+      <% } %>
+      <span>]&nbsp;</span>
+      <span>
+        <% if (currentPage > 1) { %>
+          <a href="/owners?page=1&lastName=<%= typeof owner !== 'undefined' ? owner.lastName : '' %>" title="<%= __('first') %>" class="fa fa-fast-backward"></a>
+        <% } else { %>
+          <span title="<%= __('first') %>" class="fa fa-fast-backward"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage > 1) { %>
+          <a href="/owners?page=<%= currentPage - 1 %>&lastName=<%= typeof owner !== 'undefined' ? owner.lastName : '' %>" title="<%= __('previous') %>" class="fa fa-step-backward"></a>
+        <% } else { %>
+          <span title="<%= __('previous') %>" class="fa fa-step-backward"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage < totalPages) { %>
+          <a href="/owners?page=<%= currentPage + 1 %>&lastName=<%= typeof owner !== 'undefined' ? owner.lastName : '' %>" title="<%= __('next') %>" class="fa fa-step-forward"></a>
+        <% } else { %>
+          <span title="<%= __('next') %>" class="fa fa-step-forward"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage < totalPages) { %>
+          <a href="/owners?page=<%= totalPages %>&lastName=<%= typeof owner !== 'undefined' ? owner.lastName : '' %>" title="<%= __('last') %>" class="fa fa-fast-forward"></a>
+        <% } else { %>
+          <span title="<%= __('last') %>" class="fa fa-fast-forward"></span>
+        <% } %>
+      </span>
+    </div>
+  <% } %>
+<% }) %>

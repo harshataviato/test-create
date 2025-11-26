@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('fragments/layout', { template: '', menu: 'home', noContent: true }) %>
+</head>
+<body>
+  <%- include('fragments/layout', { template: 'welcome_content', menu: 'home', noContent: false }) %>
+</body>
+</html>
+
+<% /* This content block is included by the layout fragment */ %>
+<% /* filename: views/welcome.ejs (content block) */ %>
+<%- defineContent('welcome_content', () => { %>
+  <h2><%= __('welcome') %></h2>
+  <div class="row">
+    <div class="col-md-12">
+      <img class="img-responsive" src="/resources/images/pets.png" alt="Pets">
+    </div>
+  </div>
+<% }) %>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: '', menu: 'owners', noContent: true }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'createOrUpdateOwnerForm_content', menu: 'owners', noContent: false,
+    owner: owner, errors: typeof errors !== 'undefined' ? errors : {}
+  }) %>
+</body>
+</html>
+
+<% /* This content block is included by the layout fragment */ %>
+<% /* filename: views/owners/createOrUpdateOwnerForm.ejs (content block) */ %>
+<%- defineContent('createOrUpdateOwnerForm_content', () => { %>
+  <h2 class="owners-title"><%= owner.isNew ? __('addOwner') : __('updateOwner') %></h2>
+  <form action="/owners<%= owner.id ? '/' + owner.id + '/edit' : '/new' %>" class="form-horizontal" id="add-owner-form" method="post">
+    <div class="form-group has-feedback">
+      <%- include('../fragments/inputField', { label: __('firstName'), name: 'firstName', type: 'text', model: owner, errors: errors, __: __ }) %>
+      <%- include('../fragments/inputField', { label: __('lastName'), name: 'lastName', type: 'text', model: owner, errors: errors, __: __ }) %>
+      <%- include('../fragments/inputField', { label: __('address'), name: 'address', type: 'text', model: owner, errors: errors, __: __ }) %>
+      <%- include('../fragments/inputField', { label: __('city'), name: 'city', type: 'text', model: owner, errors: errors, __: __ }) %>
+      <%- include('../fragments/inputField', { label: __('telephone'), name: 'telephone', type: 'text', model: owner, errors: errors, __: __ }) %>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-primary" type="submit">
+          <%= owner.isNew ? __('addOwner') : __('updateOwner') %>
+        </button>
+      </div>
+    </div>
+  </form>
+<% }) %>

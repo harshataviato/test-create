@@ -1,0 +1,40 @@
+<%
+// Define a reusable macro/fragment for a select field
+// Arguments:
+//   label: The label text for the select field (e.g., "Type")
+//   name: The name attribute for the select field, used for model binding (e.g., "type")
+//   items: An array of objects to populate the select options. Each item is expected to have a 'name' property.
+//   model: The data model object that contains the currently selected value for the field (e.g., 'pet')
+//   errors: An optional object containing validation errors, where keys are field names (e.g., { type: ["required"] })
+//   __(key): Internationalization function from i18n-node
+-%>
+<% function selectField(label, name, items, model, errors, __) { %>
+  <%
+    const fieldErrors = errors && errors[name] ? errors[name] : [];
+    const isValid = fieldErrors.length === 0;
+  %>
+  <div class="form-group<%= isValid ? '' : ' has-error' %>">
+    <label for="<%= name %>" class="col-sm-2 control-label"><%= label %></label>
+    <div class="col-sm-10">
+      <select id="<%= name %>" name="<%= name %>" class="form-control">
+        <% items.forEach(item => { %>
+          <option value="<%= item.name %>" <%= (model[name] && model[name].name === item.name) ? 'selected' : '' %>>
+            <%= item.name %>
+          </option>
+        <% }); %>
+      </select>
+      <% if (isValid) { %>
+        <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+      <% } else { %>
+        <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+        <% fieldErrors.forEach(error => { %>
+          <span class="help-inline"><%= __(error) %></span>
+        <% }); %>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
+<% if (typeof defineContent !== 'undefined') { %>
+  <%- defineContent('select', (label, name, items, model, errors, __) => selectField(label, name, items, model, errors, __)) %>
+<% } %>

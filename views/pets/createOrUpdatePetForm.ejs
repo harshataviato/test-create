@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: '', menu: 'owners', noContent: true }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'createOrUpdatePetForm_content', menu: 'owners', noContent: false,
+    owner: owner, pet: pet, types: types, errors: typeof errors !== 'undefined' ? errors : {}
+  }) %>
+</body>
+</html>
+
+<% /* This content block is included by the layout fragment */ %>
+<% /* filename: views/pets/createOrUpdatePetForm.ejs (content block) */ %>
+<%- defineContent('createOrUpdatePetForm_content', () => { %>
+  <h2>
+    <% if (pet.isNew) { %>
+      <%= __('new') %>
+    <% } %>
+    <%= __('pet') %>
+  </h2>
+  <form action="/owners/<%= owner.id %>/pets<%= pet.id ? '/' + pet.id + '/edit' : '/new' %>" class="form-horizontal" method="post">
+    <% if (!pet.isNew && pet.id) { %>
+      <input type="hidden" name="id" value="<%= pet.id %>" />
+    <% } %>
+    <div class="form-group has-feedback">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><%= __('owner') %></label>
+        <div class="col-sm-10">
+          <span><%= owner.firstName %> <%= owner.lastName %></span>
+        </div>
+      </div>
+      <%- include('../fragments/inputField', { label: __('name'), name: 'name', type: 'text', model: pet, errors: errors, __: __ }) %>
+      <%- include('../fragments/inputField', { label: __('birthDate'), name: 'birthDate', type: 'date', model: pet, errors: errors, __: __ }) %>
+      <%- include('../fragments/selectField', { label: __('type'), name: 'type', items: types, model: pet, errors: errors, __: __ }) %>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-primary" type="submit">
+          <%= pet.isNew ? __('addPet') : __('updatePet') %>
+        </button>
+      </div>
+    </div>
+  </form>
+<% }) %>

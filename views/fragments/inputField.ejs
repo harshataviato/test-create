@@ -1,0 +1,39 @@
+<%
+// Define a reusable macro/fragment for an input field
+// Arguments:
+//   label: The label text for the input field (e.g., "First Name")
+//   name: The name attribute for the input field, used for model binding (e.g., "firstName")
+//   type: The type attribute for the input field (e.g., "text", "date")
+//   model: The data model object that contains the value for the input field (e.g., 'owner', 'pet', 'visit')
+//   errors: An optional object containing validation errors, where keys are field names (e.g., { firstName: ["required"] })
+//   __(key): Internationalization function from i18n-node
+-%>
+<% function inputField(label, name, type, model, errors, __) { %>
+  <%
+    const fieldErrors = errors && errors[name] ? errors[name] : [];
+    const isValid = fieldErrors.length === 0;
+  %>
+  <div class="form-group<%= isValid ? '' : ' has-error' %>">
+    <label for="<%= name %>" class="col-sm-2 control-label"><%= label %></label>
+    <div class="col-sm-10">
+      <% if (type === 'text') { %>
+        <input class="form-control" type="text" id="<%= name %>" name="<%= name %>" value="<%= model[name] || '' %>" />
+      <% } else if (type === 'date') { %>
+        <input class="form-control" type="date" id="<%= name %>" name="<%= name %>" value="<%= model[name] || '' %>" />
+      <% } %>
+      
+      <% if (isValid) { %>
+        <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+      <% } else { %>
+        <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+        <% fieldErrors.forEach(error => { %>
+          <span class="help-inline"><%= __(error) %></span>
+        <% }); %>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
+<% if (typeof defineContent !== 'undefined') { %>
+  <%- defineContent('input', (label, name, type, model, errors, __) => inputField(label, name, type, model, errors, __)) %>
+<% } %>

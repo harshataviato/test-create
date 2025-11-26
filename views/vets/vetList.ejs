@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: '', menu: 'vets', noContent: true }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'vetList_content', menu: 'vets', noContent: false,
+    listVets: listVets, currentPage: currentPage, totalPages: totalPages, totalItems: totalItems
+  }) %>
+</body>
+</html>
+
+<% /* This content block is included by the layout fragment */ %>
+<% /* filename: views/vets/vetList.ejs (content block) */ %>
+<%- defineContent('vetList_content', () => { %>
+  <h2><%= __('vets') %></h2>
+
+  <table id="vets" class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= __('name') %></th>
+        <th><%= __('specialties') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% listVets.forEach(vet => { %>
+        <tr>
+          <td><%= vet.firstName %> <%= vet.lastName %></td>
+          <td>
+            <% if (vet.specialties && vet.specialties.length > 0) { %>
+              <%= vet.specialties.map(specialty => specialty.name).join(', ') %>
+            <% } else { %>
+              <%= __('none') %>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (totalPages > 1) { %>
+    <div>
+      <span><%= __('pages') %>:</span>
+      <span>[</span>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <span>
+          <% if (currentPage !== i) { %>
+            <a href="/vets.html?page=<%= i %>"><%= i %></a>
+          <% } else { %>
+            <span><%= i %></span>
+          <% } %>
+        </span>
+      <% } %>
+      <span>]&nbsp;</span>
+      <span>
+        <% if (currentPage > 1) { %>
+          <a href="/vets.html?page=1" title="<%= __('first') %>" class="fa fa-fast-backward"></a>
+        <% } else { %>
+          <span title="<%= __('first') %>" class="fa fa-fast-backward"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage > 1) { %>
+          <a href="/vets.html?page=<%= currentPage - 1 %>" title="<%= __('previous') %>" class="fa fa-step-backward"></a>
+        <% } else { %>
+          <span title="<%= __('previous') %>" class="fa fa-step-backward"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage < totalPages) { %>
+          <a href="/vets.html?page=<%= currentPage + 1 %>" title="<%= __('next') %>" class="fa fa-step-forward"></a>
+        <% } else { %>
+          <span title="<%= __('next') %>" class="fa fa-step-forward"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage < totalPages) { %>
+          <a href="/vets.html?page=<%= totalPages %>" title="<%= __('last') %>" class="fa fa-fast-forward"></a>
+        <% } else { %>
+          <span title="<%= __('last') %>" class="fa fa-fast-forward"></span>
+        <% } %>
+      </span>
+    </div>
+  <% } %>
+<% }) %>

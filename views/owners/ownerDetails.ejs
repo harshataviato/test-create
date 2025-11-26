@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: '', menu: 'owners', noContent: true }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'ownerDetails_content', menu: 'owners', noContent: false,
+    owner: owner, formatDateToYYYYMMDD: formatDateToYYYYMMDD // Pass formatter function
+  }) %>
+</body>
+</html>
+
+<% /* This content block is included by the layout fragment */ %>
+<% /* filename: views/owners/ownerDetails.ejs (content block) */ %>
+<%- defineContent('ownerDetails_content', () => { %>
+  <h2><%= __('ownerInformation') %></h2>
+
+  <table class="table table-striped">
+    <tr>
+      <th><%= __('name') %></th>
+      <td><b><%= owner.firstName %> <%= owner.lastName %></b></td>
+    </tr>
+    <tr>
+      <th><%= __('address') %></th>
+      <td><%= owner.address %></td>
+    </tr>
+    <tr>
+      <th><%= __('city') %></th>
+      <td><%= owner.city %></td>
+    </tr>
+    <tr>
+      <th><%= __('telephone') %></th>
+      <td><%= owner.telephone %></td>
+    </tr>
+  </table>
+
+  <a href="/owners/<%= owner.id %>/edit" class="btn btn-primary"><%= __('editOwner') %></a>
+  <a href="/owners/<%= owner.id %>/pets/new" class="btn btn-primary"><%= __('addNewPet') %></a>
+
+  <br />
+  <br />
+  <br />
+  <h2><%= __('petsAndVisits') %></h2>
+
+  <table class="table table-striped">
+    <% owner.pets.forEach(pet => { %>
+      <tr>
+        <td valign="top">
+          <dl class="dl-horizontal">
+            <dt><%= __('name') %></dt>
+            <dd><%= pet.name %></dd>
+            <dt><%= __('birthDate') %></dt>
+            <dd><%= formatDateToYYYYMMDD(pet.birthDate) %></dd>
+            <dt><%= __('type') %></dt>
+            <dd><%= pet.type.name %></dd>
+          </dl>
+        </td>
+        <td valign="top">
+          <table class="table-condensed">
+            <thead>
+              <tr>
+                <th><%= __('visitDate') %></th>
+                <th><%= __('description') %></th>
+              </tr>
+            </thead>
+            <% pet.visits.forEach(visit => { %>
+              <tr>
+                <td><%= formatDateToYYYYMMDD(visit.date) %></td>
+                <td><%= visit.description %></td>
+              </tr>
+            <% }); %>
+            <tr>
+              <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit"><%= __('editPet') %></a></td>
+              <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new"><%= __('addVisit') %></a></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    <% }); %>
+  </table>
+<% }) %>
+
+<script>
+  // This script is moved into the layout.ejs directly to be part of the main layout,
+  // making it available on all pages that use the layout, including this one.
+  // The functionality remains the same:
+  // Function to hide the success and error messages after 3 seconds
+  function hideMessages() {
+    const successMessage = document.getElementById("success-message");
+    const errorMessage = document.getElementById("error-message");
+
+    if (successMessage) {
+      setTimeout(function () {
+        successMessage.style.display = "none";
+      }, 3000);
+    }
+    if (errorMessage) {
+      setTimeout(function () {
+        errorMessage.style.display = "none";
+      }, 3000);
+    }
+  }
+
+  // Call the function to hide messages when the page loads
+  window.addEventListener('load', hideMessages);
+</script>

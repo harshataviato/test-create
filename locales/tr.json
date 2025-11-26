@@ -1,0 +1,71 @@
+{
+  "welcome": "Hoş geldiniz",
+  "required": "gerekli",
+  "notFound": "bulunamadı",
+  "duplicate": "zaten kullanılıyor",
+  "nonNumeric": "sadece sayısal olmalıdır",
+  "duplicateFormSubmission": "Formun tekrar gönderilmesine izin verilmez",
+  "typeMismatch.date": "geçersiz tarih",
+  "typeMismatch.birthDate": "geçersiz tarih",
+  "owner": "Sahip",
+  "firstName": "Ad",
+  "lastName": "Soyad",
+  "address": "Adres",
+  "city": "Şehir",
+  "telephone": "Telefon",
+  "owners": "Sahipler",
+  "addOwner": "Sahip Ekle",
+  "findOwner": "Sahip Bul",
+  "findOwners": "Sahipleri Bul",
+  "updateOwner": "Sahip Güncelle",
+  "vets": "Veterinerler",
+  "name": "İsim",
+  "specialties": "Uzmanlıklar",
+  "none": "yok",
+  "pages": "sayfalar",
+  "first": "İlk",
+  "next": "Sonraki",
+  "previous": "Önceki",
+  "last": "Son",
+  "somethingHappened": "Bir şey oldu...",
+  "pets": "Evcil Hayvanlar",
+  "home": "Ana Sayfa",
+  "error": "Hata",
+  "telephone.invalid": "Telefon numarası 10 basamaklı olmalıdır",
+  "layoutTitle": "PetClinic :: bir Node.js/TypeScript demosu",
+  "pet": "Evcil Hayvan",
+  "birthDate": "Doğum Tarihi",
+  "type": "Tür",
+  "previousVisits": "Önceki Ziyaretler",
+  "date": "Tarih",
+  "description": "Açıklama",
+  "new": "Yeni",
+  "addVisit": "Ziyaret Ekle",
+  "editPet": "Evcil Hayvanı Düzenle",
+  "ownerInformation": "Sahip Bilgileri",
+  "visitDate": "Ziyaret Tarihi",
+  "editOwner": "Sahibi Düzenle",
+  "addNewPet": "Yeni Evcil Hayvan Ekle",
+  "petsAndVisits": "Evcil Hayvanlar ve Ziyaretler",
+  "error.404": "İstenen sayfa bulunamadı.",
+  "error.500": "Sunucuda dahili bir hata oluştu.",
+  "error.general": "Beklenmeyen bir hata oluştu."
+}
+// In app.ts
+// Assuming webjars/bootstrap and webjars/font-awesome are npm packages
+// (which they typically are in Node.js projects)
+// Adjust paths based on how these are installed.
+// For example, if you install 'bootstrap' and '@fortawesome/fontawesome-free':
+app.use('/webjars/bootstrap', express.static(path.join(__dirname, '../node_modules/bootstrap/dist')));
+app.use('/webjars/font-awesome', express.static(path.join(__dirname, '../node_modules/@fortawesome/fontawesome-free')));
+
+// If you want to simulate the exact 'webjars' structure, you might need
+// to manually copy these libraries into a 'public/webjars' folder
+// or use a custom resolver middleware.
+// For simplicity, directly mapping node_modules is common.
+// In app.ts
+// Serve static files from node_modules for webjars
+app.use('/webjars/bootstrap', express.static(path.join(__dirname, '../node_modules/bootstrap')));
+app.use('/webjars/font-awesome', express.static(path.join(__dirname, '../node_modules/@fortawesome/fontawesome-free')));
+// Ensure `petclinic.css` is in `public/css`
+app.use('/resources', express.static(path.join(__dirname, '../public/resources')));

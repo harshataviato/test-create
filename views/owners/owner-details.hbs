@@ -1,0 +1,67 @@
+{{!< layouts/main}}
+
+<h2>{{ownerInformation}}</h2>
+
+<table class="table table-striped">
+  <tr>
+    <th>{{name}}</th>
+    <td><b>{{owner.firstName}} {{owner.lastName}}</b></td>
+  </tr>
+  <tr>
+    <th>{{address}}</th>
+    <td>{{owner.address}}</td>
+  </tr>
+  <tr>
+    <th>{{city}}</th>
+    <td>{{owner.city}}</td>
+  </tr>
+  <tr>
+    <th>{{telephone}}</th>
+    <td>{{owner.telephone}}</td>
+  </tr>
+</table>
+
+<a href="/owners/{{owner.id}}/edit" class="btn btn-primary">{{editOwner}}</a>
+<a href="/owners/{{owner.id}}/pets/new" class="btn btn-primary">{{addNewPet}}</a>
+
+<br />
+<br />
+<br />
+<h2>{{petsAndVisits}}</h2>
+
+<table class="table table-striped">
+  {{#each owner.pets}}
+    <tr>
+      <td valign="top">
+        <dl class="dl-horizontal">
+          <dt>{{../name}}</dt>
+          <dd>{{this.name}}</dd>
+          <dt>{{../birthDate}}</dt>
+          <dd>{{#temporals.format this.birthDate 'YYYY-MM-DD'}}</dd>
+          <dt>{{../type}}</dt>
+          <dd>{{this.type.name}}</dd>
+        </dl>
+      </td>
+      <td valign="top">
+        <table class="table-condensed">
+          <thead>
+            <tr>
+              <th>{{../visitDate}}</th>
+              <th>{{../description}}</th>
+            </tr>
+          </thead>
+          {{#each this.visits}}
+            <tr>
+              <td>{{#temporals.format this.date 'YYYY-MM-DD'}}</td>
+              <td>{{this.description}}</td>
+            </tr>
+          {{/each}}
+          <tr>
+            <td><a href="/owners/{{../owner.id}}/pets/{{this.id}}/edit" class="btn btn-primary">{{../editPet}}</a></td>
+            <td><a href="/owners/{{../owner.id}}/pets/{{this.id}}/visits/new" class="btn btn-primary">{{../addVisit}}</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  {{/each}}
+</table>

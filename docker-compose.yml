@@ -1,0 +1,50 @@
+# Docker Compose configuration for the PetClinic TypeScript application
+# This sets up a PostgreSQL database and the NestJS application.
+services:
+  db:
+    image: postgres:18.1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: petclinic
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: petclinic
+    volumes:
+      # Persist data to avoid losing it when containers are removed
+      - petclinic_db_data:/var/lib/postgresql/data
+      # Mount initial schema and data scripts (optional, TypeORM migrations handle this)
+      # - ./src/main/resources/db/postgres/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      # - ./src/main/resources/db/postgres/data.sql:/docker-entrypoint-initdb.d/2-data.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petclinic -d petclinic"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:3000" # Map host port 8080 to container port 3000 (NestJS default)
+    environment:
+      # Database connection details, matching the 'db' service
+      DATABASE_URL: postgres://petclinic:petclinic@db:5432/petclinic
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: petclinic
+      DATABASE_PASSWORD: petclinic
+      DATABASE_NAME: petclinic
+      # NestJS specific environment variables
+      NODE_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy # Ensure DB is ready before starting the app
+    # Command to run migrations and then start the NestJS application
+    # This ensures the database schema is up-to-date before the app starts
+    command: ["sh", "-c", "npm run migration:run && npm run seed:run && npm run start:prod"]
+    restart: always
+
+volumes:
+  petclinic_db_data: # Define a named volume for persistent database data

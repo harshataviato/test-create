@@ -1,0 +1,19 @@
+<div class="form-group {{fieldErrorClass errors name}}">
+  <label for="{{name}}" class="col-sm-2 control-label">{{i18n label}}</label>
+
+  <div class="col-sm-10">
+    <select name="{{name}}" class="form-control">
+      {{#each items}}
+        <option value="{{this.name}}" {{#eq ../defaultValue this.name}}selected{{/eq}}>{{this.name}}</option>
+      {{/each}}
+    </select>
+    {{#if (hasErrors errors name)}}
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      {{#each (lookup errors name)}}
+        <span class="help-inline">{{i18n this}}</span>
+      {{/each}}
+    {{else}}
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    {{/if}}
+  </div>
+</div>

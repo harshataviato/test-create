@@ -1,0 +1,18 @@
+<div class="form-group {{fieldErrorClass errors name}}">
+  <label for="{{name}}" class="col-sm-2 control-label">{{i18n label}}</label>
+  <div class="col-sm-10">
+    {{#eq type "text"}}
+      <input class="form-control" type="text" name="{{name}}" value="{{defaultValue}}" />
+    {{else if (eq type "date")}}
+      <input class="form-control" type="date" name="{{name}}" value="{{defaultValue}}" />
+    {{/eq}}
+    {{#if (hasErrors errors name)}}
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      {{#each (lookup errors name)}}
+        <span class="help-inline">{{i18n this}}</span>
+      {{/each}}
+    {{else}}
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    {{/if}}
+  </div>
+</div>

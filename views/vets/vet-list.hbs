@@ -1,0 +1,71 @@
+{{!< layouts/main}}
+
+<h2>{{vets}}</h2>
+
+<table id="vets" class="table table-striped">
+  <thead>
+    <tr>
+      <th>{{name}}</th>
+      <th>{{specialties}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each listVets}}
+      <tr>
+        <td>{{this.firstName}} {{this.lastName}}</td>
+        <td>
+          {{#if (gt this.specialties.length 0)}}
+            {{#each this.specialties}}
+              <span>{{this.name}} </span>
+            {{/each}}
+          {{else}}
+            <span>{{none}}</span>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#if (gt totalPages 1)}}
+  <div>
+    <span>{{pages}}:</span>
+    <span>[</span>
+    {{#each (#numbers.sequence 1 totalPages)}}
+      {{#if (eq ../currentPage this)}}
+        <span>{{this}}</span>
+      {{else}}
+        <a href="/vets.html?page={{this}}">{{this}}</a>
+      {{/if}}
+    {{/each}}
+    <span>]&nbsp;</span>
+    <span>
+      {{#if (gt currentPage 1)}}
+        <a href="/vets.html?page=1" title="{{first}}" class="fa fa-fast-backward"></a>
+      {{else}}
+        <span title="{{first}}" class="fa fa-fast-backward"></span>
+      {{/if}}
+    </span>
+    <span>
+      {{#if (gt currentPage 1)}}
+        <a href="/vets.html?page={{gt currentPage 1}}" title="{{previous}}" class="fa fa-step-backward"></a>
+      {{else}}
+        <span title="{{previous}}" class="fa fa-step-backward"></span>
+      {{/if}}
+    </span>
+    <span>
+      {{#if (lt currentPage totalPages)}}
+        <a href="/vets.html?page={{lt currentPage totalPages}}" title="{{next}}" class="fa fa-step-forward"></a>
+      {{else}}
+        <span title="{{next}}" class="fa fa-step-forward"></span>
+      {{/if}}
+    </span>
+    <span>
+      {{#if (lt currentPage totalPages)}}
+        <a href="/vets.html?page={{totalPages}}" title="{{last}}" class="fa fa-fast-forward"></a>
+      {{else}}
+        <span title="{{last}}" class="fa fa-fast-forward"></span>
+      {{/if}}
+    </span>
+  </div>
+{{/if}}

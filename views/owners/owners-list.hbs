@@ -1,0 +1,71 @@
+{{!< layouts/main}}
+
+<h2>{{ownersTitle}}</h2>
+
+<table id="owners" class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width: 150px;">{{name}}</th>
+      <th style="width: 200px;">{{address}}</th>
+      <th>{{city}}</th>
+      <th style="width: 120px">{{telephone}}</th>
+      <th>{{pets}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each listOwners}}
+      <tr>
+        <td>
+          <a href="/owners/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
+        </td>
+        <td>{{this.address}}</td>
+        <td>{{this.city}}</td>
+        <td>{{this.telephone}}</td>
+        <td><span>{{#strings.listJoin this.pets ', '}}{{/strings.listJoin}}</span></td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#if (gt totalPages 1)}}
+  <div>
+    <span>{{pages}}:</span>
+    <span>[</span>
+    {{#each (#numbers.sequence 1 totalPages)}}
+      {{#if (eq ../currentPage this)}}
+        <span>{{this}}</span>
+      {{else}}
+        <a href="/owners?page={{this}}">{{this}}</a>
+      {{/if}}
+    {{/each}}
+    <span>]&nbsp;</span>
+    <span>
+      {{#if (gt currentPage 1)}}
+        <a href="/owners?page=1" title="{{first}}" class="fa fa-fast-backward"></a>
+      {{else}}
+        <span title="{{first}}" class="fa fa-fast-backward"></span>
+      {{/if}}
+    </span>
+    <span>
+      {{#if (gt currentPage 1)}}
+        <a href="/owners?page={{gt currentPage 1}}" title="{{previous}}" class="fa fa-step-backward"></a>
+      {{else}}
+        <span title="{{previous}}" class="fa fa-step-backward"></span>
+      {{/if}}
+    </span>
+    <span>
+      {{#if (lt currentPage totalPages)}}
+        <a href="/owners?page={{lt currentPage totalPages}}" title="{{next}}" class="fa fa-step-forward"></a>
+      {{else}}
+        <span title="{{next}}" class="fa fa-step-forward"></span>
+      {{/if}}
+    </span>
+    <span>
+      {{#if (lt currentPage totalPages)}}
+        <a href="/owners?page={{totalPages}}" title="{{last}}" class="fa fa-fast-forward"></a>
+      {{else}}
+        <span title="{{last}}" class="fa fa-fast-forward"></span>
+      {{/if}}
+    </span>
+  </div>
+{{/if}}

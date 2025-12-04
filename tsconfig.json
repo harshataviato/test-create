@@ -1,0 +1,32 @@
+// This is a standard TypeScript configuration file for a Node.js project.
+// It defines how TypeScript files are compiled.
+{
+  "compilerOptions": {
+    "target": "ES2022",                // Specify ECMAScript target version
+    "module": "Node16",                // Specify module code generation
+    "moduleResolution": "Node16",      // Resolve modules using Node.js resolution strategy
+    "declaration": true,               // Generate .d.ts files for compiled JavaScript
+    "outDir": "./dist",                // Redirect output structure to the 'dist' folder
+    "rootDir": "./src",                // Specify the root directory of source files
+    "strict": true,                    // Enable all strict type-checking options
+    "esModuleInterop": true,           // Allow default imports from modules with no default export
+    "forceConsistentCasingInFileNames": true, // Ensure that casing in file names matches across the file system
+    "skipLibCheck": true,              // Skip type checking of declaration files
+    "experimentalDecorators": true,    // Enable experimental support for decorators (used by TypeORM, class-validator)
+    "emitDecoratorMetadata": true,     // Emit design-type metadata for decorated declarations
+    "sourceMap": true,                 // Generate corresponding .map files
+    "baseUrl": "./",                   // Base directory to resolve non-absolute module names
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"] // Path mapping for modules
+    }
+  },
+  "include": [
+    "src/**/*.ts",                     // Include all TypeScript files in the 'src' directory
+    "mvnw.ts",                         // Include the custom mvnw wrapper script
+    "gradlew.ts"                       // Include the custom gradlew wrapper script
+  ],
+  "exclude": [
+    "node_modules",                    // Exclude node_modules from compilation
+    "dist"                             // Exclude compiled output directory
+  ]
+}

@@ -1,0 +1,6 @@
+// This file is a Gradle build configuration file for a Java project.
+// It defines the root project name and is part of the Gradle build system.
+// In a conceptual TypeScript/Node.js project, this metadata would typically
+// be defined in the 'package.json' file (e.g., the "name" field)
+// or implicitly handled by the project structure, and thus does not
+// translate directly into a TypeScript code file.

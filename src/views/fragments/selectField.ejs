@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+  <% /*
+     * EJS fragment for a generic select field.
+     * Parameters:
+     * - label: The human-readable label for the select field.
+     * - name: The `name` attribute of the select field, used for data binding.
+     * - items: A collection of objects, each with a `name` property, to populate the select options.
+     * - selectedValue: The value that should be pre-selected in the dropdown.
+     * - errors: An array of validation errors for the current form, to display specific errors.
+     * - t: i18n translation function
+     */ %>
+  <%- include('./layout', { template: 'select (label, name, items, selectedValue, errors)', menu: undefined, i18n: i18n, t: t }) %>
+
+  <div class="form-group has-feedback <%= (errors && errors.find(e => e.property === name)) ? 'has-error' : '' %>">
+    <label for="<%= name %>" class="col-sm-2 control-label"><%= label %></label>
+
+    <div class="col-sm-10">
+      <select id="<%= name %>" name="<%= name %>" class="form-control">
+        <% items.forEach(function(item) { %>
+          <option value="<%= item.name %>" <%= (item.name === selectedValue) ? 'selected' : '' %>>
+            <%= item.name %>
+          </option>
+        <% }); %>
+      </select>
+      
+      <% const fieldErrors = errors ? errors.find(e => e.property === name) : null; %>
+      <% if (!fieldErrors) { %>
+        <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+      <% } else { %>
+        <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+        <% if (fieldErrors && fieldErrors.constraints) { %>
+          <% for (const constraintKey in fieldErrors.constraints) { %>
+            <span class="help-inline text-danger"><%= t(fieldErrors.constraints[constraintKey]) %></span>
+          <% } %>
+        <% } %>
+      <% } %>
+    </div>
+  </div>
+</body>
+
+</html>

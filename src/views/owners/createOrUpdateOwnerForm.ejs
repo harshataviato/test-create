@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<%- include('../fragments/layout', { template: 'owners/createOrUpdateOwnerForm', menu: 'owners', i18n: i18n, t: t, owner: owner, validationErrors: errors }) %>
+
+<body>
+  <h2 class="mt-4"><%= t('owner') %></h2>
+  <form action="/owners/<%= owner.id ? owner.id + '/edit' : 'new' %>" method="post" class="form-horizontal" id="add-owner-form">
+    <div class="form-group has-feedback">
+      <%- include('../fragments/inputField', { label: t('firstName'), name: 'firstName', type: 'text', value: owner.firstName, errors: errors, t: t }) %>
+      <%- include('../fragments/inputField', { label: t('lastName'), name: 'lastName', type: 'text', value: owner.lastName, errors: errors, t: t }) %>
+      <%- include('../fragments/inputField', { label: t('address'), name: 'address', type: 'text', value: owner.address, errors: errors, t: t }) %>
+      <%- include('../fragments/inputField', { label: t('city'), name: 'city', type: 'text', value: owner.city, errors: errors, t: t }) %>
+      <%- include('../fragments/inputField', { label: t('telephone'), name: 'telephone', type: 'text', value: owner.telephone, errors: errors, t: t }) %>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">
+          <%= owner.isNew() ? t('addOwner') : t('updateOwner') %>
+        </button>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

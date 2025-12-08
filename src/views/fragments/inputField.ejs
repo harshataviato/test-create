@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<body>
+  <% /*
+     * EJS fragment for a generic input field.
+     * Parameters:
+     * - label: The human-readable label for the input field.
+     * - name: The `name` attribute of the input field, used for data binding.
+     * - type: The `type` attribute of the input field (e.g., 'text', 'date').
+     * - value: The current value of the input field (for pre-filling forms).
+     * - errors: An array of validation errors for the current form, to display specific errors.
+     * - t: i18n translation function
+     */ %>
+  <%- include('./layout', { template: 'input (label, name, type, value, errors)', menu: undefined, i18n: i18n, t: t }) %>
+
+  <div class="form-group has-feedback <%= (errors && errors.find(e => e.property === name)) ? 'has-error' : '' %>">
+    <label for="<%= name %>" class="col-sm-2 control-label"><%= label %></label>
+    <div class="col-sm-10">
+      <% if (type === 'text') { %>
+        <input class="form-control" type="text" id="<%= name %>" name="<%= name %>" value="<%= value || '' %>" />
+      <% } else if (type === 'date') { %>
+        <input class="form-control" type="date" id="<%= name %>" name="<%= name %>" value="<%= value ? new Date(value).toISOString().substring(0, 10) : '' %>" />
+      <% } %>
+      
+      <% const fieldErrors = errors ? errors.find(e => e.property === name) : null; %>
+      <% if (!fieldErrors) { %>
+        <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+      <% } else { %>
+        <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+        <span class="help-inline" th:errors="*{__${name}__}" ><%= t('error') %></span>
+        <% if (fieldErrors && fieldErrors.constraints) { %>
+          <% for (const constraintKey in fieldErrors.constraints) { %>
+            <span class="help-inline text-danger"><%= t(fieldErrors.constraints[constraintKey]) %></span>
+          <% } %>
+        <% } %>
+      <% } %>
+    </div>
+  </div>
+</body>
+
+</html>

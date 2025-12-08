@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<%- include('../fragments/layout', { template: 'owners/ownerDetails', menu: 'owners', i18n: i18n, t: t, owner: owner, message: message, error: error }) %>
+
+<body>
+
+  <h2 class="mt-4"><%= t('ownerInformation') %></h2>
+
+  <% if (message) { %>
+    <div class="alert alert-success mt-3" id="success-message">
+      <span class="fa fa-check-circle" aria-hidden="true"></span>
+      <span class="help-inline"><%= message %></span>
+    </div>
+  <% } %>
+
+  <% if (error) { %>
+    <div class="alert alert-danger mt-3" id="error-message">
+      <span class="fa fa-remove" aria-hidden="true"></span>
+      <span class="help-inline"><%= error %></span>
+    </div>
+  <% } %>
+
+  <table class="table table-striped mt-3">
+    <tr>
+      <th><%= t('name') %></th>
+      <td><b><%= owner.firstName %> <%= owner.lastName %></b></td>
+    </tr>
+    <tr>
+      <th><%= t('address') %></th>
+      <td><%= owner.address %></td>
+    </tr>
+    <tr>
+      <th><%= t('city') %></th>
+      <td><%= owner.city %></td>
+    </tr>
+    <tr>
+      <th><%= t('telephone') %></th>
+      <td><%= owner.telephone %></td>
+    </tr>
+  </table>
+
+  <a href="/owners/<%= owner.id %>/edit" class="btn btn-primary"><%= t('editOwner') %></a>
+  <a href="/owners/<%= owner.id %>/pets/new" class="btn btn-primary"><%= t('addNewPet') %></a>
+
+  <br />
+  <br />
+  <br />
+  <h2 class="mt-4"><%= t('petsAndVisits') %></h2>
+
+  <table class="table table-striped mt-3">
+    <% owner.pets.forEach(function(pet) { %>
+      <tr>
+        <td valign="top">
+          <dl class="dl-horizontal">
+            <dt><%= t('name') %></dt>
+            <dd><%= pet.name %></dd>
+            <dt><%= t('birthDate') %></dt>
+            <dd><%= pet.birthDate ? new Date(pet.birthDate).toISOString().substring(0, 10) : '' %></dd>
+            <dt><%= t('type') %></dt>
+            <dd><%= pet.type ? pet.type.name : '' %></dd>
+          </dl>
+        </td>
+        <td valign="top">
+          <table class="table-condensed">
+            <thead>
+              <tr>
+                <th><%= t('visitDate') %></th>
+                <th><%= t('description') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (pet.visits && pet.visits.length > 0) { %>
+                <% pet.visits.forEach(function(visit) { %>
+                  <tr>
+                    <td><%= visit.date ? new Date(visit.date).toISOString().substring(0, 10) : '' %></td>
+                    <td><%= visit.description %></td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="2">No visits.</td>
+                </tr>
+              <% } %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit" class="btn btn-sm btn-info mt-2"><%= t('editPet') %></a></td>
+                <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new" class="btn btn-sm btn-info mt-2"><%= t('addVisit') %></a></td>
+              </tr>
+            </tfoot>
+          </table>
+        </td>
+      </tr>
+    <% }); %>
+  </table>
+
+  <script>
+    // Function to hide the success and error messages after 3 seconds
+    function hideMessages() {
+      const successMessage = document.getElementById("success-message");
+      const errorMessage = document.getElementById("error-message");
+
+      if (successMessage) {
+        setTimeout(function () {
+          successMessage.style.display = "none";
+        }, 3000); // 3000 milliseconds (3 seconds)
+      }
+      if (errorMessage) {
+        setTimeout(function () {
+          errorMessage.style.display = "none";
+        }, 3000); // 3000 milliseconds (3 seconds)
+      }
+    }
+
+    // Call the function to hide messages when the page loads
+    window.onload = hideMessages;
+  </script>
+
+</body>
+
+</html>

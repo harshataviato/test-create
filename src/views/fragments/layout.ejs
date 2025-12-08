@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.png">
+  <title><%= t('layoutTitle') %></title>
+  <link href="/webjars/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/petclinic.css" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'home' ? 'active' : '' %>" href="/" title="<%= t('home') %>">
+              <span class="fa fa-home"></span>
+              <span><%= t('home') %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'owners' ? 'active' : '' %>" href="/owners/find" title="<%= t('findOwners') %>">
+              <span class="fa fa-search"></span>
+              <span><%= t('findOwners') %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'vets' ? 'active' : '' %>" href="/vets.html" title="<%= t('vets') %>">
+              <span class="fa fa-th-list"></span>
+              <span><%= t('vets') %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'error' ? 'active' : '' %>" href="/oups" title="<%= t('error') %>">
+              <span class="fa fa-exclamation-triangle"></span>
+              <span><%= t('error') %></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <% if (template === 'error') { %>
+        <%- include('../error', { status: status, message: message, stack: stack, i18n: i18n, t: t }) %>
+      <% } else if (template === 'welcome') { %>
+        <%- include('../welcome', { i18n: i18n, t: t }) %>
+      <% } else if (template === 'owners/createOrUpdateOwnerForm') { %>
+        <%- include('../owners/createOrUpdateOwnerForm', { owner: owner, errors: validationErrors || [], i18n: i18n, t: t }) %>
+      <% } else if (template === 'owners/findOwners') { %>
+        <%- include('../owners/findOwners', { owner: owner, i18n: i18n, t: t }) %>
+      <% } else if (template === 'owners/ownerDetails') { %>
+        <%- include('../owners/ownerDetails', { owner: owner, message: message, error: error, i18n: i18n, t: t }) %>
+      <% } else if (template === 'owners/ownersList') { %>
+        <%- include('../owners/ownersList', { listOwners: listOwners, totalPages: totalPages, currentPage: currentPage, i18n: i18n, t: t }) %>
+      <% } else if (template === 'pets/createOrUpdatePetForm') { %>
+        <%- include('../pets/createOrUpdatePetForm', { owner: owner, pet: pet, types: types, errors: validationErrors || [], i18n: i18n, t: t }) %>
+      <% } else if (template === 'pets/createOrUpdateVisitForm') { %>
+        <%- include('../pets/createOrUpdateVisitForm', { owner: owner, pet: pet, visit: visit, errors: validationErrors || [], i18n: i18n, t: t }) %>
+      <% } else if (template === 'vets/vetList') { %>
+        <%- include('../vets/vetList', { listVets: listVets, totalPages: totalPages, currentPage: currentPage, i18n: i18n, t: t }) %>
+      <% } else { %>
+        <!-- Render the dynamic content of the specific view -->
+        <%- template %>
+      <% } %>
+
+      <br />
+      <br />
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <img src="/static/images/spring-logo.svg" alt="VMware Tanzu Logo" class="logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/webjars/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<%- include('../fragments/layout', { template: 'pets/createOrUpdatePetForm', menu: 'owners', i18n: i18n, t: t, owner: owner, pet: pet, types: types, validationErrors: errors }) %>
+
+<body>
+
+  <h2 class="mt-4">
+    <% if (pet.isNew()) { %>
+      <%= t('new') %>
+    <% } %>
+    <%= t('pet') %>
+  </h2>
+  <form action="/owners/<%= owner.id %>/pets/<%= pet.id ? pet.id + '/edit' : 'new' %>" method="post" class="form-horizontal">
+    <% if (pet.id) { %>
+      <input type="hidden" name="id" value="<%= pet.id %>" />
+    <% } %>
+    <div class="form-group has-feedback">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><%= t('owner') %></label>
+        <div class="col-sm-10">
+          <span><%= owner.firstName %> <%= owner.lastName %></span>
+        </div>
+      </div>
+      <%- include('../fragments/inputField', { label: t('name'), name: 'name', type: 'text', value: pet.name, errors: errors, t: t }) %>
+      <%- include('../fragments/inputField', { label: t('birthDate'), name: 'birthDate', type: 'date', value: pet.birthDate, errors: errors, t: t }) %>
+      <%- include('../fragments/selectField', { label: t('type'), name: 'type', items: types, selectedValue: pet.type ? pet.type.name : '', errors: errors, t: t }) %>
+    </div>
+    <div class="form-group mt-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">
+          <%= pet.isNew() ? t('addPet') : t('updatePet') %>
+        </button>
+      </div>
+    </div>
+  </form>
+
+</body>
+
+</html>

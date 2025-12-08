@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<%- include('../fragments/layout', { template: 'owners/findOwners', menu: 'owners', i18n: i18n, t: t, owner: owner }) %>
+
+<body>
+  <h2 class="mt-4"><%= t('findOwners') %></h2>
+
+  <% if (error) { %>
+    <div class="alert alert-danger" id="error-message">
+      <span class="fa fa-remove" aria-hidden="true"></span>
+      <span class="help-inline"><%= error %></span>
+    </div>
+  <% } %>
+
+  <form action="/owners" method="get" class="form-horizontal" id="search-owner-form">
+    <div class="form-group">
+      <div class="control-group" id="lastNameGroup">
+        <label class="col-sm-2 control-label"><%= t('lastName') %></label>
+        <div class="col-sm-10">
+          <input class="form-control" name="lastName" value="<%= owner.lastName || '' %>" size="30" maxlength="80" />
+          <span class="help-inline">
+            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+              <% errors.forEach(function(err) { %>
+                <p><%= err %></p>
+              <% }); %>
+            <% } %>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group mt-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary"><%= t('findOwner') %></button>
+      </div>
+    </div>
+
+    <a class="btn btn-primary mt-3" href="/owners/new"><%= t('addOwner') %></a>
+
+  </form>
+
+</body>
+
+</html>

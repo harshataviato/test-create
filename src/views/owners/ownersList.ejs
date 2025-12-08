@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<%- include('../fragments/layout', { template: 'owners/ownersList', menu: 'owners', i18n: i18n, t: t, listOwners: listOwners, totalPages: totalPages, currentPage: currentPage }) %>
+
+<body>
+
+  <h2 class="mt-4"><%= t('owners') %></h2>
+
+  <table id="owners" class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th style="width: 150px;"><%= t('name') %></th>
+        <th style="width: 200px;"><%= t('address') %></th>
+        <th><%= t('city') %></th>
+        <th style="width: 120px"><%= t('telephone') %></th>
+        <th><%= t('pets') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% listOwners.forEach(function(owner) { %>
+        <tr>
+          <td>
+            <a href="/owners/<%= owner.id %>"><%= owner.firstName %> <%= owner.lastName %></a>
+          </td>
+          <td><%= owner.address %></td>
+          <td><%= owner.city %></td>
+          <td><%= owner.telephone %></td>
+          <td>
+            <% if (owner.pets && owner.pets.length > 0) { %>
+              <%= owner.pets.map(pet => pet.name).join(', ') %>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (totalPages > 1) { %>
+    <div class="pagination-controls mt-3">
+      <span><%= t('pages') %>:</span>
+      <span>[</span>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (currentPage !== i) { %>
+          <a href="/owners?page=<%= i %>&lastName=<%= locals.owner ? locals.owner.lastName : '' %>"><%= i %></a>
+        <% } else { %>
+          <span><%= i %></span>
+        <% } %>
+      <% } %>
+      <span>]&nbsp;</span>
+      <span>
+        <% if (currentPage > 1) { %>
+          <a href="/owners?page=1&lastName=<%= locals.owner ? locals.owner.lastName : '' %>" title="<%= t('first') %>" class="fa fa-fast-backward"></a>
+        <% } else { %>
+          <span class="fa fa-fast-backward disabled" title="<%= t('first') %>"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage > 1) { %>
+          <a href="/owners?page=<%= currentPage - 1 %>&lastName=<%= locals.owner ? locals.owner.lastName : '' %>" title="<%= t('previous') %>" class="fa fa-step-backward"></a>
+        <% } else { %>
+          <span class="fa fa-step-backward disabled" title="<%= t('previous') %>"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage < totalPages) { %>
+          <a href="/owners?page=<%= currentPage + 1 %>&lastName=<%= locals.owner ? locals.owner.lastName : '' %>" title="<%= t('next') %>" class="fa fa-step-forward"></a>
+        <% } else { %>
+          <span class="fa fa-step-forward disabled" title="<%= t('next') %>"></span>
+        <% } %>
+      </span>
+      <span>
+        <% if (currentPage < totalPages) { %>
+          <a href="/owners?page=<%= totalPages %>&lastName=<%= locals.owner ? locals.owner.lastName : '' %>" title="<%= t('last') %>" class="fa fa-fast-forward"></a>
+        <% } else { %>
+          <span class="fa fa-fast-forward disabled" title="<%= t('last') %>"></span>
+        <% } %>
+      </span>
+    </div>
+  <% } %>
+</body>
+
+</html>

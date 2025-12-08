@@ -1,0 +1,53 @@
+{
+  "name": "spring-petclinic-typescript",
+  "version": "1.0.0",
+  "description": "Spring PetClinic Sample Application converted to TypeScript/Node.js/Express.js/TypeORM",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "build": "rimraf dist && tsc",
+    "dev": "nodemon --exec ts-node src/main.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:run": "npm run typeorm migration:run -- -d src/config/data-source.ts",
+    "migration:generate": "npm run typeorm migration:generate src/migrations/$(date +%s)-InitialSchema -- -d src/config/data-source.ts",
+    "seed": "ts-node src/db-init/sql-scripts.ts",
+    "db:reset": "npm run typeorm schema:drop -- -d src/config/data-source.ts && npm run migration:run && npm run seed"
+  },
+  "keywords": [
+    "petclinic",
+    "spring",
+    "typescript",
+    "nodejs",
+    "express",
+    "typeorm",
+    "ejs"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "i18next": "^23.11.5",
+    "i18next-fs-backend": "^2.3.1",
+    "i18next-http-middleware": "^3.6.0",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/node": "^20.12.12",
+    "nodemon": "^3.1.0",
+    "rimraf": "^5.0.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

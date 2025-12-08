@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                       /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', 'ES2021', 'ES2022', 'ESNext'. */
+    "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', 'es2022', 'esNext'. */
+    "lib": ["ES2020", "DOM"],                 /* Specify library files to be included in the compilation. */
+    "outDir": "./dist",                       /* Redirect output structure to the directory. */
+    "rootDir": "./src",                       /* Specify the root directory of source files. */
+    "strict": true,                           /* Enable all strict type-checking options. */
+    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "skipLibCheck": true,                     /* Skip type checking all .d.ts files. */
+    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+    "experimentalDecorators": true,           /* Enable experimental support for TC39 decorators. */
+    "emitDecoratorMetadata": true,            /* Emit design-type metadata for decorated declarations in source files. */
+    "strictPropertyInitialization": false,    /* Disable strict checking of property initialization for TypeORM entities. */
+    "sourceMap": true,                        /* Emit prior source files. */
+    "baseUrl": "./src",                       /* Base directory to resolve non-relative module names. */
+    "paths": {
+      "@models/*": ["models/*"],
+      "@repositories/*": ["repositories/*"],
+      "@services/*": ["services/*"],
+      "@controllers/*": ["controllers/*"],
+      "@routes/*": ["routes/*"],
+      "@utils/*": ["utils/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@config/*": ["config/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

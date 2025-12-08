@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('fragments/layout', { template: 'error', menu: 'error', __: __, temporals: temporals, strings: strings }) %>
+</head>
+<body>
+  <%- include('fragments/layout', { template: 'error', menu: 'error', __: __, temporals: temporals, strings: strings }, function() { %>
+    <img src="/resources/images/pets.png" alt="Pets Image" />
+    <h2 class="error-title"><%= __("somethingHappened") %></h2>
+
+    <p>
+      <% if (status === 404) { %>
+        <span><%= __("error.404") %></span>
+      <% } else if (status === 500) { %>
+        <span><%= __("error.500") %></span>
+      <% } else { %>
+        <span><%= __("error.general") %></span>
+      <% } %>
+    </p>
+
+    <!-- Display original message for debugging purposes (e.g., in development) -->
+    <p><%= debugMessage %></p>
+
+    <% if (stack && process.env.NODE_ENV === 'development') { %>
+      <pre><code><%= stack %></code></pre>
+    <% } %>
+  <% }) %>
+</body>
+</html>

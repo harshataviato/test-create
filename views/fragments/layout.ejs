@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="/resources/images/favicon.png">
+  <title><%= __("layoutTitle") %></title>
+  <link href="/webjars/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/resources/css/petclinic.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'home' ? 'active' : '' %>" href="/" title="<%= __("home page") %>">
+              <span class="fa fa-home" aria-hidden="true"></span>
+              <span><%= __("home") %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'owners' ? 'active' : '' %>" href="/owners/find" title="<%= __("find owners") %>">
+              <span class="fa fa-search" aria-hidden="true"></span>
+              <span><%= __("findOwners") %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'vets' ? 'active' : '' %>" href="/vets.html" title="<%= __("veterinarians") %>">
+              <span class="fa fa-th-list" aria-hidden="true"></span>
+              <span><%= __("vets") %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'error' ? 'active' : '' %>" href="/oups" title="<%= __("trigger a RuntimeException to see how it is handled") %>">
+              <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>
+              <span><%= __("error") %></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <%- body %>
+
+      <br />
+      <br />
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <img src="/resources/images/spring-logo.svg" alt="VMware Tanzu Logo" class="logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/webjars/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

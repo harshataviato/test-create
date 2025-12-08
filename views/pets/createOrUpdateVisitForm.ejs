@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: 'pets/createOrUpdateVisitForm', menu: 'owners', __: __, temporals: temporals, strings: strings }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'pets/createOrUpdateVisitForm', menu: 'owners', __: __, temporals: temporals, strings: strings }, function() { %>
+    <h2>
+      <% if (visit.isNew()) { %>
+        <%= __("new") %>
+      <% } %>
+      Visit
+    </h2>
+
+    <b><%= __("pet") %></b>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th><%= __("name") %></th>
+          <th><%= __("birthDate") %></th>
+          <th><%= __("type") %></th>
+          <th><%= __("owner") %></th>
+        </tr>
+      </thead>
+      <tr>
+        <td><%= pet.name %></td>
+        <td><%= temporals.format(pet.birthDate, 'YYYY-MM-DD') %></td>
+        <td><%= pet.type.name %></td>
+        <td><%= owner.firstName + ' ' + owner.lastName %></td>
+      </tr>
+    </table>
+
+    <form action="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new" method="post" class="form-horizontal">
+      <% if (locals.errors) { %>
+        <div class="alert alert-danger" id="error-message">
+          <span><%= locals.errors %></span>
+        </div>
+      <% } %>
+
+      <div class="form-group has-feedback">
+        <%- include('../fragments/inputField', { label: __("date"), name: 'date', type: 'date', value: visit.date, errors: locals.errors }) %>
+        <%- include('../fragments/inputField', { label: __("description"), name: 'description', type: 'text', value: visit.description, errors: locals.errors }) %>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input type="hidden" name="petId" value="<%= pet.id %>" />
+          <button class="btn btn-primary" type="submit"><%= __("addVisit") %></button>
+        </div>
+      </div>
+    </form>
+
+    <br />
+    <b><%= __("previousVisits") %></b>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th><%= __("date") %></th>
+          <th><%= __("description") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (pet.visits && pet.visits.length > 0) { %>
+          <% pet.visits.forEach(function(prevVisit) { %>
+            <tr>
+              <td><%= temporals.format(prevVisit.date, 'YYYY-MM-DD') %></td>
+              <td><%= prevVisit.description %></td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="2"><%= __("none") %></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% }) %>
+</body>
+</html>

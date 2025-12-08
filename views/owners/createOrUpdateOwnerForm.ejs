@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../fragments/layout', { template: 'owners/createOrUpdateOwnerForm', menu: 'owners', __: __, temporals: temporals, strings: strings }) %>
+</head>
+<body>
+  <%- include('../fragments/layout', { template: 'owners/createOrUpdateOwnerForm', menu: 'owners', __: __, temporals: temporals, strings: strings }, function() { %>
+    <h2 class="col-sm-offset-2"><%= __("owner") %></h2>
+    <form action="<%= owner.id ? `/owners/${owner.id}/edit` : '/owners/new' %>" method="post" class="form-horizontal" id="add-owner-form">
+      <% if (locals.errors) { %>
+        <div class="alert alert-danger" id="error-message">
+          <span><%= locals.errors %></span>
+        </div>
+      <% } %>
+
+      <div class="form-group has-feedback">
+        <%- include('../fragments/inputField', { label: __("firstName"), name: 'firstName', type: 'text', value: owner.firstName, errors: locals.errors }) %>
+        <%- include('../fragments/inputField', { label: __("lastName"), name: 'lastName', type: 'text', value: owner.lastName, errors: locals.errors }) %>
+        <%- include('../fragments/inputField', { label: __("address"), name: 'address', type: 'text', value: owner.address, errors: locals.errors }) %>
+        <%- include('../fragments/inputField', { label: __("city"), name: 'city', type: 'text', value: owner.city, errors: locals.errors }) %>
+        <%- include('../fragments/inputField', { label: __("telephone"), name: 'telephone', type: 'text', value: owner.telephone, errors: locals.errors }) %>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button class="btn btn-primary" type="submit">
+            <%= owner.isNew() ? __("addOwner") : __("updateOwner") %>
+          </button>
+        </div>
+      </div>
+    </form>
+  <% }) %>
+</body>
+</html>

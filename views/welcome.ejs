@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('fragments/layout', { template: 'welcome', menu: 'home', __: __, temporals: temporals, strings: strings }) %>
+</head>
+<body>
+  <%- include('fragments/layout', { template: 'welcome', menu: 'home', __: __, temporals: temporals, strings: strings }, function() { %>
+    <h2><%= __("welcome") %></h2>
+    <div class="row">
+      <div class="col-md-12">
+        <img class="img-responsive" src="/resources/images/pets.png" alt="Pets Image" />
+      </div>
+    </div>
+  <% }) %>
+</body>
+</html>

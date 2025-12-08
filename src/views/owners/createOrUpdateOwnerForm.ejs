@@ -1,0 +1,35 @@
+<%- include('../fragments/layout', { template: 'createOrUpdateOwnerFormBody', menu: 'owners', i18n: i18n, req: req }) %>
+
+<%~ contentFor('createOrUpdateOwnerFormBody') %>
+  <h2><%= i18n.t('messages.owner', { lang: req.i18nLang }) %></h2>
+  <form action="<%= owner.id ? `/owners/${owner.id}/edit` : `/owners/new` %>" method="post" class="form-horizontal" id="add-owner-form">
+    <div class="form-group has-feedback">
+      <%
+        // Helper function to render input field fragment
+        const renderInputField = (labelKey, fieldName, type) => {
+          // Pass the owner object properties as 'value' and 'errors' specific to the field
+          return include('../fragments/inputField', {
+            label: labelKey,
+            name: fieldName,
+            type: type,
+            value: owner[fieldName], // Pre-fill with existing owner data
+            errors: errors, // Pass all errors to the fragment to check for specific field errors
+            i18n: i18n,
+            req: req
+          });
+        };
+      %>
+      <%- renderInputField('firstName', 'firstName', 'text') %>
+      <%- renderInputField('lastName', 'lastName', 'text') %>
+      <%- renderInputField('address', 'address', 'text') %>
+      <%- renderInputField('city', 'city', 'text') %>
+      <%- renderInputField('telephone', 'telephone', 'text') %>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">
+          <%= owner.id ? i18n.t('messages.updateOwner', { lang: req.i18nLang }) : i18n.t('messages.addOwner', { lang: req.i18nLang }) %>
+        </button>
+      </div>
+    </div>
+  </form>

@@ -1,0 +1,118 @@
+<%- include('../fragments/layout', { template: 'ownerDetailsBody', menu: 'owners', i18n: i18n, req: req }) %>
+
+<%~ contentFor('ownerDetailsBody') %>
+  <h2><%= ownerInformation %></h2>
+
+  <% if (message) { %>
+    <div class="alert alert-success" id="success-message">
+      <span><%= message %></span>
+    </div>
+  <% } %>
+
+  <% if (error) { %>
+    <div class="alert alert-danger" id="error-message">
+      <span><%= error %></span>
+    </div>
+  <% } %>
+
+  <table class="table table-striped">
+    <tr>
+      <th><%= name %></th>
+      <td><b><%= owner.firstName + ' ' + owner.lastName %></b></td>
+    </tr>
+    <tr>
+      <th><%= address %></th>
+      <td><%= owner.address %></td>
+    </tr>
+    <tr>
+      <th><%= city %></th>
+      <td><%= owner.city %></td>
+    </tr>
+    <tr>
+      <th><%= telephone %></th>
+      <td><%= owner.telephone %></td>
+    </tr>
+  </table>
+
+  <a href="/owners/<%= owner.id %>/edit" class="btn btn-primary"><%= editOwner %></a>
+  <a href="/owners/<%= owner.id %>/pets/new" class="btn btn-primary"><%= addNewPet %></a>
+
+  <br />
+  <br />
+  <br />
+  <h2><%= petsAndVisits %></h2>
+
+  <table class="table table-striped">
+    <% if (owner.pets && owner.pets.length > 0) { %>
+      <% owner.pets.forEach(pet => { %>
+        <tr>
+          <td valign="top">
+            <dl class="dl-horizontal">
+              <dt><%= name %></dt>
+              <dd><%= pet.name %></dd>
+              <dt><%= birthDate %></dt>
+              <dd><%= new Date(pet.birthDate).toISOString().split('T')[0] %></dd>
+              <dt><%= type %></dt>
+              <dd><%= pet.type.name %></dd>
+            </dl>
+          </td>
+          <td valign="top">
+            <table class="table-condensed">
+              <thead>
+                <tr>
+                  <th><%= visitDate %></th>
+                  <th><%= description %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (pet.visits && pet.visits.length > 0) { %>
+                  <% pet.visits.forEach(visit => { %>
+                    <tr>
+                      <td><%= new Date(visit.date).toISOString().split('T')[0] %></td>
+                      <td><%= visit.description %></td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="2"><em>No visits recorded.</em></td>
+                  </tr>
+                <% } %>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit"><%= editPet %></a></td>
+                  <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new"><%= addVisit %></a></td>
+                </tr>
+              </tfoot>
+            </table>
+          </td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr>
+        <td colspan="2"><em>No pets found for this owner.</em></td>
+      </tr>
+    <% } %>
+  </table>
+
+  <script>
+    // Function to hide the success and error messages after 3 seconds
+    function hideMessages() {
+      const successMessage = document.getElementById("success-message");
+      const errorMessage = document.getElementById("error-message");
+
+      if (successMessage) {
+        setTimeout(function () {
+          successMessage.style.display = "none";
+        }, 3000); // 3000 milliseconds (3 seconds)
+      }
+      if (errorMessage) {
+        setTimeout(function () {
+          errorMessage.style.display = "none";
+        }, 3000); // 3000 milliseconds (3 seconds)
+      }
+    }
+
+    // Call the function to hide messages when the page loads
+    window.onload = hideMessages;
+  </script>

@@ -1,0 +1,41 @@
+<%
+// selectField.ejs: A reusable EJS fragment for rendering HTML <select> elements with validation feedback.
+// This fragment simplifies form creation by providing a consistent structure for select elements.
+// It populates options from a provided list of items and displays validation errors.
+//
+// Parameters:
+//   label (string): The visible label for the select field.
+//   name (string): The name attribute for the select field, also used for form binding.
+//   items (Array<object>): An array of objects to populate the <option> elements. Each object
+//                           should ideally have `id` and `name` properties (or a `toString()` method).
+//   selectedValue (any, optional): The value of the option that should be pre-selected.
+//   errors (object, optional): An object containing error messages, keyed by field name.
+//   i18n (I18nService): The i18n service instance for translation.
+//   req (Request): The request object containing language information.
+
+const fieldName = name; // Name of the field for error lookup
+const fieldErrors = errors && errors[fieldName] ? errors[fieldName] : [];
+const isValid = fieldErrors.length === 0;
+%>
+
+<div class="form-group<%= isValid ? '' : ' has-error' %>">
+  <label for="<%= name %>" class="col-sm-2 control-label"><%= i18n.t(`messages.${label}`, { lang: req.i18nLang }) %></label>
+  <div class="col-sm-10">
+    <select class="form-control" id="<%= name %>" name="<%= name %>">
+      <% if (items && items.length > 0) { %>
+        <% items.forEach(item => {
+          const itemValue = item.name || item.toString(); // Use name property or toString()
+          const isSelected = (selectedValue && selectedValue.name === itemValue) || (selectedValue === itemValue);
+        %>
+          <option value="<%= itemValue %>" <%= isSelected ? 'selected' : '' %>><%= itemValue %></option>
+        <% }); %>
+      <% } %>
+    </select>
+    <% if (isValid) { %>
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    <% } else { %>
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      <span class="help-inline"><%= fieldErrors.join(', ') %></span>
+    <% } %>
+  </div>
+</div>

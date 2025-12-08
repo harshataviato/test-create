@@ -1,0 +1,84 @@
+<%- include('../fragments/layout', { template: 'createOrUpdateVisitFormBody', menu: 'owners', i18n: i18n, req: req }) %>
+
+<%~ contentFor('createOrUpdateVisitFormBody') %>
+  <h2>
+    <% if (visit.id === undefined || visit.id === null) { %>
+      <%= i18n.t('messages.new', { lang: req.i18nLang }) %>
+    <% } %>
+    Visit
+  </h2>
+
+  <b><%= i18n.t('messages.pet', { lang: req.i18nLang }) %></b>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= i18n.t('messages.name', { lang: req.i18nLang }) %></th>
+        <th><%= i18n.t('messages.birthDate', { lang: req.i18nLang }) %></th>
+        <th><%= i18n.t('messages.type', { lang: req.i18nLang }) %></th>
+        <th><%= i18n.t('messages.owner', { lang: req.i18nLang }) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= pet.name %></td>
+        <td><%= new Date(pet.birthDate).toISOString().split('T')[0] %></td>
+        <td><%= pet.type.name %></td>
+        <td><%= owner.firstName + ' ' + owner.lastName %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <form action="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new" method="post" class="form-horizontal">
+    <div class="form-group has-feedback">
+      <%
+        // Helper function to render input field fragment
+        const renderInputField = (labelKey, fieldName, type, value) => {
+          return include('../fragments/inputField', {
+            label: labelKey,
+            name: fieldName,
+            type: type,
+            value: value,
+            errors: errors, // Pass all errors to check for specific field errors
+            i18n: i18n,
+            req: req
+          });
+        };
+      %>
+      <%- renderInputField('date', 'date', 'date', visit.date) %>
+      <%- renderInputField('description', 'description', 'text', visit.description) %>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <input type="hidden" name="petId" value="<%= pet.id %>" />
+        <button class="btn btn-primary" type="submit"><%= i18n.t('messages.addVisit', { lang: req.i18nLang }) %></button>
+      </div>
+    </div>
+  </form>
+
+  <br />
+  <b><%= i18n.t('messages.previousVisits', { lang: req.i18nLang }) %></b>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= i18n.t('messages.date', { lang: req.i18nLang }) %></th>
+        <th><%= i18n.t('messages.description', { lang: req.i18nLang }) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (pet.visits && pet.visits.length > 0) { %>
+        <% pet.visits.forEach(prevVisit => { %>
+          <% if (visit.id === undefined || visit.id === null || prevVisit.id !== visit.id) { %>
+            <tr>
+              <td><%= new Date(prevVisit.date).toISOString().split('T')[0] %></td>
+              <td><%= prevVisit.description %></td>
+            </tr>
+          <% } %>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="2"><em>No previous visits recorded.</em></td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>

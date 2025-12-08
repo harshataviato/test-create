@@ -1,0 +1,61 @@
+<%- include('../fragments/layout', { template: 'createOrUpdatePetFormBody', menu: 'owners', i18n: i18n, req: req }) %>
+
+<%~ contentFor('createOrUpdatePetFormBody') %>
+  <h2>
+    <% if (pet.id === undefined || pet.id === null) { %>
+      <%= i18n.t('messages.new', { lang: req.i18nLang }) %>
+    <% } %>
+    <%= i18n.t('messages.pet', { lang: req.i18nLang }) %>
+  </h2>
+  <form action="/owners/<%= owner.id %>/pets<%= (pet.id !== undefined && pet.id !== null) ? `/${pet.id}/edit` : '/new' %>" method="post" class="form-horizontal">
+    <input type="hidden" name="id" value="<%= pet.id || '' %>" />
+    <div class="form-group has-feedback">
+      <div class="form-group">
+        <label class="col-sm-2 control-label"><%= i18n.t('messages.owner', { lang: req.i18nLang }) %></label>
+        <div class="col-sm-10">
+          <span><%= owner.firstName + ' ' + owner.lastName %></span>
+        </div>
+      </div>
+      <%
+        // Helper function to render input field fragment
+        const renderInputField = (labelKey, fieldName, type, value) => {
+          return include('../fragments/inputField', {
+            label: labelKey,
+            name: fieldName,
+            type: type,
+            value: value,
+            errors: errors, // Pass all errors to check for specific field errors
+            i18n: i18n,
+            req: req
+          });
+        };
+
+        // Helper function to render select field fragment
+        const renderSelectField = (labelKey, fieldName, items, selectedValue) => {
+          return include('../fragments/selectField', {
+            label: labelKey,
+            name: fieldName,
+            items: items,
+            selectedValue: selectedValue,
+            errors: errors, // Pass all errors to check for specific field errors
+            i18n: i18n,
+            req: req
+          });
+        };
+      %>
+      <%- renderInputField('name', 'name', 'text', pet.name) %>
+      <%- renderInputField('birthDate', 'birthDate', 'date', pet.birthDate) %>
+      <%- renderSelectField('type', 'type', petTypes, pet.type) %>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">
+          <% if (pet.id === undefined || pet.id === null) { %>
+            <%= i18n.t('messages.addPet', { lang: req.i18nLang }) %>
+          <% } else { %>
+            <%= i18n.t('messages.updatePet', { lang: req.i18nLang }) %>
+          <% } %>
+        </button>
+      </div>
+    </div>
+  </form>

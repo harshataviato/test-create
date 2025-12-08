@@ -1,0 +1,30 @@
+<%- include('../fragments/layout', { template: 'findOwnersBody', menu: 'owners', i18n: i18n, req: req }) %>
+
+<%~ contentFor('findOwnersBody') %>
+  <h2><%= i18n.t('messages.findOwners', { lang: req.i18nLang }) %></h2>
+
+  <form action="/owners" method="get" class="form-horizontal" id="search-owner-form">
+    <div class="form-group">
+      <div class="control-group" id="lastNameGroup">
+        <label class="col-sm-2 control-label"><%= i18n.t('messages.lastName', { lang: req.i18nLang }) %></label>
+        <div class="col-sm-10">
+          <input class="form-control" id="lastName" name="lastName" size="30" maxlength="80" value="<%= owner.lastName || '' %>" />
+          <span class="help-inline">
+            <% if (errors && errors.lastName) { %>
+              <% errors.lastName.forEach(err => { %>
+                <p><%= err %></p>
+              <% }) %>
+            <% } %>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary"><%= i18n.t('messages.findOwner', { lang: req.i18nLang }) %></button>
+      </div>
+    </div>
+
+    <a class="btn btn-primary" href="/owners/new"><%= i18n.t('messages.addOwner', { lang: req.i18nLang }) %></a>
+
+  </form>

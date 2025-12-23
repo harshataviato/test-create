@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+    environment:
+      # Pass environment variables from .env file directly
+      # or set them explicitly here.
+      # For production, consider using a secret management solution.
+      PORT: ${PORT:-8080}
+      DATABASE_TYPE: ${DATABASE_TYPE:-postgres}
+      DATABASE_HOST: postgres-db
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-petclinic}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-petclinic}
+      DATABASE_NAME: ${DATABASE_NAME:-petclinic}
+    depends_on:
+      - postgres-db
+    volumes:
+      - ./src:/app/src  # Mount source for development
+      - ./dist:/app/dist # Mount dist for dev, though build step will populate
+      - /app/node_modules # Avoid overwriting node_modules with host's (important for bind mounts)
+    command: sh -c "npm install && npm run typeorm migration:run && npm run seed && npm start"
+    # For dev: command: sh -c "npm install && npm run typeorm migration:run && npm run seed && npm run dev"
+
+  postgres-db:
+    image: postgres:18.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-petclinic}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-petclinic}
+      POSTGRES_DB: ${DATABASE_NAME:-petclinic}
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data # Persistent data
+
+volumes:
+  postgres_data: # Define a volume for persistent PostgreSQL data

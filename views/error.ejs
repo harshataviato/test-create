@@ -1,0 +1,21 @@
+<%- include('common/header', { title: title || __('common.error'), activePage: 'error' }) %>
+
+<div class="container my-5 text-center">
+    <h1 class="display-4 text-danger"><%= title %></h1>
+    <% if (status === 404) { %>
+        <p class="lead"><%= message || __('error.message404') %></p>
+    <% } else if (status === 500) { %>
+        <p class="lead"><%= message || __('error.message500') %></p>
+        <p class="small text-muted"><%= error.stack %></p> <!-- Show stack trace in dev mode -->
+    <% } else { %>
+        <p class="lead"><%= message || __('common.error') %></p>
+    <% } %>
+
+    <img src="/images/error-page-image.png" alt="<%= __('common.error') %>" class="img-fluid my-4" style="max-width: 400px;">
+
+    <p>
+        <a href="/" class="btn btn-primary mt-3"><%= __('error.goHome') %></a>
+    </p>
+</div>
+
+<%- include('common/footer') %>

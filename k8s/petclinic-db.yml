@@ -1,0 +1,92 @@
+# k8s/petclinic-db.yml
+# Kubernetes Deployment and Service for the PostgreSQL database.
+# You would use either this or a similar one for MySQL, not both typically.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-postgres-service
+  labels:
+    app: petclinic-postgres
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: petclinic-postgres
+  type: ClusterIP # Exposes the service only within the cluster
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-postgres-deployment
+  labels:
+    app: petclinic-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petclinic-postgres
+  template:
+    metadata:
+      labels:
+        app: petclinic-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13
+        ports:
+        - containerPort: 5432
+        env:
+          # Values fetched from a Kubernetes Secret for security
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: petclinic-db-credentials
+                key: postgres_db
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: petclinic-db-credentials
+                key: postgres_user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: petclinic-db-credentials
+                key: postgres_password
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "petclinic", "-d", "petclinic"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "petclinic", "-d", "petclinic"]
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pv-claim # Connects to the PVC defined below
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: petclinic-postgres
+spec:
+  accessModes:
+    - ReadWriteOnce # Can be mounted as read-write by a single node
+  resources:
+    requests:
+      storage: 5Gi # Request 5GB of storage

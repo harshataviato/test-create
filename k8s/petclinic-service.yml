@@ -1,0 +1,19 @@
+# k8s/petclinic-service.yml
+# Kubernetes Service for the PetClinic Node.js application.
+# This exposes the application within the cluster.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-nodejs-service
+  labels:
+    app: petclinic-nodejs
+spec:
+  ports:
+  - port: 8080 # Port the service listens on
+    targetPort: 8080 # Port the application container listens on
+    protocol: TCP
+  selector:
+    app: petclinic-nodejs # Selects pods with this label
+  type: ClusterIP # Exposes the service only within the cluster.
+                  # For external access, you would use an Ingress or LoadBalancer type.

@@ -1,0 +1,100 @@
+# k8s/petclinic-deployment.yml
+# Kubernetes Deployment for the PetClinic Node.js application.
+# This deploys multiple replicas of the Node.js application.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-nodejs-deployment
+  labels:
+    app: petclinic-nodejs
+spec:
+  replicas: 2 # You can scale this up or down
+  selector:
+    matchLabels:
+      app: petclinic-nodejs
+  template:
+    metadata:
+      labels:
+        app: petclinic-nodejs
+    spec:
+      containers:
+      - name: petclinic-nodejs
+        image: your-dockerhub-username/petclinic-nodejs:latest # Replace with your actual Docker image
+        ports:
+        - containerPort: 8080
+        env:
+          # --- Application Configuration ---
+          - name: PORT
+            value: "8080"
+          - name: CACHE_TTL_SECONDS
+            value: "3600"
+          - name: DEFAULT_LOCALE
+            value: "en"
+
+          # --- Database Configuration (PostgreSQL example) ---
+          # Link to PostgreSQL service defined in petclinic-db.yml
+          # DB_DIALECT should match your chosen database
+          - name: DB_DIALECT
+            value: "postgres"
+          - name: POSTGRES_HOST
+            value: petclinic-postgres-service # Matches the service name for PostgreSQL
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: petclinic-db-credentials # Name of the Kubernetes Secret
+                key: postgres_user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: petclinic-db-credentials # Name of the Kubernetes Secret
+                key: postgres_password
+          - name: POSTGRES_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: petclinic-db-credentials # Name of the Kubernetes Secret
+                key: postgres_db
+
+          # If you wanted to use MySQL instead:
+          # - name: DB_DIALECT
+          #   value: "mysql"
+          # - name: MYSQL_HOST
+          #   value: petclinic-mysql-service # Matches the service name for MySQL
+          # - name: MYSQL_PORT
+          #   value: "3306"
+          # - name: MYSQL_USER
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: petclinic-db-credentials
+          #       key: mysql_user
+          # - name: MYSQL_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: petclinic-db-credentials
+          #       key: mysql_password
+          # - name: MYSQL_DATABASE
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: petclinic-db-credentials
+          #       key: mysql_db
+        livenessProbe: # Checks if the app is still running
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe: # Checks if the app is ready to serve traffic
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"

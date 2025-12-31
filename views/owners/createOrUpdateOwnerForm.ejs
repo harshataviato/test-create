@@ -1,0 +1,54 @@
+<%- include('../common/header', { title: title, activePage: 'owners' }) %>
+
+<div class="container my-4">
+    <h2 class="mb-4"><%= title %></h2>
+
+    <form action="/owners/<%= isNew ? 'new' : owner.id + '/edit' %>" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label for="firstName" class="form-label"><%= __('common.firstName') %></label>
+                    <input type="text" class="form-control <%= errors.firstName ? 'is-invalid' : '' %>" id="firstName" name="firstName" value="<%= owner.firstName || '' %>" required>
+                    <% if (errors.firstName) { %><div class="invalid-feedback"><%= errors.firstName.msg %></div><% } %>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label for="lastName" class="form-label"><%= __('common.lastName') %></label>
+                    <input type="text" class="form-control <%= errors.lastName ? 'is-invalid' : '' %>" id="lastName" name="lastName" value="<%= owner.lastName || '' %>" required>
+                    <% if (errors.lastName) { %><div class="invalid-feedback"><%= errors.lastName.msg %></div><% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="address" class="form-label"><%= __('common.address') %></label>
+            <input type="text" class="form-control <%= errors.address ? 'is-invalid' : '' %>" id="address" name="address" value="<%= owner.address || '' %>" required>
+            <% if (errors.address) { %><div class="invalid-feedback"><%= errors.address.msg %></div><% } %>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label for="city" class="form-label"><%= __('common.city') %></label>
+                    <input type="text" class="form-control <%= errors.city ? 'is-invalid' : '' %>" id="city" name="city" value="<%= owner.city || '' %>" required>
+                    <% if (errors.city) { %><div class="invalid-feedback"><%= errors.city.msg %></div><% } %>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label for="telephone" class="form-label"><%= __('common.telephone') %></label>
+                    <input type="text" class="form-control <%= errors.telephone ? 'is-invalid' : '' %>" id="telephone" name="telephone" value="<%= owner.telephone || '' %>" required pattern="[0-9]{10}" title="<%= __('validation.invalidPhone', { field: __('common.telephone') }) %>">
+                    <% if (errors.telephone) { %><div class="invalid-feedback"><%= errors.telephone.msg %></div><% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-start my-4">
+            <button type="submit" class="btn btn-success me-2"><%= __('common.save') %></button>
+            <a href="/owners/<%= isNew ? 'find' : owner.id %>" class="btn btn-secondary"><%= __('common.cancel') %></a>
+        </div>
+    </form>
+</div>
+
+<%- include('../common/footer') %>

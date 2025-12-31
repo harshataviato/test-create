@@ -1,0 +1,60 @@
+<%- include('../common/header', { title: __('vet.vetListTitle'), activePage: 'vets' }) %>
+
+<div class="container my-4">
+    <h2 class="mb-4"><%= __('vet.vetListTitle') %></h2>
+
+    <% if (vets && vets.length > 0) { %>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"><%= __('common.firstName') %></th>
+                    <th scope="col"><%= __('common.lastName') %></th>
+                    <th scope="col"><%= __('vet.specialties') %></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% vets.forEach(vet => { %>
+                    <tr>
+                        <td><%= vet.firstName %></td>
+                        <td><%= vet.lastName %></td>
+                        <td>
+                            <% if (vet.specialties && vet.specialties.length > 0) { %>
+                                <%= vet.specialties.map(s => s.name).join(', ') %>
+                            <% } else { %>
+                                <em><%= __('vet.noSpecialties') %></em>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        <% } %>
+
+    <% } else { %>
+        <p>No veterinarians found.</p>
+    <% } %>
+</div>
+
+<%- include('../common/footer') %>

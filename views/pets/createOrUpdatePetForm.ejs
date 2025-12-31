@@ -1,0 +1,44 @@
+<%- include('../common/header', { title: title, activePage: 'owners' }) %>
+
+<div class="container my-4">
+    <h2 class="mb-4"><%= title %></h2>
+
+    <form action="/owners/<%= owner.id %>/pets/<%= isNew ? 'new' : pet.id + '/edit' %>" method="post">
+        <div class="mb-3">
+            <label for="ownerName" class="form-label">Owner</label>
+            <input type="text" class="form-control" id="ownerName" value="<%= owner.firstName %> <%= owner.lastName %>" readonly>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="name" class="form-label"><%= __('common.name') %></label>
+            <input type="text" class="form-control <%= errors.name ? 'is-invalid' : '' %>" id="name" name="name" value="<%= pet.name || '' %>" required>
+            <% if (errors.name) { %><div class="invalid-feedback"><%= errors.name.msg %></div><% } %>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="birthDate" class="form-label"><%= __('common.birthDate') %></label>
+            <input type="date" class="form-control <%= errors.birthDate ? 'is-invalid' : '' %>" id="birthDate" name="birthDate" value="<%= pet.birthDate || '' %>" required>
+            <% if (errors.birthDate) { %><div class="invalid-feedback"><%= errors.birthDate.msg %></div><% } %>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="typeId" class="form-label"><%= __('common.type') %></label>
+            <select class="form-select <%= errors.typeId ? 'is-invalid' : '' %>" id="typeId" name="typeId" required>
+                <option value="">-- Select Pet Type --</option>
+                <% petTypes.forEach(type => { %>
+                    <option value="<%= type.id %>" <%= (pet.typeId == type.id || (pet.type && pet.type.id == type.id)) ? 'selected' : '' %>>
+                        <%= type.name %>
+                    </option>
+                <% }) %>
+            </select>
+            <% if (errors.typeId) { %><div class="invalid-feedback"><%= errors.typeId.msg %></div><% } %>
+        </div>
+
+        <div class="d-flex justify-content-start my-4">
+            <button type="submit" class="btn btn-success me-2"><%= __('common.save') %></button>
+            <a href="/owners/<%= owner.id %>" class="btn btn-secondary"><%= __('common.cancel') %></a>
+        </div>
+    </form>
+</div>
+
+<%- include('../common/footer') %>

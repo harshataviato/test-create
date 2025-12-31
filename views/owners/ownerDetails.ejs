@@ -1,0 +1,64 @@
+<%- include('../common/header', { title: title, activePage: 'owners' }) %>
+
+<div class="container my-4">
+    <h2 class="mb-4"><%= title %></h2>
+
+    <div class="owner-info mb-4">
+        <p><span class="detail-label"><%= __('common.name') %>:</span> <%= owner.firstName %> <%= owner.lastName %></p>
+        <p><span class="detail-label"><%= __('common.address') %>:</span> <%= owner.address %></p>
+        <p><span class="detail-label"><%= __('common.city') %>:</span> <%= owner.city %></p>
+        <p><span class="detail-label"><%= __('common.telephone') %>:</span> <%= owner.telephone %></p>
+    </div>
+
+    <div class="d-flex justify-content-start my-4">
+        <a href="/owners/<%= owner.id %>/edit" class="btn btn-info me-2"><%= __('owner.editOwner') %></a>
+        <a href="/owners/<%= owner.id %>/pets/new" class="btn btn-success"><%= __('owner.addPet') %></a>
+    </div>
+
+    <h3 class="mt-5 mb-3"><%= __('owner.pets') %></h3>
+    <% if (owner.pets && owner.pets.length > 0) { %>
+        <% owner.pets.forEach(pet => { %>
+            <div class="pet-details mb-4">
+                <h4 class="mb-3"><%= pet.name %></h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><span class="detail-label"><%= __('common.birthDate') %>:</span> <%= moment(pet.birthDate).format('YYYY/MM/DD') %></p>
+                        <p><span class="detail-label"><%= __('common.type') %>:</span> <%= pet.type ? pet.type.name : 'Unknown' %></p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit" class="btn btn-warning btn-sm me-2"><%= __('pet.editPet') %></a>
+                        <a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new" class="btn btn-success btn-sm"><%= __('pet.addVisit') %></a>
+                    </div>
+                </div>
+
+                <div class="visits mt-4">
+                    <h5><%= __('visit.visitHistory') %></h5>
+                    <% if (pet.visits && pet.visits.length > 0) { %>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><%= __('common.date') %></th>
+                                    <th scope="col"><%= __('common.description') %></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% pet.visits.forEach(visit => { %>
+                                    <tr>
+                                        <td><%= moment(visit.visitDate).format('YYYY/MM/DD') %></td>
+                                        <td><%= visit.description %></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p>No visits recorded for <%= pet.name %>.</p>
+                    <% } %>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p><%= owner.firstName %> <%= owner.lastName %> has no pets yet.</p>
+    <% } %>
+</div>
+
+<%- include('../common/footer') %>

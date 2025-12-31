@@ -1,0 +1,73 @@
+{
+  "common": {
+    "appName": "Clínica de Mascotas",
+    "home": "Inicio",
+    "owners": "Propietarios",
+    "veterinarians": "Veterinarios",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "telephone": "Teléfono",
+    "name": "Nombre",
+    "birthDate": "Fecha de Nacimiento",
+    "type": "Tipo",
+    "description": "Descripción",
+    "date": "Fecha",
+    "visitDate": "Fecha de Visita",
+    "locale": "Idioma",
+    "language": "Idioma"
+  },
+  "home": {
+    "welcomeTitle": "¡Bienvenido a la Clínica de Mascotas!",
+    "imageAlt": "Mascotas"
+  },
+  "owner": {
+    "findOwnerTitle": "Buscar Propietarios",
+    "newOwnerTitle": "Nuevo Propietario",
+    "editOwnerTitle": "Editar Propietario: {{ownerName}}",
+    "ownerListTitle": "Propietarios",
+    "ownerDetailsTitle": "Información del Propietario: {{ownerName}}",
+    "search": "Buscar",
+    "addOwner": "Añadir Propietario",
+    "notFound": "No se encontraron propietarios",
+    "notFoundById": "Propietario con ID {{ownerId}} no encontrado.",
+    "addPet": "Añadir Mascota Nueva",
+    "editOwner": "Editar Propietario",
+    "pets": "Mascotas"
+  },
+  "pet": {
+    "newPetTitle": "Nueva Mascota para {{ownerName}}",
+    "editPetTitle": "Editar Mascota: {{petName}}",
+    "notFoundById": "Mascota con ID {{petId}} no encontrada.",
+    "addVisit": "Añadir Nueva Visita",
+    "editPet": "Editar Mascota"
+  },
+  "visit": {
+    "newVisitTitle": "Nueva Visita para {{petName}}",
+    "visitHistory": "Historial de Visitas"
+  },
+  "vet": {
+    "vetListTitle": "Veterinarios",
+    "specialties": "Especialidades",
+    "noSpecialties": "Sin especialidades listadas"
+  },
+  "error": {
+    "simulationMessage": "¡Algo inesperado ha ocurrido!",
+    "message500": "¡Ups! Algo salió mal en nuestro servidor. Por favor, inténtelo de nuevo más tarde.",
+    "message404": "La página que busca no existe.",
+    "goHome": "Ir a Inicio"
+  },
+  "validation": {
+    "required": "{{field}} es obligatorio.",
+    "invalidPhone": "{{field}} debe ser un número de 10 dígitos.",
+    "invalidDate": "{{field}} debe ser una fecha válida.",
+    "futureDate": "{{field}} no puede ser una fecha futura.",
+    "invalidPetType": "Tipo de mascota no válido seleccionado.",
+    "minLength": "{{field}} debe tener al menos {{min}} caracteres.",
+    "maxLength": "{{field}} no puede exceder los {{max}} caracteres."
+  }
+}

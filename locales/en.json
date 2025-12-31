@@ -1,0 +1,73 @@
+{
+  "common": {
+    "appName": "PetClinic",
+    "home": "Home",
+    "owners": "Owners",
+    "veterinarians": "Veterinarians",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "address": "Address",
+    "city": "City",
+    "telephone": "Telephone",
+    "name": "Name",
+    "birthDate": "Birth Date",
+    "type": "Type",
+    "description": "Description",
+    "date": "Date",
+    "visitDate": "Visit Date",
+    "locale": "Locale",
+    "language": "Language"
+  },
+  "home": {
+    "welcomeTitle": "Welcome to PetClinic!",
+    "imageAlt": "Pets"
+  },
+  "owner": {
+    "findOwnerTitle": "Find Owners",
+    "newOwnerTitle": "New Owner",
+    "editOwnerTitle": "Edit Owner: {{ownerName}}",
+    "ownerListTitle": "Owners",
+    "ownerDetailsTitle": "Owner Information: {{ownerName}}",
+    "search": "Search",
+    "addOwner": "Add Owner",
+    "notFound": "No owners found",
+    "notFoundById": "Owner with ID {{ownerId}} not found.",
+    "addPet": "Add New Pet",
+    "editOwner": "Edit Owner",
+    "pets": "Pets"
+  },
+  "pet": {
+    "newPetTitle": "New Pet for {{ownerName}}",
+    "editPetTitle": "Edit Pet: {{petName}}",
+    "notFoundById": "Pet with ID {{petId}} not found.",
+    "addVisit": "Add New Visit",
+    "editPet": "Edit Pet"
+  },
+  "visit": {
+    "newVisitTitle": "New Visit for {{petName}}",
+    "visitHistory": "Visit History"
+  },
+  "vet": {
+    "vetListTitle": "Veterinarians",
+    "specialties": "Specialties",
+    "noSpecialties": "No specialties listed"
+  },
+  "error": {
+    "simulationMessage": "Something unexpected happened!",
+    "message500": "Oops! Something went wrong on our server. Please try again later.",
+    "message404": "The page you are looking for does not exist.",
+    "goHome": "Go Home"
+  },
+  "validation": {
+    "required": "{{field}} is required.",
+    "invalidPhone": "{{field}} must be a 10-digit number.",
+    "invalidDate": "{{field}} must be a valid date.",
+    "futureDate": "{{field}} cannot be in the future.",
+    "invalidPetType": "Invalid pet type selected.",
+    "minLength": "{{field}} must be at least {{min}} characters long.",
+    "maxLength": "{{field}} cannot exceed {{max}} characters."
+  }
+}

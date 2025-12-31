@@ -37,7 +37,9 @@ async function setupDatabase() {
     console.log('Database connection has been established successfully.');
     // `alter: true` will update the table schema to match the model if there are changes.
     // In production, consider using migrations for schema changes.
-    await db.sequelize.sync({ alter: true });
+    // In test environment, `force: true` will be used via `test/setup.js` for clean slate.
+    // For other environments, `alter: true` or migrations are suitable.
+    await db.sequelize.sync({ alter: process.env.NODE_ENV !== 'test' });
     console.log('All models were synchronized successfully.');
     // Seed initial data if in development environment
     if (process.env.NODE_ENV === 'development') {
@@ -116,7 +118,10 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only start the server if this file is run directly (not required by another module like test files)
+if (require.main === module) {
+  startServer();
+}
 
 // Clear vet cache on server shutdown (optional, good practice for graceful exits)
 process.on('SIGINT', () => {
@@ -124,3 +129,7 @@ process.on('SIGINT', () => {
   cache.clear('vets'); // Clear vets cache specifically
   process.exit();
 });
+
+// Export the app for testing
+module.exports = app;
+

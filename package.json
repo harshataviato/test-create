@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon app.js",
     "db:migrate": "node config/sequelize.js migrate",
     "db:seed": "node config/sequelize.js seed",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha --require test/setup.js --recursive --exit"
   },
   "keywords": [
     "nodejs",
@@ -36,5 +36,12 @@
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "chai": "^4.4.1",
+    "mocha": "^10.4.0",
+    "sinon": "^18.0.0",
+    "supertest": "^7.0.0"
   }
 }
+

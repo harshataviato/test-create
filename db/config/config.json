@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "petclinic",
+    "password": "petclinic",
+    "database": "petclinic",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "petclinic",
+    "password": "petclinic",
+    "database": "petclinic_test",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "petclinic",
+    "password": "petclinic",
+    "database": "petclinic_prod",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

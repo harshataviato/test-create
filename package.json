@@ -11,7 +11,7 @@
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all",
     "seed:undo": "npx sequelize-cli db:seed:undo:all",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "NODE_ENV=test mocha --require ./test/setup.js --recursive --exit"
   },
   "keywords": [],
   "author": "Google Senior Engineer",
@@ -31,6 +31,11 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.4",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "mocha": "^10.x",
+    "chai": "^4.x",
+    "supertest": "^6.x",
+    "ejs-mate": "^4.0.0"
   }
 }
+

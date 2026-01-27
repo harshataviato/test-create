@@ -1,0 +1,38 @@
+<%- layout('layout') %>
+
+<h2 class="mt-4"><%= title %></h2>
+
+<% if (owners && owners.length > 0) { %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= __('owner.name') %></th>
+      <th><%= __('owner.address') %></th>
+      <th><%= __('owner.city') %></th>
+      <th><%= __('owner.telephone') %></th>
+      <th><%= __('owner.pets') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% owners.forEach(function(owner) { %>
+      <tr>
+        <td>
+          <a href="/owners/<%= owner.id %>"><%= owner.firstName %> <%= owner.lastName %></a>
+        </td>
+        <td><%= owner.address %></td>
+        <td><%= owner.city %></td>
+        <td><%= owner.telephone %></td>
+        <td>
+          <% if (owner.pets && owner.pets.length > 0) { %>
+            <%= owner.pets.map(pet => pet.name).join(', ') %>
+          <% } else { %>
+            <em><%= __('owner.noPets') %></em>
+          <% } %>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } else { %>
+  <p><%= __('owner.noOwnersFound') %></p>
+<% } %>

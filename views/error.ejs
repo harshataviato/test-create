@@ -1,0 +1,13 @@
+<%- layout('layout') %>
+
+<div class="container text-center mt-5">
+  <h2 class="display-4 text-danger"><%= __('error.generalTitle') %></h2>
+  <h3 class="mt-4"><%= message %></h3>
+  <% if (status) { %>
+    <p class="lead mt-3">Status: <%= status %></p>
+  <% } %>
+  <% if (stack) { %>
+    <pre class="text-start bg-light p-3 mt-4" style="white-space: pre-wrap; word-wrap: break-word;"><%= stack %></pre>
+  <% } %>
+  <p class="mt-4"><a href="/" class="btn btn-primary"><%= __('error.goHome') %></a></p>
+</div>

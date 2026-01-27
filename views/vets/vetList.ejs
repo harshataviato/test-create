@@ -1,0 +1,30 @@
+<%- layout('layout') %>
+
+<h2 class="mt-4"><%= title %></h2>
+
+<% if (vets && vets.length > 0) { %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= __('vet.name') %></th>
+      <th><%= __('vet.specialties') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% vets.forEach(function(vet) { %>
+      <tr>
+        <td><%= vet.firstName %> <%= vet.lastName %></td>
+        <td>
+          <% if (vet.specialties && vet.specialties.length > 0) { %>
+            <%= vet.getSpecialties().map(s => s.name).join(', ') %>
+          <% } else { %>
+            <em><%= __('vet.noSpecialties') %></em>
+          <% } %>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } else { %>
+  <p><%= __('vet.noVetsFound') %></p>
+<% } %>

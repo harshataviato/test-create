@@ -1,0 +1,13 @@
+<%- layout('layout') %>
+
+<div class="container text-center mt-5">
+  <h2 class="display-4 text-primary"><%= title %></h2>
+  <p class="lead"><%= __('home.description') %></p>
+  <div class="mt-4">
+    <a href="/owners/find" class="btn btn-primary btn-lg me-3"><i class="fa fa-search"></i> <%= __('menu.findOwners') %></a>
+    <a href="/vets" class="btn btn-secondary btn-lg"><i class="fa fa-th-list"></i> <%= __('menu.veterinarians') %></a>
+  </div>
+  <div class="mt-5">
+    <img class="img-fluid" src="/resources/images/pets.png" alt="pets image">
+  </div>
+</div>

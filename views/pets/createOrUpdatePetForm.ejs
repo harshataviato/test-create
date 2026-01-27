@@ -1,0 +1,55 @@
+<%- layout('layout') %>
+
+<h2 class="mt-4"><%= title %> <%= owner.firstName %> <%= owner.lastName %></h2>
+
+<form class="form-horizontal" method="post">
+  <input type="hidden" name="_csrf" value="YOUR_CSRF_TOKEN"> <%# For CSRF protection if implemented %>
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('pet.name') %></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control <% if (locals.errors && errors.find(e => e.path === 'name')) { %>is-invalid<% } %>" name="name" value="<%= pet.name || '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'name')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'name').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('pet.birthDate') %></label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control <% if (locals.errors && errors.find(e => e.path === 'birthDate')) { %>is-invalid<% } %>" name="birthDate" value="<%= pet.birthDate ? moment(pet.birthDate).format('YYYY-MM-DD') : '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'birthDate')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'birthDate').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('pet.type') %></label>
+    <div class="col-sm-10">
+      <select class="form-control <% if (locals.errors && errors.find(e => e.path === 'type_id')) { %>is-invalid<% } %>" name="type_id">
+        <option value=""><%= __('pet.selectType') %></option>
+        <% petTypes.forEach(function(type) { %>
+          <option value="<%= type.id %>" <%= (pet.type && pet.type.id === type.id) || (pet.type_id === type.id) ? 'selected' : '' %>>
+            <%= type.name %>
+          </option>
+        <% }); %>
+      </select>
+      <% if (locals.errors && errors.find(e => e.path === 'type_id')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'type_id').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mt-4">
+    <div class="col-sm-10 offset-sm-2">
+      <button type="submit" class="btn btn-primary"><%= __('button.savePet') %></button>
+    </div>
+  </div>
+</form>

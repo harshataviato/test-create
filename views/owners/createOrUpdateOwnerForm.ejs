@@ -1,0 +1,72 @@
+<%- layout('layout') %>
+
+<h2 class="mt-4"><%= title %></h2>
+
+<form class="form-horizontal" method="post">
+  <input type="hidden" name="_csrf" value="YOUR_CSRF_TOKEN"> <%# For CSRF protection if implemented %>
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('owner.firstName') %></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control <% if (locals.errors && errors.find(e => e.path === 'firstName')) { %>is-invalid<% } %>" name="firstName" value="<%= owner.firstName || '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'firstName')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'firstName').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('owner.lastName') %></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control <% if (locals.errors && errors.find(e => e.path === 'lastName')) { %>is-invalid<% } %>" name="lastName" value="<%= owner.lastName || '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'lastName')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'lastName').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('owner.address') %></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control <% if (locals.errors && errors.find(e => e.path === 'address')) { %>is-invalid<% } %>" name="address" value="<%= owner.address || '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'address')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'address').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('owner.city') %></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control <% if (locals.errors && errors.find(e => e.path === 'city')) { %>is-invalid<% } %>" name="city" value="<%= owner.city || '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'city')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'city').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('owner.telephone') %></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control <% if (locals.errors && errors.find(e => e.path === 'telephone')) { %>is-invalid<% } %>" name="telephone" value="<%= owner.telephone || '' %>">
+      <% if (locals.errors && errors.find(e => e.path === 'telephone')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'telephone').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mt-4">
+    <div class="col-sm-10 offset-sm-2">
+      <button type="submit" class="btn btn-primary"><%= __('button.saveOwner') %></button>
+    </div>
+  </div>
+</form>

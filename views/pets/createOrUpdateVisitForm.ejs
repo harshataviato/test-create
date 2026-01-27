@@ -1,0 +1,36 @@
+<%- layout('layout') %>
+
+<h2 class="mt-4"><%= title %> <%= pet.name %> (<%= owner.firstName %> <%= owner.lastName %>)</h2>
+
+<form class="form-horizontal" method="post">
+  <input type="hidden" name="_csrf" value="YOUR_CSRF_TOKEN"> <%# For CSRF protection if implemented %>
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('visit.date') %></label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control <% if (locals.errors && errors.find(e => e.path === 'date')) { %>is-invalid<% } %>" name="date" value="<%= visit.date ? moment(visit.date).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD') %>">
+      <% if (locals.errors && errors.find(e => e.path === 'date')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'date').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label class="col-sm-2 col-form-label"><%= __('visit.description') %></label>
+    <div class="col-sm-10">
+      <textarea class="form-control <% if (locals.errors && errors.find(e => e.path === 'description')) { %>is-invalid<% } %>" name="description" rows="3"><%= visit.description || '' %></textarea>
+      <% if (locals.errors && errors.find(e => e.path === 'description')) { %>
+        <div class="invalid-feedback">
+          <%= errors.find(e => e.path === 'description').msg %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="form-group row mt-4">
+    <div class="col-sm-10 offset-sm-2">
+      <button type="submit" class="btn btn-primary"><%= __('button.addVisit') %></button>
+    </div>
+  </div>
+</form>

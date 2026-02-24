@@ -1,0 +1,17 @@
+(Binary placeholder - in a real migration you would copy the binary file)
+
+2.  **Database Configuration:**
+    By default, the application uses **SQLite**. The database file `petclinic.sqlite` will be created automatically in the root directory upon the first run.
+    
+    *   *Note:* The application is configured to **drop and re-seed** the database every time the server restarts (`force: true` in `server.js`). This mimics the in-memory behavior of the H2 database in the original Java application.
+
+## Running the Server
+
+1.  **Start the application:**
+
+    ```bash
+    npm start
+    Database synced.
+    Database seeded successfully.
+    PetClinic running on http://localhost:8080
+npm run dev

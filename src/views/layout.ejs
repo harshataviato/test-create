@@ -1,0 +1,26 @@
+<!-- Layout shell replacement. EJS uses partials/includes instead of layout decorators. -->
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head') %>
+<body>
+  <%- include('partials/navbar') %>
+  
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <%- body %>
+      
+      <br />
+      <br />
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <img src="/images/spring-logo.svg" alt="VMware Tanzu Logo" class="logo" style="width: 200px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <%- include('partials/footer') %>
+</body>
+</html>

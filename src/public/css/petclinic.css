@@ -1,0 +1,86 @@
+/* Pasting original content provided in context to ensure styling works */
+.navbar {
+  border-top: 4px solid #6db33f;
+  background-color: #34302d;
+  margin-bottom: 0px;
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.navbar a.navbar-brand {
+  background: url("../images/spring-logo-dataflow.png") -1px -1px no-repeat;
+  margin: 12px 0 6px;
+  width: 229px;
+  height: 46px;
+  display: inline-block;
+  text-decoration: none;
+  padding: 0;
+}
+
+.navbar a.navbar-brand span {
+  display: block;
+  width: 229px;
+  height: 46px;
+  background: url("../images/spring-logo-dataflow.png") -1px -48px no-repeat;
+  opacity: 0;
+  -moz-transition: opacity 0.12s ease-in-out;
+  -webkit-transition: opacity 0.12s ease-in-out;
+  -o-transition: opacity 0.12s ease-in-out;
+}
+
+.navbar a:hover.navbar-brand span {
+  opacity: 1;
+}
+
+.navbar li > a, .navbar-text {
+  font-family: "montserratregular", sans-serif;
+  text-shadow: none;
+  font-size: 14px;
+  padding: 28px 20px;
+  transition: all 0.15s;
+  -webkit-transition: all 0.15s;
+  -moz-transition: all 0.15s;
+  -o-transition: all 0.15s;
+  -ms-transition: all 0.15s;
+}
+
+.navbar li > a {
+  text-transform: uppercase;
+  color: #838789;
+}
+
+.navbar li:hover > a {
+  color: #eeeeee;
+  background-color: #6db33f;
+}
+
+.xd-container {
+  margin-top: 40px;
+  margin-bottom: 100px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.table > thead > tr > th {
+  background-color: #3c3834;
+  color: #f1f1f1;
+}
+
+.btn-primary {
+  margin-top: 12px;
+  border-width: 2px;
+  transition: border 0.15s;
+  color: #f1f1f1;
+  background: #34302D;
+  border-color: #6db33f;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+  background-color: #34302D;
+  border-color: #34302D;
+}
+
+img.logo {
+  width: 200px;
+}

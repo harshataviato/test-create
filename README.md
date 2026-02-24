@@ -1,39 +1,23 @@
-# Node.js PetClinic Sample Application
+# Node PetClinic
 
-This is a pragmatic port of the standard Spring PetClinic application to Node.js, Express, and Sequelize.
-
-## Features
-
-*   **MVC Architecture**: Uses Express.js controllers and EJS views.
-*   **Database**: SQLite by default (zero configuration), Sequelize ORM models.
-*   **Validation**: Server-side validation using `express-validator`.
-*   **Layouts**: Templating with `express-ejs-layouts`.
+A Node.js port of the Spring PetClinic application.
 
 ## Prerequisites
+- Node.js >= 18.0.0
 
-*   Node.js (v18 or newer)
-*   NPM
+## Installation
 
-## Setup & Running
 
-1.  **Install Dependencies**
-    ```bash
-    npm install
+## Running the Application
 
-3.  **Run the Server**
-    ```bash
-    npm start
+Start the server:
 
-4.  **Access the Application**
-    Open your browser and navigate to:
-    [http://localhost:8080](http://localhost:8080)
+Seed the database (optional, for development):
 
-## Project Structure
+## Running Tests
 
-*   `server.js`: Entry point.
-*   `config/`: Database configuration.
-*   `models/`: Sequelize entity definitions.
-*   `controllers/`: Request handling logic.
-*   `routes/`: URL mapping.
-*   `views/`: EJS templates.
-*   `public/`: Static assets (CSS, Images).
+This project includes a comprehensive test suite using Jest and Supertest.
+
+Run all tests:
+
+The tests utilize a separate in-memory or temporary database environment to ensure the development database is not affected.

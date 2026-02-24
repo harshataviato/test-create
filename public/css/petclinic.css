@@ -1,0 +1,8 @@
+/* Copied from original source, minimal adjustments */
+body { padding-top: 0px; }
+.logo { width: 100px; margin-top: 20px; }
+.xd-container { margin-top: 20px; margin-bottom: 20px; }
+.table-striped>tbody>tr:nth-of-type(odd) { background-color: #f9f9f9; }
+.navbar { margin-bottom: 20px; }
+.has-error .help-inline { color: red; }
+.has-error input { border-color: red; }

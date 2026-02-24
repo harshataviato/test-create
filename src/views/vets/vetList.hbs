@@ -1,0 +1,26 @@
+<h2>Veterinarians</h2>
+
+<table id="vets" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Specialties</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each listVets}}
+    <tr>
+      <td>{{this.firstName}} {{this.lastName}}</td>
+      <td>
+        {{#if this.Specialties.length}}
+          {{#each this.Specialties}}
+            {{this.name}} 
+          {{/each}}
+        {{else}}
+          none
+        {{/if}}
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

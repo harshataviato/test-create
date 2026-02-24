@@ -1,0 +1,10 @@
+<%- include('layout', { body: `
+  <img src="/images/pets.png" />
+  <h2>Something happened...</h2>
+
+  <p>${message}</p>
+  
+  <% if (locals.status) { %>
+    <p>Status Code: ${status}</p>
+  <% } %>
+` }) %>

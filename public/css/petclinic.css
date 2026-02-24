@@ -1,0 +1,11 @@
+/* Copied content from the provided spring-petclinic source */
+:root, [data-bs-theme="light"] { --bs-blue: #0d6efd; --bs-indigo: #6610f2; --bs-primary: #0d6efd; }
+body { padding-top: 0; margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif; }
+.navbar { margin-bottom: 20px; background-color: #34302d; border-top: 4px solid #6db33f; }
+.navbar-brand span { display: inline-block; width: 229px; height: 46px; background: url("../images/spring-logo-dataflow.png") -1px -48px no-repeat; }
+.container { margin-top: 20px; }
+.table-striped > tbody > tr:nth-of-type(odd) > * { --bs-table-accent-bg: rgba(0, 0, 0, 0.05); }
+.has-error .help-inline { color: #dc3545; }
+.form-group { margin-bottom: 1rem; }
+/* Simplified for brevity - usually this file would be the full compiled CSS */
+img.logo { width: 200px; }

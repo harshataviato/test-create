@@ -1,0 +1,52 @@
+<h2>
+  {{#if pet.id}}Update{{else}}New{{/if}} Pet
+</h2>
+
+<form class="form-horizontal" method="post">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Owner</label>
+    <div class="col-sm-10">
+      <span class="form-control-plaintext">{{owner.firstName}} {{owner.lastName}}</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <input class="form-control" name="name" value="{{pet.name}}" type="text" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Birth Date</label>
+    <div class="col-sm-10">
+      <input class="form-control" name="birthDate" value="{{formatDate pet.birthDate}}" type="date" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Type</label>
+    <div class="col-sm-10">
+      <select class="form-control" name="type_id">
+        {{#each types}}
+          <option value="{{this.id}}" {{#if (eq this.id ../pet.type_id)}}selected{{/if}}>{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+
+  {{#if errors}}
+    <div class="col-sm-offset-2 col-sm-10 text-danger">
+      <ul>
+        {{#each errors}}
+          <li>{{this.message}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+
+  <div class="form-group mt-2">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button class="btn btn-primary" type="submit">
+        {{#if pet.id}}Update Pet{{else}}Add Pet{{/if}}
+      </button>
+    </div>
+  </div>
+</form>

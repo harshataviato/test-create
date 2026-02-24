@@ -1,0 +1,35 @@
+<h2>Veterinarians</h2>
+
+<table id="vets" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Specialties</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each listVets}}
+    <tr>
+      <td>{{this.firstName}} {{this.lastName}}</td>
+      <td>
+        {{#each this.specialties}}
+          <span>{{this.name}}</span>
+        {{else}}
+          <span>none</span>
+        {{/each}}
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#if (gt totalPages 1)}}
+<div>
+  <span>Pages:</span>
+  <span>[</span>
+  {{#each (range 1 totalPages)}}
+    <a href="/vets.html?page={{this}}">{{this}}</a>
+  {{/each}}
+  <span>]</span>
+</div>
+{{/if}}

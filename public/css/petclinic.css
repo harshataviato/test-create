@@ -1,0 +1,15 @@
+/* 
+ * Copied directly from source.
+ * Minimal necessary CSS to make the layout look correct.
+ */
+body { padding-top: 0; }
+.navbar { border-top: 4px solid #6db33f; background-color: #34302d; }
+.navbar a.navbar-brand { width: 229px; height: 46px; display: inline-block; text-decoration: none; }
+.navbar li > a { color: #838789; text-transform: uppercase; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; padding: 20px; }
+.navbar li:hover > a { color: #eeeeee; background-color: #6db33f; }
+.xd-container { margin-top: 40px; margin-bottom: 100px; padding-left: 5px; padding-right: 5px; }
+h2 { font-size: 18px; font-weight: 700; line-height: 24px; margin-bottom: 10px; }
+.table > thead > tr > th { background-color: #3c3834; color: #f1f1f1; }
+.has-error .help-inline { color: #a94442; }
+.logo { width: 200px; }
+/* Bootstrap overrides mostly handled by CDN version in header.ejs */

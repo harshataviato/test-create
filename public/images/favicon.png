@@ -1,0 +1,25 @@
+(Binary placeholder)
+
+2.  **Database Setup (Seeding)**
+    This command creates the SQLite database file (`petclinic.sqlite`) and populates it with the standard sample data (Owners, Pets, Vets, Specialties, Visits).
+    ```bash
+    npm run seed
+
+4.  **Access the Application**
+    Open your browser and navigate to:
+    [http://localhost:8080](http://localhost:8080)
+
+## Project Structure
+
+*   `server.js`: Main application entry point.
+*   `models/`: Sequelize definitions for Owner, Pet, Visit, Vet, etc.
+*   `controllers/`: Request handling logic (equivalent to Spring Controllers).
+*   `views/`: EJS templates (equivalent to Thymeleaf templates).
+*   `public/`: Static assets (CSS, Images).
+*   `scripts/`: Database management scripts.
+
+## Database
+
+By default, this application uses **SQLite** for zero-configuration startup. The database file `petclinic.sqlite` is created in the root directory after running `npm run seed`.
+
+To switch to MySQL or Postgres, modify `models/index.js` to update the `Sequelize` configuration dialect and connection details.

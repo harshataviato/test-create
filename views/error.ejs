@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/header') %>
+<body>
+  <%- include('partials/navbar') %>
+  <div class="container xd-container">
+    <img src="/images/pets.png" />
+    <h2>Something happened...</h2>
+    <p>
+      <% if (status === 404) { %>
+        The requested page was not found.
+      <% } else if (status === 500) { %>
+        An internal server error occurred.
+      <% } else { %>
+        An unexpected error occurred.
+      <% } %>
+    </p>
+    <p><%= message %></p>
+  </div>
+</body>
+</html>

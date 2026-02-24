@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+
+<h2>Veterinarians</h2>
+
+<table id="vets" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Specialties</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% listVets.forEach(function(vet) { %>
+      <tr>
+        <td><%= vet.firstName %> <%= vet.lastName %></td>
+        <td>
+          <% if (vet.Specialties && vet.Specialties.length > 0) { %>
+            <% vet.Specialties.forEach(function(spec) { %>
+              <span><%= spec.name %> </span>
+            <% }); %>
+          <% } else { %>
+            <span>none</span>
+          <% } %>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+<!-- Simple Pagination Logic -->
+<% if (totalPages > 1) { %>
+  <div>
+    <span>Pages: [</span>
+    <% for(let i=1; i <= totalPages; i++) { %>
+        <a href="/vets.html?page=<%= i %>"><%= i %></a>
+    <% } %>
+    <span>]</span>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>

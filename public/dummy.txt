@@ -1,0 +1,3 @@
+Placeholder to ensure the public directory exists. 
+In a real deployment, copy the contents of spring-petclinic-main/src/main/resources/static/resources/ here.
+(e.g., public/css/petclinic.css, public/images/...)

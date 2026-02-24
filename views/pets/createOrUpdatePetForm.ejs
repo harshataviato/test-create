@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+
+<h2><%= pet.id ? 'Update' : 'New' %> Pet</h2>
+
+<form class="form-horizontal" method="post">
+  
+  <div class="form-group mb-2">
+    <label class="col-sm-2 control-label">Owner</label>
+    <div class="col-sm-10">
+      <span><%= owner.firstName %> <%= owner.lastName %></span>
+    </div>
+  </div>
+
+  <div class="form-group mb-2">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <input class="form-control" type="text" name="name" value="<%= pet.name || '' %>" />
+      <% const errName = (locals.errors || []).find(e => e.path === 'name'); %>
+      <% if (errName) { %> <span class="text-danger"><%= errName.msg %></span> <% } %>
+    </div>
+  </div>
+
+  <div class="form-group mb-2">
+    <label class="col-sm-2 control-label">Birth Date</label>
+    <div class="col-sm-10">
+      <input class="form-control" type="date" name="birthDate" value="<%= pet.birthDate ? moment(pet.birthDate).format('YYYY-MM-DD') : '' %>" />
+      <% const errDate = (locals.errors || []).find(e => e.path === 'birthDate'); %>
+      <% if (errDate) { %> <span class="text-danger"><%= errDate.msg %></span> <% } %>
+    </div>
+  </div>
+
+  <div class="form-group mb-2">
+    <label class="col-sm-2 control-label">Type</label>
+    <div class="col-sm-10">
+      <select class="form-control" name="type_id">
+        <% types.forEach(function(type) { %>
+          <option value="<%= type.id %>" <%= (pet.type_id || (pet.type && pet.type.id)) == type.id ? 'selected' : '' %>>
+            <%= type.name %>
+          </option>
+        <% }); %>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group mt-3">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button class="btn btn-primary" type="submit"><%= pet.id ? 'Update Pet' : 'Add Pet' %></button>
+    </div>
+  </div>
+</form>
+
+<%- include('../partials/footer') %>

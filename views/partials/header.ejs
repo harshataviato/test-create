@@ -1,0 +1,41 @@
+<!-- Wrapper to allow easy inclusion of layout -->
+<%- include('../layout', { body: '' }) %>
+<!-- Note: EJS implementation usually includes the layout at the end or uses 'extend' logic. 
+     For simplicity in this structure, I will assume the individual views contain the content 
+     and are wrapped by the layout logic in the response or via specific EJS libraries.
+     However, standard EJS is simple include. 
+     
+     CORRECTION: To make this robust without extra libs, I will define the views to just be the content
+     and pass them into the layout during res.render if I used a layout middleware. 
+     
+     But the Spring way wraps fragments. 
+     The standard Node way: 
+     1. Include Header
+     2. Content
+     3. Include Footer
+-->
+<!-- Re-implementing layout structure for standard EJS inclusion -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PetClinic</title>
+  <link rel="stylesheet" href="/css/petclinic.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">PetClinic</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/owners/find">Find Owners</a></li>
+        <li class="nav-item"><a class="nav-link" href="/vets.html">Veterinarians</a></li>
+        <li class="nav-item"><a class="nav-link" href="/oups">Error</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container mt-4">

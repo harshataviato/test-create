@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+
+<img src="/images/pets.png" />
+<h2>Something happened...</h2>
+
+<% if (status === 404) { %>
+  <p>The requested page was not found.</p>
+<% } else { %>
+  <p>An unexpected error occurred.</p>
+<% } %>
+
+<p class="text-danger"><%= message %></p>
+
+<%- include('partials/footer') %>

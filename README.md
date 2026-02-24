@@ -1,22 +1,28 @@
-# Node.js PetClinic Sample Application
+# Node.js PetClinic
 
-This is a Node.js port of the Spring PetClinic application.
+This is a Node.js version of the Spring PetClinic application.
 
 ## Prerequisites
+- Node.js (v14+)
+- NPM
 
-- Node.js (v16 or higher)
-- npm
+## Installation
 
-## Setup
 
-1.  Install dependencies:
-    ```bash
-    npm install
+## Running the Application
 
-3.  Run the server:
-    ```bash
-    # Run in development mode (auto-restart)
-    npm run dev
-    
-    # Run in production mode
-    npm start
+Development mode:
+
+Production start:
+
+## Running Tests
+
+This project includes a comprehensive suite of automated tests using Mocha, Chai, and Supertest.
+
+To run the tests:
+
+
+The tests will:
+1. Start the server on a dedicated test port (8081).
+2. Use a SQLite database.
+3. Verify Models, Controllers, and Routes.

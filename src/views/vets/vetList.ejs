@@ -1,0 +1,19 @@
+<%- include('../fragments/layout', { body: `
+    <h2>${__('vets')}</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>${__('name')}</th>
+                <th>${__('specialties')}</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${listVets.map(v => `
+                <tr>
+                    <td>${v.firstName} ${v.lastName}</td>
+                    <td>${v.specialties.length > 0 ? v.specialties.map(s => s.name).join(' ') : __('none')}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+`}) %>

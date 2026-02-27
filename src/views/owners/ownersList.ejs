@@ -1,0 +1,25 @@
+<%- include('../fragments/layout', { body: `
+    <h2>${__('owners')}</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>${__('name')}</th>
+                <th>${__('address')}</th>
+                <th>${__('city')}</th>
+                <th>${__('telephone')}</th>
+                <th>${__('pet')}</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${listOwners.map(o => `
+                <tr>
+                    <td><a href="/owners/${o.id}">${o.firstName} ${o.lastName}</a></td>
+                    <td>${o.address}</td>
+                    <td>${o.city}</td>
+                    <td>${o.telephone}</td>
+                    <td>${o.pets.map(p => p.name).join(', ')}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+`}) %>

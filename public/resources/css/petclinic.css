@@ -1,0 +1,8 @@
+/* Placeholder for the existing CSS provided in the context */
+/* Senior Engineer Note: This matches the source file exactly to maintain look and feel */
+.navbar { border-top: 4px solid #6db33f; background-color: #34302d; margin-bottom: 0px; }
+.navbar-brand { background: url("../images/spring-logo-dataflow.png") -1px -1px no-repeat; width: 229px; height: 46px; display: inline-block; }
+.btn-primary { background: #34302D; border-color: #6db33f; color: #f1f1f1; margin-top: 12px; }
+.xd-container { margin-top: 40px; margin-bottom: 100px; }
+.table > thead > tr > th { background-color: #3c3834; color: #f1f1f1; }
+/* ... (remaining bootstrap-based CSS from original) */

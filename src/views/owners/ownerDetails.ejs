@@ -1,0 +1,40 @@
+<%- include('../fragments/layout', { body: `
+    <h2>${__('ownerInformation')}</h2>
+    <table class="table table-striped">
+        <tr><th>${__('name')}</th><td><b>${owner.firstName} ${owner.lastName}</b></td></tr>
+        <tr><th>${__('address')}</th><td>${owner.address}</td></tr>
+        <tr><th>${__('city')}</th><td>${owner.city}</td></tr>
+        <tr><th>${__('telephone')}</th><td>${owner.telephone}</td></tr>
+    </table>
+
+    <a href="/owners/${owner.id}/edit" class="btn btn-primary">${__('editOwner')}</a>
+    <a href="/owners/${owner.id}/pets/new" class="btn btn-primary">${__('addNewPet')}</a>
+
+    <br /><br />
+    <h2>${__('petsAndVisits')}</h2>
+    <table class="table table-striped">
+        ${owner.pets.map(pet => `
+            <tr>
+                <td>
+                    <dl>
+                        <dt>${__('name')}</dt><dd>${pet.name}</dd>
+                        <dt>${__('birthDate')}</dt><dd>${pet.birthDate}</dd>
+                        <dt>${__('type')}</dt><dd>${pet.type.name}</dd>
+                    </dl>
+                </td>
+                <td>
+                    <table class="table-condensed">
+                        <thead><tr><th>${__('visitDate')}</th><th>${__('description')}</th></tr></thead>
+                        ${pet.visits.map(v => `
+                            <tr><td>${v.date}</td><td>${v.description}</td></tr>
+                        `).join('')}
+                        <tr>
+                            <td><a href="/owners/${owner.id}/pets/${pet.id}/edit">${__('editPet')}</a></td>
+                            <td><a href="/owners/${owner.id}/pets/${pet.id}/visits/new">${__('addVisit')}</a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        `).join('')}
+    </table>
+`}) %>

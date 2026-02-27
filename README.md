@@ -1,19 +1,18 @@
-# Node.js PetClinic
+# Node.js PetClinic - QA Suite
 
-This is a pragmatic port of the famous Spring PetClinic to Node.js.
+This repository contains a port of the Spring PetClinic application with a full automated test suite.
 
-## Prerequisites
-- Node.js (v18 or higher recommended)
-- npm (installed with Node.js)
+## Installation
 
-## Environment Setup
-1. Open your terminal in the project root directory.
-2. Install dependencies:
+1. Install dependencies:
    ```bash
    npm install
 
-## Running the Server
-1. Start the application:
+3. Run the application:
    ```bash
    npm start
+npm test
 
+---
+
+### Test Execution Guide

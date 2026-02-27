@@ -1,0 +1,21 @@
+<h2><%= t('vets') %></h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Specialties</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% vets.forEach(vet => { %>
+            <tr>
+                <td><%= vet.firstName %> <%= vet.lastName %></td>
+                <td>
+                    <% vet.Specialties.forEach(s => { %>
+                        <span class="badge bg-info"><%= s.name %></span>
+                    <% }) %>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

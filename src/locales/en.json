@@ -1,0 +1,9 @@
+{
+  "welcome": "Welcome to PetClinic",
+  "vets": "Veterinarians",
+  "owners": "Owners",
+  "find_owner": "Find Owner",
+  "add_owner": "Add Owner",
+  "pets": "Pets",
+  "visits": "Visits"
+}

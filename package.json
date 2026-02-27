@@ -1,0 +1,33 @@
+{
+  "name": "petclinic-node",
+  "version": "1.0.0",
+  "description": "Google-standard Pet Clinic Management System",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "express-ejs-layouts": "^2.5.1",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6",
+    "pg": "^8.11.1",
+    "mysql2": "^3.4.0",
+    "dotenv": "^16.3.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "express-session": "^1.17.3",
+    "i18next": "^23.2.3",
+    "i18next-fs-backend": "^2.1.5",
+    "i18next-http-middleware": "^3.3.2",
+    "node-cache": "^5.1.2",
+    "express-actuator": "^1.8.4",
+    "joi": "^17.9.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

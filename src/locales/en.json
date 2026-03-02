@@ -1,0 +1,24 @@
+{
+  "title": "PetClinic",
+  "nav": {
+    "home": "Home",
+    "owners": "Find Owners",
+    "vets": "Veterinarians",
+    "error": "Error Trigger"
+  },
+  "welcome": "Welcome to PetClinic",
+  "vets": {
+    "title": "Veterinarians",
+    "table": {
+      "name": "Name",
+      "specialties": "Specialties"
+    }
+  },
+  "owners": {
+    "find_title": "Find Owners",
+    "last_name": "Last Name",
+    "find_button": "Find Owner",
+    "add_button": "Add Owner",
+    "not_found": "has not been found"
+  }
+}

@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Node Application
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Switch dialect to 'mysql' or 'postgres' to test multi-db
+      - DB_DIALECT=postgres 
+      - DB_HOST=db
+      - DB_USER=petclinic
+      - DB_PASS=petclinic
+      - DB_NAME=petclinic
+    depends_on:
+      - db
+    networks:
+      - petnet
+
+  # PostgreSQL Database (Example of Multi-DB Support)
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: petclinic
+      POSTGRES_DB: petclinic
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - petnet
+
+networks:
+  petnet:
+
+volumes:
+  postgres_data:

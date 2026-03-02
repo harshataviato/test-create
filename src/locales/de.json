@@ -1,0 +1,24 @@
+{
+  "title": "Tierklinik",
+  "nav": {
+    "home": "Startseite",
+    "owners": "Besitzer finden",
+    "vets": "Tierärzte",
+    "error": "Fehler auslösen"
+  },
+  "welcome": "Willkommen in der Tierklinik",
+  "vets": {
+    "title": "Tierärzte",
+    "table": {
+      "name": "Name",
+      "specialties": "Spezialitäten"
+    }
+  },
+  "owners": {
+    "find_title": "Besitzer finden",
+    "last_name": "Nachname",
+    "find_button": "Besitzer finden",
+    "add_button": "Besitzer hinzufügen",
+    "not_found": "wurde nicht gefunden"
+  }
+}

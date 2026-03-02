@@ -1,0 +1,16 @@
+<%- include('../layout', { body: `
+    <h2>${__('owners.find_title')}</h2>
+    
+    ${locals.errors ? errors.map(e => `<div class="alert alert-danger">${e.msg}</div>`).join('') : ''}
+
+    <form action="/owners" method="get" class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">${__('owners.last_name')}</label>
+            <input type="text" name="lastName" class="form-control" value="${owner.lastName || ''}">
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">${__('owners.find_button')}</button>
+            <a href="/owners/new" class="btn btn-success">${__('owners.add_button')}</a>
+        </div>
+    </form>
+` }) %>

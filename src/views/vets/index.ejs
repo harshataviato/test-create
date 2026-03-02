@@ -1,0 +1,30 @@
+<%- include('../layout', { body: `
+    <h2>${__('vets.title')}</h2>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>${__('vets.table.name')}</th>
+                <th>${__('vets.table.specialties')}</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${vets.map(vet => `
+                <tr>
+                    <td>${vet.firstName} ${vet.lastName}</td>
+                    <td>
+                        ${vet.Specialties.length === 0 ? 'none' : vet.Specialties.map(s => s.name).join(', ')}
+                    </td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}"><a class="page-link" href="?page=${currentPage - 1}">Previous</a></li>
+            <li class="page-item active"><a class="page-link" href="#">${currentPage}</a></li>
+            <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}"><a class="page-link" href="?page=${parseInt(currentPage) + 1}">Next</a></li>
+        </ul>
+    </nav>
+` }) %>

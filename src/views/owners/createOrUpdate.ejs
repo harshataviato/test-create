@@ -1,0 +1,30 @@
+<%- include('../layout', { body: `
+    <h2>${mode === 'create' ? 'Add Owner' : 'Update Owner'}</h2>
+
+    ${locals.errors ? errors.map(e => `<div class="alert alert-danger">${e.msg}</div>`).join('') : ''}
+
+    <form method="post" class="form-horizontal">
+        <div class="mb-3">
+            <label>First Name</label>
+            <input name="firstName" class="form-control" value="${owner.firstName || ''}" />
+        </div>
+        <div class="mb-3">
+            <label>Last Name</label>
+            <input name="lastName" class="form-control" value="${owner.lastName || ''}" />
+        </div>
+        <div class="mb-3">
+            <label>Address</label>
+            <input name="address" class="form-control" value="${owner.address || ''}" />
+        </div>
+        <div class="mb-3">
+            <label>City</label>
+            <input name="city" class="form-control" value="${owner.city || ''}" />
+        </div>
+        <div class="mb-3">
+            <label>Telephone</label>
+            <input name="telephone" class="form-control" value="${owner.telephone || ''}" />
+            <small class="text-muted">10 digits, no dashes</small>
+        </div>
+        <button type="submit" class="btn btn-primary">${mode === 'create' ? 'Add Owner' : 'Update Owner'}</button>
+    </form>
+` }) %>

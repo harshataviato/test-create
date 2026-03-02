@@ -1,0 +1,24 @@
+{
+  "title": "Clínica de Mascotas",
+  "nav": {
+    "home": "Inicio",
+    "owners": "Buscar Propietarios",
+    "vets": "Veterinarios",
+    "error": "Provocar Error"
+  },
+  "welcome": "Bienvenido a la Clínica de Mascotas",
+  "vets": {
+    "title": "Veterinarios",
+    "table": {
+      "name": "Nombre",
+      "specialties": "Especialidades"
+    }
+  },
+  "owners": {
+    "find_title": "Buscar Propietarios",
+    "last_name": "Apellido",
+    "find_button": "Buscar",
+    "add_button": "Añadir Propietario",
+    "not_found": "no ha sido encontrado"
+  }
+}

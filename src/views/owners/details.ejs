@@ -1,0 +1,41 @@
+<%- include('../layout', { body: `
+    <h2>Owner Information</h2>
+    
+    <table class="table table-bordered">
+        <tr><th>Name</th><td>${owner.firstName} ${owner.lastName}</td></tr>
+        <tr><th>Address</th><td>${owner.address}</td></tr>
+        <tr><th>City</th><td>${owner.city}</td></tr>
+        <tr><th>Telephone</th><td>${owner.telephone}</td></tr>
+    </table>
+    
+    <a href="/owners/${owner.id}/edit" class="btn btn-primary">Edit Owner</a>
+    <a href="/owners/${owner.id}/pets/new" class="btn btn-success">Add New Pet</a>
+
+    <h3 class="mt-4">Pets and Visits</h3>
+    <table class="table table-striped">
+        ${owner.Pets.map(pet => `
+            <tr>
+                <td valign="top" style="width: 200px">
+                    <dl>
+                        <dt>Name</dt><dd>${pet.name}</dd>
+                        <dt>Birth Date</dt><dd>${pet.birthDate}</dd>
+                        <dt>Type</dt><dd>${pet.type}</dd>
+                    </dl>
+                </td>
+                <td valign="top">
+                    <table class="table table-condensed">
+                        <thead><tr><th>Visit Date</th><th>Description</th></tr></thead>
+                        <tbody>
+                            ${pet.Visits.map(visit => `
+                                <tr><td>${visit.date}</td><td>${visit.description}</td></tr>
+                            `).join('')}
+                            <tr>
+                                <td colspan="2"><a href="/owners/${owner.id}/pets/${pet.id}/visits/new">Add Visit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        `).join('')}
+    </table>
+` }) %>

@@ -1,0 +1,24 @@
+<%- include('../layout', { body: `
+    <h2>${mode === 'create' ? 'Add Pet' : 'Update Pet'}</h2>
+    <h4>Owner: ${owner.firstName} ${owner.lastName}</h4>
+
+    ${locals.errors ? errors.map(e => `<div class="alert alert-danger">${e.msg}</div>`).join('') : ''}
+
+    <form method="post">
+        <div class="mb-3">
+            <label>Name</label>
+            <input name="name" class="form-control" value="${pet.name || ''}" />
+        </div>
+        <div class="mb-3">
+            <label>Birth Date</label>
+            <input type="date" name="birthDate" class="form-control" value="${pet.birthDate || ''}" />
+        </div>
+        <div class="mb-3">
+            <label>Type</label>
+            <select name="type" class="form-select">
+                ${types.map(t => `<option value="${t}" ${pet.type === t ? 'selected' : ''}>${t}</option>`).join('')}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+` }) %>

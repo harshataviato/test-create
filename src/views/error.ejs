@@ -1,0 +1,10 @@
+<%- include('layout', { body: `
+    <div class="alert alert-danger">
+        <h4 class="alert-heading">Something went wrong!</h4>
+        <p>${message}</p>
+        <hr>
+        <p class="mb-0">Please contact support or try again later.</p>
+    </div>
+    
+    ${stack ? `<div class="card mt-4"><div class="card-header">Debug Stack Trace</div><div class="card-body"><pre>${stack}</pre></div></div>` : ''}
+` }) %>

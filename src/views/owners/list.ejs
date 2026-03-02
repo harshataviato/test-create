@@ -1,0 +1,25 @@
+<%- include('../layout', { body: `
+    <h2>Owners</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Telephone</th>
+                <th>Pets</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${owners.map(o => `
+                <tr>
+                    <td><a href="/owners/${o.id}">${o.firstName} ${o.lastName}</a></td>
+                    <td>${o.address}</td>
+                    <td>${o.city}</td>
+                    <td>${o.telephone}</td>
+                    <td><!-- Pets handled in details view for simplicity --></td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+` }) %>

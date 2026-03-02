@@ -1,0 +1,10 @@
+<% var activePage = 'error'; %>
+<% var body = `
+    <img src="/images/pets.png" />
+    <h2>Something happened...</h2>
+    <p>${error.message || 'An unexpected error occurred.'}</p>
+    <% if(error.stack) { %>
+        <!-- <pre>${error.stack}</pre> -->
+    <% } %>
+`; %>
+<%- include('layout', {body: body, activePage: activePage}) %>

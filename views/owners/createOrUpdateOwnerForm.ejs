@@ -1,0 +1,34 @@
+<% var activePage = 'owners'; %>
+<% 
+// Helper to generate input field
+function input(label, name, value, error) {
+    return `
+    <div class="form-group row mb-3">
+        <label class="col-sm-2 col-form-label">${label}</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control ${error ? 'is-invalid' : ''}" name="${name}" value="${value || ''}" />
+            ${error ? '<div class="invalid-feedback">' + error.msg + '</div>' : ''}
+        </div>
+    </div>`;
+}
+
+var content = `
+    <h2>Owner</h2>
+    <form class="form-horizontal" method="post">
+        <div class="form-group has-feedback">
+            ${input('First Name', 'firstName', owner.firstName, errors && errors.firstName)}
+            ${input('Last Name', 'lastName', owner.lastName, errors && errors.lastName)}
+            ${input('Address', 'address', owner.address, errors && errors.address)}
+            ${input('City', 'city', owner.city, errors && errors.city)}
+            ${input('Telephone', 'telephone', owner.telephone, errors && errors.telephone)}
+        </div>
+        <div class="form-group row mb-3">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary" type="submit">${owner.id ? 'Update Owner' : 'Add Owner'}</button>
+            </div>
+        </div>
+    </form>
+`;
+var body = content;
+%>
+<%- include('../layout', {body: body, activePage: activePage}) %>

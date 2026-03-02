@@ -1,0 +1,44 @@
+<% var activePage = 'vets'; %>
+<% 
+var content = `
+    <h2>Veterinarians</h2>
+
+    <table id="vets" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Specialties</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${listVets.map(vet => `
+                <tr>
+                    <td>${vet.firstName} ${vet.lastName}</td>
+                    <td>
+                        ${vet.Specialties && vet.Specialties.length > 0 ? 
+                            vet.Specialties.map(s => s.name).join(' ') : 
+                            'none'}
+                    </td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+`;
+
+// Pagination
+if (totalPages > 1) {
+    content += '<div class="pagination-container"><span>Pages: [</span>';
+    for (let i = 1; i <= totalPages; i++) {
+        if(currentPage == i) {
+            content += `<span>${i}</span>`;
+        } else {
+            content += `<a href="/vets.html?page=${i}">${i}</a>`;
+        }
+        if(i < totalPages) content += ' ';
+    }
+    content += ']</div>';
+}
+
+var body = content;
+%>
+<%- include('../layout', {body: body, activePage: activePage}) %>

@@ -1,0 +1,28 @@
+/* Minimal CSS to match PetClinic Style - using provided SCSS compiled logic */
+.navbar {
+  border-top: 4px solid #6db33f;
+  background-color: #34302d !important; /* Override bootstrap */
+}
+
+.navbar-brand {
+  /* Placeholder for the sprite logic, simplified for Node impl */
+  padding-left: 20px;
+  color: white !important;
+  font-weight: bold;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.xd-container {
+  margin-top: 40px;
+  margin-bottom: 100px;
+  padding-left: 5px;
+  padding-right: 5px;
+}

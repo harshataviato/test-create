@@ -1,0 +1,23 @@
+/* Custom styles matching the original branding */
+.navbar-brand {
+    background: url('../images/spring-logo-dataflow.png') no-repeat;
+    width: 229px;
+    height: 46px;
+    display: inline-block;
+}
+
+.bg-dark {
+    background-color: #34302d !important;
+    border-top: 4px solid #6db33f;
+}
+
+.btn-primary {
+    background-color: #34302d;
+    border-color: #6db33f;
+    border-width: 2px;
+}
+
+.btn-primary:hover {
+    background-color: #6db33f;
+    border-color: #34302d;
+}

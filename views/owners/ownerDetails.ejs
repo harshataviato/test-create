@@ -1,0 +1,60 @@
+<h2><%= messages.ownerInformation %></h2>
+
+<table class="table table-striped">
+    <tr>
+        <th><%= messages.name %></th>
+        <td><b><%= owner.firstName %> <%= owner.lastName %></b></td>
+    </tr>
+    <tr>
+        <th><%= messages.address %></th>
+        <td><%= owner.address %></td>
+    </tr>
+    <tr>
+        <th><%= messages.city %></th>
+        <td><%= owner.city %></td>
+    </tr>
+    <tr>
+        <th><%= messages.telephone %></th>
+        <td><%= owner.telephone %></td>
+    </tr>
+</table>
+
+<div class="mb-4">
+    <a href="/owners/<%= owner.id %>/edit" class="btn btn-primary"><%= messages.editOwner %></a>
+    <a href="/owners/<%= owner.id %>/pets/new" class="btn btn-primary"><%= messages.addNewPet %></a>
+</div>
+
+<h2><%= messages.petsAndVisits %></h2>
+<table class="table table-striped">
+    <% owner.pets.forEach(pet => { %>
+        <tr>
+            <td valign="top">
+                <dl>
+                    <dt><%= messages.name %></dt><dd><%= pet.name %></dd>
+                    <dt><%= messages.birthDate %></dt><dd><%= pet.birthDate %></dd>
+                    <dt><%= messages.type %></dt><dd><%= pet.type.name %></dd>
+                </dl>
+            </td>
+            <td valign="top">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th><%= messages.visitDate %></th>
+                            <th><%= messages.description %></th>
+                        </tr>
+                    </thead>
+                    <% pet.visits.forEach(visit => { %>
+                        <tr>
+                            <td><%= visit.date %></td>
+                            <td><%= visit.description %></td>
+                        </tr>
+                    <% }) %>
+                    <tr>
+                        <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit"><%= messages.editPet %></a></td>
+                        <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new"><%= messages.addVisit %></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    <% }) %>
+</table>

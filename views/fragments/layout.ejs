@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/resources/css/petclinic.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><span></span></a>
+            <div class="collapse navbar-collapse" id="main-navbar">
+                <ul class="nav navbar-nav me-auto">
+                    <li><a class="nav-link" href="/">Home</a></li>
+                    <li><a class="nav-link" href="/owners/find">Find Owners</a></li>
+                    <li><a class="nav-link" href="/vets.html">Veterinarians</a></li>
+                    <li><a class="nav-link" href="/oups">Error</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container xd-container">
+        <%- body %>
+        <br/><br/>
+        <div class="col-12 text-center">
+            <img src="/resources/images/spring-logo.svg" alt="Logo" class="logo" style="width: 200px;">
+        </div>
+    </div>
+</body>
+</html>

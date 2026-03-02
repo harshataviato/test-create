@@ -1,0 +1,27 @@
+<%- include('../fragments/layout', { body: `
+    <h2>New Visit</h2>
+    <p><b>Pet:</b> ${pet.name} (${pet.type.name})</p>
+    <form method="post" class="form-horizontal">
+        <div class="form-group">
+            <label>Date</label>
+            <input class="form-control" type="date" name="visitDate" required />
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input class="form-control" name="description" required />
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Add Visit</button>
+    </form>
+
+    <br/>
+    <b>Previous Visits</b>
+    <table class="table table-striped">
+        <thead><tr><th>Date</th><th>Description</th></tr></thead>
+        <tbody>
+            ${pet.visits.map(v => `
+                <tr><td>${v.visitDate}</td><td>${v.description}</td></tr>
+            `).join('')}
+        </tbody>
+    </table>
+` }) %>

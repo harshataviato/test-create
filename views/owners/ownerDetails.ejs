@@ -1,0 +1,40 @@
+<%- include('../fragments/layout', { body: `
+    <h2>Owner Information</h2>
+    <table class="table table-striped">
+        <tr><th>Name</th><td><b>${owner.firstName} ${owner.lastName}</b></td></tr>
+        <tr><th>Address</th><td>${owner.address}</td></tr>
+        <tr><th>City</th><td>${owner.city}</td></tr>
+        <tr><th>Telephone</th><td>${owner.telephone}</td></tr>
+    </table>
+
+    <a href="/owners/${owner.id}/edit" class="btn btn-primary">Edit Owner</a>
+    <a href="/owners/${owner.id}/pets/new" class="btn btn-primary">Add New Pet</a>
+
+    <br /><br />
+    <h2>Pets and Visits</h2>
+    <table class="table table-striped">
+        ${owner.pets.map(pet => `
+            <tr>
+                <td valign="top">
+                    <dl>
+                        <dt>Name</dt><dd>${pet.name}</dd>
+                        <dt>Birth Date</dt><dd>${pet.birthDate}</dd>
+                        <dt>Type</dt><dd>${pet.type ? pet.type.name : ''}</dd>
+                    </dl>
+                </td>
+                <td valign="top">
+                    <table class="table-condensed">
+                        <thead><tr><th>Visit Date</th><th>Description</th></tr></thead>
+                        ${pet.visits ? pet.visits.map(v => `
+                            <tr><td>${v.visitDate}</td><td>${v.description}</td></tr>
+                        `).join('') : ''}
+                        <tr>
+                            <td><a href="/owners/${owner.id}/pets/${pet.id}/edit">Edit Pet</a></td>
+                            <td><a href="/owners/${owner.id}/pets/${pet.id}/visits/new">Add Visit</a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        `).join('')}
+    </table>
+` }) %>

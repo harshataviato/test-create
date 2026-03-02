@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "reset-db": "node seed/init.js"
+    "reset-db": "node seed/init.js",
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
@@ -19,6 +20,14 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "dotenv/config"
+    ]
   }
 }

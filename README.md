@@ -1,32 +1,34 @@
 # Node.js PetClinic
 
-A pragmatic Node.js port of the famous Spring PetClinic sample application. Built with Express, Sequelize (SQLite/PostgreSQL/MySQL support), and EJS.
+This is a Node.js port of the classic Spring PetClinic sample application, using Express, Sequelize, and EJS.
 
 ## Prerequisites
 
-- Node.js (v18 or newer)
-- NPM (v9 or newer)
+- Node.js (v16+)
+- npm
 
-## Environment Setup
+## Installation
 
-Create a `.env` file in the root directory if you wish to use a persistent database. By default, the application uses an in-memory SQLite database for zero-config startup.
+1. Install dependencies:
+   ```bash
+   npm install
 
+## Running the Application
 
-## Dependency Installation
+Start the server:
+Visit `http://localhost:8080` in your browser.
 
-Install all required packages:
+## Testing
 
+The project includes a comprehensive test suite for models and routes.
 
-## Database Setup and Migrations
+Run the tests:
 
-This application uses Sequelize. The schema is automatically synchronized and seeded with initial data on the first start.
+## Project Structure
 
-To manually reset and seed the database:
-
-## Running the Server
-
-Start the application in production mode:
-
-For development with hot-reload:
-
-The application will be available at [http://localhost:8080](http://localhost:8080).
+- `app.js`: Application entry point and middleware configuration.
+- `models/`: Sequelize models and database schema.
+- `routes/`: Controller logic for different functional areas.
+- `views/`: EJS templates for the UI.
+- `locales/`: Internationalization messages.
+- `tests/`: Automated test suite.

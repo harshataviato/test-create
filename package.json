@@ -12,8 +12,14 @@
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
   },
+  "devDependencies": {
+    "mocha": "^10.4.0",
+    "chai": "^4.4.1",
+    "supertest": "^7.0.0"
+  },
   "scripts": {
     "start": "node app.js",
-    "seed": "node src/db/seed.js"
+    "seed": "node src/db/seed.js",
+    "test": "export NODE_ENV=test && mocha 'test/**/*.test.js' --exit --timeout 10000"
   }
 }

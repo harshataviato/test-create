@@ -1,0 +1,64 @@
+<% extend('../fragments/layout') %>
+<h2><%= __('ownerInformation') %></h2>
+
+<table class="table table-striped">
+    <tr>
+        <th><%= __('name') %></th>
+        <td><b><%= owner.firstName %> <%= owner.lastName %></b></td>
+    </tr>
+    <tr>
+        <th><%= __('address') %></th>
+        <td><%= owner.address %></td>
+    </tr>
+    <tr>
+        <th><%= __('city') %></th>
+        <td><%= owner.city %></td>
+    </tr>
+    <tr>
+        <th><%= __('telephone') %></th>
+        <td><%= owner.telephone %></td>
+    </tr>
+</table>
+
+<a href="/owners/<%= owner.id %>/edit" class="btn btn-primary"><%= __('editOwner') %></a>
+<a href="/owners/<%= owner.id %>/pets/new" class="btn btn-primary"><%= __('addNewPet') %></a>
+
+<br /><br />
+<h2><%= __('petsAndVisits') %></h2>
+
+<table class="table table-striped">
+    <% owner.pets.forEach(pet => { %>
+    <tr>
+        <td valign="top">
+            <dl class="dl-horizontal">
+                <dt><%= __('name') %></dt>
+                <dd><%= pet.name %></dd>
+                <dt><%= __('birthDate') %></dt>
+                <dd><%= pet.birthDate %></dd>
+                <dt><%= __('type') %></dt>
+                <dd><%= pet.type.name %></dd>
+            </dl>
+        </td>
+        <td valign="top">
+            <table class="table-condensed">
+                <thead>
+                    <tr>
+                        <th><%= __('visitDate') %></th>
+                        <th><%= __('description') %></th>
+                    </tr>
+                </thead>
+                <% pet.visits.forEach(visit => { %>
+                <tr>
+                    <td><%= visit.date %></td>
+                    <td><%= visit.description %></td>
+                </tr>
+                <% }) %>
+                <tr>
+                    <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit"><%= __('editPet') %></a></td>
+                    <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new"><%= __('addVisit') %></a></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <% }) %>
+</table>

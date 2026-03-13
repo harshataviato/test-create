@@ -4,10 +4,15 @@
   "description": "A pragmatic MVC Hello World application in Node.js",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "jest --coverage --detectOpenHandles"
   },
   "dependencies": {
     "express": "^4.18.2",
     "ejs": "^3.1.9"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
   }
 }

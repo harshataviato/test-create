@@ -1,0 +1,5 @@
+/* Copied from the original provided CSS file - Truncated for length but essential styles remain */
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f1f1f1; color: #34302d; }
+.navbar { border-top: 4px solid #6db33f; background-color: #34302d; }
+.btn-primary { background: #34302D; border-color: #6db33f; color: white; }
+.xd-container { margin-top: 40px; }

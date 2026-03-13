@@ -1,0 +1,19 @@
+<%- include('../fragments/layout', { body: `
+  <h2>${__('vets')}</h2>
+  <table class="table table-striped">
+    <thead><tr><th>${__('name')}</th><th>${__('specialties')}</th></tr></thead>
+    <tbody>
+      ${listVets.map(vet => `
+        <tr>
+          <td>${vet.firstName} ${vet.lastName}</td>
+          <td>${vet.specialties.length > 0 ? vet.specialties.map(s => s.name).join(', ') : __('none')}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>
+  <div>
+    ${currentPage > 1 ? `<a href="?page=${currentPage - 1}">${__('previous')}</a>` : ''}
+    <span>Page ${currentPage} of ${totalPages}</span>
+    ${currentPage < totalPages ? `<a href="?page=${currentPage + 1}">${__('next')}</a>` : ''}
+  </div>
+` }) %>

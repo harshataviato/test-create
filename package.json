@@ -1,0 +1,22 @@
+{
+  "name": "node-petclinic",
+  "version": "1.0.0",
+  "description": "Node.js implementation of the Spring PetClinic",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-validator": "^7.0.1",
+    "i18n": "^0.15.1",
+    "method-override": "^3.0.0",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

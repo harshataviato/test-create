@@ -4,11 +4,20 @@
   "description": "A pragmatic Node.js implementation of Hello World following MVC patterns",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha tests/**/*.test.js --exit",
+    "test:coverage": "nyc mocha tests/**/*.test.js --exit"
   },
   "dependencies": {
     "express": "^4.18.2",
     "ejs": "^3.1.9"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "chai": "^4.3.7",
+    "supertest": "^6.3.3",
+    "sinon": "^15.2.0",
+    "nyc": "^15.1.0"
   },
   "engines": {
     "node": ">=14.0.0"

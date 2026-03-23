@@ -1,0 +1,39 @@
+<!-- 
+  Module: Base Layout Template 
+  Description: Acts as the master template for all views, providing a uniform HTML structure
+  and styling. Individual views are injected into the <%- body %> placeholder.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Task Manager</title>
+    <!-- Using a lightweight CSS framework for clean UI without local static files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 2rem; background-color: #f8f9fa; }
+        .container { max-width: 800px; }
+        .card { margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .completed { text-decoration: line-through; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pb-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4 fw-bold">Enterprise Task Manager</span>
+            </a>
+        </header>
+        
+        <main>
+            <!-- View-specific content is injected here -->
+            <%- body %>
+        </main>
+        
+        <footer class="pt-3 mt-4 text-muted border-top">
+            &copy; Google Engineering Example - TypeScript MVC
+        </footer>
+    </div>
+</body>
+</html>

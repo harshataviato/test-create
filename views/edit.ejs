@@ -1,0 +1,35 @@
+<!-- 
+  Module: Edit Task View
+  Description: Form to edit an existing Task. Populates fields with current Task data.
+  Expects parameter: `task` (Task object).
+-->
+<%- include('layout', { body: `
+    <div class="card p-4">
+        <h2 class="mb-4">Edit Task</h2>
+        
+        <form action="/edit/${task.id}" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label fw-bold">Task Title <span class="text-danger">*</span></label>
+                <!-- Pre-fill with existing title -->
+                <input type="text" class="form-control" id="title" name="title" value="${task.title}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label fw-bold">Description</label>
+                <!-- Pre-fill with existing description -->
+                <textarea class="form-control" id="description" name="description" rows="4">${task.description || ''}</textarea>
+            </div>
+            
+            <div class="mb-4 form-check">
+                <!-- Checkbox handles the isCompleted boolean -->
+                <input type="checkbox" class="form-check-input" id="isCompleted" name="isCompleted" ${task.isCompleted ? 'checked' : ''}>
+                <label class="form-check-label fw-bold" for="isCompleted">Mark as Completed</label>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="/" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update Task</button>
+            </div>
+        </form>
+    </div>
+` }) %>

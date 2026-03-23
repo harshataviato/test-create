@@ -1,0 +1,36 @@
+<!-- Include header template -->
+<%- include('../layout/header') %>
+
+<h1>Add New User</h1>
+
+<!-- Display error banner if the controller passes an error message -->
+<% if (error) { %>
+    <div class="alert">
+        <%= error %>
+    </div>
+<% } %>
+
+<!-- Form to create a user. Sends POST request to the server -->
+<form action="/users/create" method="POST">
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required placeholder="Enter first name">
+    </div>
+    
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required placeholder="Enter last name">
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="Enter valid email">
+    </div>
+
+    <button type="submit" class="btn">Save User</button>
+    <!-- Cancellation link returning to the index page -->
+    <a href="/users" style="margin-left: 10px; text-decoration: none; color: #666;">Cancel</a>
+</form>
+
+<!-- Include footer template -->
+<%- include('../layout/footer') %>

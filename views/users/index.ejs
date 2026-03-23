@@ -1,0 +1,47 @@
+<!-- Include header template -->
+<%- include('../layout/header') %>
+
+<h1>User Directory</h1>
+
+<!-- Button linking to the creation form -->
+<a href="/users/create" class="btn">Add New User</a>
+
+<!-- Check if the users list is empty -->
+<% if (users.length === 0) { %>
+    <p>No users found. Please add a new user.</p>
+<% } else { %>
+    <!-- Table displaying user records -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterate over the users array passed from the Controller -->
+            <% users.forEach(function(user) { %>
+                <tr>
+                    <td><%= user.id %></td>
+                    <td><%= user.firstName %></td>
+                    <td><%= user.lastName %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.isActive ? 'Active' : 'Inactive' %></td>
+                    <td>
+                        <!-- Form to delete a user. Uses POST method as HTML forms don't support DELETE -->
+                        <form action="/users/delete/<%= user.id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } %>
+
+<!-- Include footer template -->
+<%- include('../layout/footer') %>

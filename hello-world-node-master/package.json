@@ -1,0 +1,23 @@
+{
+  "name": "hello-world-node-master",
+  "version": "1.0.0",
+  "description": "A simple 'Hello World' application using Node.js, Express, and EJS, demonstrating basic MVC structure.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hello-world",
+    "node.js",
+    "express",
+    "ejs",
+    "mvc"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  }
+}

@@ -36,14 +36,22 @@ app.set('views', path.join(__dirname, 'views'));
  */
 app.get('/', helloController.getHomePage);
 
-// --- Server Startup ---
+// Export the app instance for testing and modularity.
+// This allows test files to import the Express application without
+// starting the server, which supertest handles internally.
+module.exports = app;
 
-/**
- * Starts the Express server and listens for incoming requests on the specified port.
- * Once the server is successfully started, a callback function is executed
- * to log a message to the console, indicating the server's status and access URL.
- */
-app.listen(port, () => {
-  // Log message to console once the server starts listening
-  console.log(`Server is running on http://localhost:${port}`);
-});
+// --- Server Startup ---
+// This conditional block ensures the server only starts listening if app.js is run directly
+// (e.g., 'node app.js'), and not when it's imported as a module by test files.
+if (require.main === module) {
+  /**
+   * Starts the Express server and listens for incoming requests on the specified port.
+   * Once the server is successfully started, a callback function is executed
+   * to log a message to the console, indicating the server's status and access URL.
+   */
+  app.listen(port, () => {
+    // Log message to console once the server starts listening
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}

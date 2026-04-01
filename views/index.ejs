@@ -1,0 +1,22 @@
+<!-- Extends the base layout for common header, footer, etc. -->
+<%- layout('layout') %>
+
+<!-- Main content of the home page -->
+<div class="container">
+  <h2><%= title %></h2>
+  <p>This is a simple application to manage products. You can perform CRUD operations (Create, Read, Update, Delete) on product data.</p>
+
+  <div class="action-buttons">
+    <a href="/products" class="btn">View All Products</a>
+    <a href="/products/new" class="btn btn-primary">Add New Product</a>
+  </div>
+
+  <h3>Features:</h3>
+  <ul>
+    <li>View a list of all products.</li>
+    <li>View details of a single product.</li>
+    <li>Add new products to the inventory.</li>
+    <li>Edit existing product information.</li>
+    <li>Delete products from the system.</li>
+  </ul>
+</div>

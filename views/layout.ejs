@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Dynamic title for each page, defaults to 'Product App' if not provided -->
+  <title><%= typeof title !== 'undefined' ? title : 'Product App' %></title>
+  <!-- Link to the main stylesheet for global styles -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1><a href="/" class="header-link">Product Management</a></h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/products/new">New Product</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Display global error messages if `error` variable is passed to the template -->
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert error">
+        <p><strong>Error:</strong> <%= error %></p>
+      </div>
+    <% } %>
+    <!-- This is where the content of specific views (e.g., index.ejs, new.ejs) will be injected -->
+    <%- body %>
+  </main>
+
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Product Management. All rights reserved.</p>
+  </footer>
+
+  <!-- Link to the main client-side JavaScript file (optional, for future interactive features) -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

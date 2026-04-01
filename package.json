@@ -1,0 +1,31 @@
+{
+  "name": "harshataviato-test-create-ebb4653",
+  "version": "1.0.0",
+  "description": "A simple Node.js application demonstrating MVC pattern with Express, Mongoose, and EJS.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mongoose",
+    "ejs",
+    "mvc",
+    "crud"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
+  }
+}

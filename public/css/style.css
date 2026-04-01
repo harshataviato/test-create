@@ -1,0 +1,294 @@
+/* General Body and Font Styles */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure full viewport height */
+}
+
+.container {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+header {
+  background: #333;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+  border-bottom: 3px solid #007bff;
+}
+
+header h1 {
+  margin: 0;
+  padding-bottom: 10px;
+}
+
+header h1 .header-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+header nav ul {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+header nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header nav a:hover {
+  color: #007bff;
+}
+
+/* Main Content Area */
+main {
+  flex: 1; /* Allows main content to grow and push footer down */
+  padding: 20px 0;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+h2 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  position: relative; /* For top-right action buttons */
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  background: #007bff;
+  color: #fff;
+  padding: 8px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9em;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+.btn-primary {
+  background-color: #28a745; /* Green for primary actions like 'Add' */
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Grey for secondary actions like 'Edit' or 'Cancel' */
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Red for destructive actions like 'Delete' */
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.8em;
+}
+
+/* Action Button Containers */
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+.action-buttons.top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  margin-top: 0; /* Override default margin */
+}
+
+/* Table Styles for Product List */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.data-table td:last-child {
+  white-space: nowrap; /* Prevent action buttons from wrapping */
+}
+
+/* Form Styles */
+.form-container {
+  max-width: 600px; /* Slightly smaller width for forms */
+  padding: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  font-size: 1em;
+}
+
+.form-group textarea {
+  resize: vertical; /* Allow vertical resizing only */
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* Product Details View */
+.product-details {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dotted #eee;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.detail-item strong {
+  display: inline-block;
+  width: 120px; /* Align labels */
+  color: #555;
+}
+
+/* Alert Messages (for errors) */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert.error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+/* Error Page Specific Styles */
+.error-page {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.error-page h2 {
+  color: #dc3545;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  border-bottom: none;
+}
+
+.error-page .error-message {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.error-page .error-details {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: left;
+  margin-top: 30px;
+}
+
+.error-page .error-details pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9em;
+  color: #721c24;
+}
+
+/* Footer Styles */
+footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto; /* Pushes footer to the bottom */
+  border-top: 3px solid #007bff;
+}

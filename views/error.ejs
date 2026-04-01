@@ -1,0 +1,23 @@
+<!-- Extends the base layout for common header, footer, etc. -->
+<%- layout('layout') %>
+
+<!-- Main content for displaying an error page -->
+<div class="container">
+  <div class="error-page">
+    <h2><%= typeof title !== 'undefined' ? title : 'Error' %></h2>
+    <p class="error-message"><%= message %></p>
+
+    <!-- Optionally display more detailed error information if available (e.g., in development) -->
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="error-details">
+        <h3>Details:</h3>
+        <pre><%= error.stack %></pre> <!-- Display the error stack for debugging -->
+      </div>
+    <% } %>
+
+    <div class="form-actions">
+      <a href="/" class="btn btn-primary">Go to Home</a>
+      <a href="/products" class="btn btn-secondary">View Products</a>
+    </div>
+  </div>
+</div>

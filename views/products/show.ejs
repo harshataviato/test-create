@@ -1,0 +1,44 @@
+<!-- Extends the base layout for common header, footer, etc. -->
+<%- layout('layout') %>
+
+<!-- Main content for displaying a single product's details -->
+<div class="container">
+  <h2>Product Details: <%= product.name %></h2>
+
+  <div class="product-details">
+    <div class="detail-item">
+      <strong>ID:</strong> <span><%= product._id %></span>
+    </div>
+    <div class="detail-item">
+      <strong>Name:</strong> <span><%= product.name %></span>
+    </div>
+    <div class="detail-item">
+      <strong>Description:</strong> <span><%= product.description %></span>
+    </div>
+    <div class="detail-item">
+      <strong>Price:</strong> <span>$<%= product.price.toFixed(2) %></span>
+    </div>
+    <div class="detail-item">
+      <strong>Quantity:</strong> <span><%= product.quantity %></span>
+    </div>
+    <div class="detail-item">
+      <!-- Format the creation date nicely -->
+      <strong>Created At:</strong> <span><%= product.createdAt.toLocaleDateString() %> <%= product.createdAt.toLocaleTimeString() %></span>
+    </div>
+    <div class="detail-item">
+      <!-- Format the update date nicely -->
+      <strong>Last Updated:</strong> <span><%= product.updatedAt.toLocaleDateString() %> <%= product.updatedAt.toLocaleTimeString() %></span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <!-- Link to edit this specific product -->
+    <a href="/products/<%= product._id %>/edit" class="btn btn-secondary">Edit Product</a>
+    <!-- Form to delete this specific product. Uses method-override to send a DELETE request. -->
+    <form action="/products/<%= product._id %>?_method=DELETE" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">Delete Product</button>
+    </form>
+    <!-- Link back to the list of all products -->
+    <a href="/products" class="btn">Back to Products</a>
+  </div>
+</div>

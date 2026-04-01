@@ -1,0 +1,47 @@
+<!-- Extends the base layout for common header, footer, etc. -->
+<%- layout('layout') %>
+
+<!-- Main content for displaying the list of all products -->
+<div class="container">
+  <h2><%= title %></h2>
+
+  <div class="action-buttons top-right">
+    <a href="/products/new" class="btn btn-primary">Add New Product</a>
+  </div>
+
+  <% if (products.length > 0) { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through each product in the 'products' array passed from the controller -->
+        <% products.forEach(product => { %>
+          <tr>
+            <td><%= product.name %></td>
+            <td>$<%= product.price.toFixed(2) %></td>
+            <td><%= product.quantity %></td>
+            <td>
+              <!-- Link to view individual product details -->
+              <a href="/products/<%= product._id %>" class="btn btn-sm">View</a>
+              <!-- Link to edit product details -->
+              <a href="/products/<%= product._id %>/edit" class="btn btn-sm btn-secondary">Edit</a>
+              <!-- Form to delete a product. Uses method-override to send a DELETE request. -->
+              <form action="/products/<%= product._id %>?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <!-- Message displayed if no products are found in the database -->
+    <p>No products found. <a href="/products/new">Create one now!</a></p>
+  <% } %>
+</div>

@@ -1,0 +1,40 @@
+{
+  "name": "petclinic-node",
+  "version": "1.0.0",
+  "description": "PetClinic application rewritten in Node.js",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "sequelize",
+    "petclinic",
+    "ejs"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
+    "i18n": "^0.15.1",
+    "method-override": "^3.0.0",
+    "moment": "^2.30.1",
+    "node-cache": "^5.1.2",
+    "pg": "^8.12.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.3",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

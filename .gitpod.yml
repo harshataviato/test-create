@@ -1,0 +1,21 @@
+# Gitpod configuration for the PetClinic Node.js application
+image:
+  file: ./.devcontainer/Dockerfile # Use a custom Dockerfile for environment setup
+tasks:
+  # Before command runs, ensure Gitpod user has necessary permissions (if applicable, e.g., for specific tools)
+  # This part is highly dependent on the base image and specific tools needed.
+  # For Node.js, often less complex than Java setups.
+  - name: Install dependencies
+    init: npm install # Install Node.js dependencies
+  - name: Start application
+    command: npm run dev # Start the application in development mode (e.g., with nodemon)
+ports:
+  - port: 8080 # Expose the application port
+    onOpen: open-browser # Automatically open a browser to this port
+  - port: 5432 # Expose the PostgreSQL port (optional, for direct DB access)
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint # ESLint for JavaScript linting
+    - esbenp.prettier-vscode # Prettier for code formatting
+    - ms-azuretools.vscode-docker # Docker extension
+    - ms-vscode.vscode-typescript-javascript-grammar # Enhanced JS/TS grammar

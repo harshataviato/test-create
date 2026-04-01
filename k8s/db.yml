@@ -1,0 +1,92 @@
+---
+# Kubernetes Secret for database credentials
+# This Secret stores sensitive information (username, password, database name)
+# for the PostgreSQL database, which is then used by both the database deployment
+# and the PetClinic application.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: demo-db # Name of the secret
+type: servicebinding.io/postgresql # Kubernetes Service Binding specification type for PostgreSQL
+stringData:
+  type: "postgresql"
+  provider: "postgresql"
+  host: "demo-db" # Hostname of the database service within the cluster
+  port: "5432"
+  database: "petclinic" # Database name
+  username: "petclinic" # Database user
+  password: "petclinic" # Database password
+
+---
+# Kubernetes Service for PostgreSQL
+# This Service creates a stable network endpoint for the PostgreSQL database,
+# allowing the PetClinic application to connect to it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-db # Name of the service
+spec:
+  ports:
+    - port: 5432 # Port the service exposes
+      targetPort: 5432 # Port on the pods that the service targets
+  selector:
+    app: demo-db # Selects pods with the label 'app: demo-db'
+
+---
+# Kubernetes Deployment for PostgreSQL
+# This Deployment manages the PostgreSQL database pods, ensuring a desired
+# number of replicas are running and handling updates.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-db # Name of the deployment
+  labels:
+    app: demo-db # Label for the deployment
+spec:
+  selector:
+    matchLabels:
+      app: demo-db # Match pods with the label 'app: demo-db'
+  template:
+    metadata:
+      labels:
+        app: demo-db # Label for the pods created by this deployment
+    spec:
+      containers:
+        - image: postgres:18.1 # PostgreSQL Docker image
+          name: postgresql
+          env:
+            # Environment variables for PostgreSQL, sourced from the 'demo-db' secret
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: password
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: database
+          ports:
+            - containerPort: 5432 # Port the PostgreSQL container listens on
+              name: postgresql
+          livenessProbe: # Checks if the container is still running
+            tcpSocket:
+              port: postgresql
+            initialDelaySeconds: 10 # Start checking after 10 seconds
+            periodSeconds: 5 # Check every 5 seconds
+          readinessProbe: # Checks if the container is ready to serve requests
+            tcpSocket:
+              port: postgresql
+            initialDelaySeconds: 15 # Start checking after 15 seconds
+            periodSeconds: 5 # Check every 5 seconds
+          startupProbe: # Checks if the container has successfully started
+            tcpSocket:
+              port: postgresql
+            initialDelaySeconds: 5 # Start checking after 5 seconds
+            periodSeconds: 5 # Check every 5 seconds
+            failureThreshold: 30 # Fail after 30 consecutive failures

@@ -1,0 +1,48 @@
+# Docker Compose configuration for the PetClinic Node.js application and PostgreSQL database.
+# This file sets up the necessary services for local development and testing.
+
+services:
+  # PostgreSQL database service
+  postgres:
+    image: postgres:18.1 # Using the specified PostgreSQL version
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    environment:
+      # Database credentials and name
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
+    volumes:
+      # Persistent volume for PostgreSQL data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petclinic -d petclinic"] # Health check command
+      interval: 5s # Check every 5 seconds
+      timeout: 5s # Timeout after 5 seconds
+      retries: 5 # Retry 5 times before failing
+
+  # Node.js application service
+  node-app:
+    build:
+      context: . # Build context is the current directory
+      dockerfile: Dockerfile # Specify the Dockerfile to use
+    ports:
+      - "8080:8080" # Map host port 8080 to container port 8080 (where Express app runs)
+    environment:
+      # Application environment variables, dynamically linking to the postgres service
+      - PORT=8080
+      - DB_HOST=postgres # Hostname resolves to the 'postgres' service within the Docker network
+      - DB_PORT=5432
+      - DB_NAME=petclinic
+      - DB_USER=petclinic
+      - DB_PASSWORD=petclinic
+    depends_on:
+      postgres:
+        condition: service_healthy # Ensure postgres is healthy before starting node-app
+    volumes:
+      - ./src:/app/src # Mount source code for live changes (development)
+      - /app/node_modules # Exclude node_modules from host mount to prevent issues
+    command: sh -c "/app/init-db.sh && npm start" # Run init-db script, then start the Node.js app
+
+volumes:
+  postgres_data: # Define the named volume for PostgreSQL data

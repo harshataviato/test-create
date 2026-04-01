@@ -1,0 +1,99 @@
+---
+# Kubernetes Service for the PetClinic Node.js application
+# This Service exposes the PetClinic application to the outside world using a NodePort.
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic # Name of the service
+spec:
+  type: NodePort # Expose the service on a port on each Node in the cluster
+  ports:
+    - port: 80 # Service port
+      targetPort: 8080 # Container port that the service targets (where Node.js app listens)
+      protocol: TCP
+      name: http
+  selector:
+    app: petclinic # Selects pods with the label 'app: petclinic'
+
+---
+# Kubernetes Deployment for the PetClinic Node.js application
+# This Deployment manages the PetClinic application pods, ensuring a desired
+# number of replicas are running and handling updates.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic # Name of the deployment
+  labels:
+    app: petclinic # Label for the deployment
+spec:
+  replicas: 1 # Number of desired replicas
+  selector:
+    matchLabels:
+      app: petclinic # Match pods with the label 'app: petclinic'
+  template:
+    metadata:
+      labels:
+        app: petclinic # Label for the pods created by this deployment
+    spec:
+      containers:
+        - name: workload
+          # IMPORTANT: Replace with your actual Docker image name and tag
+          # Example: your-docker-registry/your-namespace/petclinic-node:latest
+          image: your-docker-registry/your-namespace/petclinic-node:latest # Docker image for the Node.js application
+          env:
+            # Environment variables for the Node.js application, sourced from the 'demo-db' secret
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: port
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: database
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: password
+            - name: PORT # Application listens on this port
+              value: "8080"
+          ports:
+            - name: http
+              containerPort: 8080 # Port the Node.js container listens on
+          livenessProbe: # Checks if the application is alive
+            httpGet:
+              path: /healthz/live # A simple liveness endpoint
+              port: http
+            initialDelaySeconds: 30 # Allow some time for the app to start
+            periodSeconds: 10 # Check every 10 seconds
+          readinessProbe: # Checks if the application is ready to serve traffic
+            httpGet:
+              path: /healthz/ready # A simple readiness endpoint
+              port: http
+            initialDelaySeconds: 45 # Allow more time for database connections, etc.
+            periodSeconds: 15 # Check every 15 seconds
+          volumeMounts:
+            # Mounting the secret as a volume is an alternative to envFrom for some setups
+            # If using envFrom for DB credentials, this might not be strictly necessary for DB,
+            # but is kept here to demonstrate Kubernetes service binding pattern if needed.
+            - mountPath: /bindings/secret # Example path for service binding (not directly used by this app config)
+              name: binding
+              readOnly: true
+      volumes:
+        - name: binding # Volume definition for the secret
+          projected:
+            sources:
+              - secret:
+                  name: demo-db # Referencing the secret created earlier

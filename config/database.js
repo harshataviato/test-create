@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Define the database URL from environment variables, defaulting to an in-memory database
+// For testing, this will be overridden by the test setup to ensure isolation.
 const DATABASE_URL = process.env.DATABASE_URL || 'sqlite::memory:';
 
 // Ensure the directory for the SQLite database file exists if it's a file path

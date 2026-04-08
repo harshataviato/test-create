@@ -9,7 +9,6 @@ const productRoutes = require('./routes/productRoutes'); // Import product route
 
 // Create an Express application instance
 const app = express();
-const PORT = process.env.PORT || 3000; // Define the port for the server, default to 3000
 
 // --- Middleware Setup ---
 
@@ -26,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // This middleware populates `req.body` with the parsed form data
 app.use(express.urlencoded({ extended: true }));
 
-// --- Database Initialization ---
+// --- Database Initialization Function ---
 
 /**
  * Initializes the database connection and synchronizes models.
@@ -44,21 +43,21 @@ async function initializeDatabase() {
     await syncDatabase();
     console.log('Database synchronized: All models were synchronized successfully.');
 
-    // Check for CLI argument to seed the database
-    // This allows running `npm run db:seed` from the command line
-    if (process.argv.includes('seed')) {
+    // Check for CLI argument to seed the database, but only if run as main app
+    if (require.main === module && process.argv.includes('seed')) {
       await seedDatabase();
       console.log('Database seeded with initial data.');
     }
   } catch (error) {
     console.error('Unable to connect to the database or synchronize models:', error);
+    // In a test environment, re-throw the error for the test runner to catch
+    if (process.env.NODE_ENV === 'test') {
+      throw error;
+    }
     // Exit the process if database connection fails, as the app can't function without it
     process.exit(1);
   }
 }
-
-// Call the database initialization function immediately
-initializeDatabase();
 
 // --- Routes Setup ---
 
@@ -87,8 +86,19 @@ app.use((err, req, res, next) => {
 });
 
 
-// --- Start the Server ---
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log('Press Ctrl-C to terminate.');
-});
+// Export app and initializeDatabase for testing
+module.exports = { app, initializeDatabase };
+
+// --- Start the Server (only if app.js is executed directly) ---
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  initializeDatabase().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+      console.log('Press Ctrl-C to terminate.');
+    });
+  }).catch(err => {
+    console.error('Failed to initialize database and start server:', err);
+    process.exit(1);
+  });
+}

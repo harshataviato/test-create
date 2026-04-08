@@ -1,0 +1,35 @@
+<!-- This view extends the main layout, injecting its content into the `<%- body %>` placeholder in `layout.ejs` -->
+<%- layout('layout') %>
+
+<h2>Product List</h2>
+
+<% if (products.length > 0) { %>
+    <!-- Table to display product details -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterate over the 'products' array passed from the controller -->
+            <% products.forEach(product => { %>
+                <tr>
+                    <td><%= product.id %></td>
+                    <td><%= product.name %></td>
+                    <td><%= product.description %></td>
+                    <td>$<%= product.price.toFixed(2) %></td>
+                    <!-- Format the createdAt date for better readability -->
+                    <td><%= new Date(product.createdAt).toLocaleString() %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } else { %>
+    <!-- Message displayed if no products are found -->
+    <p>No products found. <a href="/products/create">Create one!</a></p>
+<% } %>

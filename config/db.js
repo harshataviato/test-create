@@ -54,9 +54,21 @@ function getProductById(id) {
   return products.find(product => product.id === id);
 }
 
+/**
+ * Clears all products from the in-memory data store and resets the ID counter.
+ * Useful for test setup and teardown to ensure isolation.
+ */
+function clearProducts() {
+  products.length = 0; // Clears the array
+  nextProductId = 1;   // Reset ID counter
+}
+
+
 // Export the functions to be used by other modules (e.g., controllers)
 module.exports = {
   saveProduct,
   getProducts,
-  getProductById // Exporting for potential future use (e.g., view/edit detail)
+  getProductById, // Exporting for potential future use (e.g., view/edit detail)
+  clearProducts // Export the new function for testing purposes
 };
+

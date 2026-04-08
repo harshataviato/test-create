@@ -59,6 +59,15 @@ app.get('/', (req, res) => {
   res.redirect('/products');
 });
 
+// Test route to trigger the global error handler (only for testing environment)
+if (process.env.NODE_ENV === 'test') {
+  app.get('/test-error', (req, res, next) => {
+    const error = new Error('Simulated Internal Server Error');
+    error.status = 500;
+    next(error);
+  });
+}
+
 /**
  * Error Handling (Optional but good practice)
  * Catches 404 errors (resource not found) and forwards them to an error handler.
@@ -95,8 +104,15 @@ app.use((err, req, res, next) => {
  * Server Start
  * Starts the Express server and listens for incoming requests on the specified port.
  */
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`Access product list at: http://localhost:${PORT}/products`);
-  console.log(`Access product creation at: http://localhost:${PORT}/products/create`);
-});
+// Only start the server if this file is run directly (not when imported for testing)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Access product list at: http://localhost:${PORT}/products`);
+    console.log(`Access product creation at: http://localhost:${PORT}/products/create`);
+  });
+}
+
+// Export the app for testing purposes
+module.exports = app;
+

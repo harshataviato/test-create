@@ -1,0 +1,45 @@
+<% layout('layout') -%>
+<!-- Sets the layout template for this view -->
+
+<h1><%= title %></h1>
+
+<!-- Link to add a new product -->
+<p><a href="/products/new" class="button">Add New Product</a></p>
+
+<% if (products.length > 0) { %>
+    <!-- Table to display the list of products if available -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(product => { %>
+                <tr>
+                    <td><%= product.name %></td>
+                    <td>$<%= product.price.toFixed(2) %></td>
+                    <td><%= product.stock %></td>
+                    <td><%= product.isActive ? 'Yes' : 'No' %></td>
+                    <td class="actions">
+                        <!-- Link to view product details -->
+                        <a href="/products/<%= product.id %>">View</a> |
+                        <!-- Link to edit product -->
+                        <a href="/products/<%= product.id %>/edit">Edit</a> |
+                        <!-- Form to delete product. Using POST request for deletion. -->
+                        <form action="/products/<%= product.id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                            <button type="submit" class="button red">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } else { %>
+    <!-- Message displayed if no products are found -->
+    <p>No products found. <a href="/products/new">Add one now!</a></p>
+<% } %>

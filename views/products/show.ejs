@@ -1,0 +1,26 @@
+<% layout('layout') -%>
+<!-- Sets the layout template for this view -->
+
+<h1>Product Details: <%= product.name %></h1>
+
+<div>
+    <p><strong>ID:</strong> <%= product.id %></p>
+    <p><strong>Name:</strong> <%= product.name %></p>
+    <p><strong>Description:</strong> <%= product.description || 'N/A' %></p>
+    <p><strong>Price:</strong> $<%= product.price.toFixed(2) %></p>
+    <p><strong>Stock:</strong> <%= product.stock %></p>
+    <p><strong>Active:</strong> <%= product.isActive ? 'Yes' : 'No' %></p>
+    <p><strong>Created At:</strong> <%= product.createdAt.toLocaleString() %></p>
+    <p><strong>Last Updated:</strong> <%= product.updatedAt.toLocaleString() %></p>
+</div>
+
+<p>
+    <!-- Link to edit this product -->
+    <a href="/products/<%= product.id %>/edit" class="button">Edit Product</a>
+    <!-- Form to delete this product. Using POST request for deletion. -->
+    <form action="/products/<%= product.id %>/delete" method="POST" style="display:inline-block; margin-left: 10px;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+        <button type="submit" class="button red">Delete Product</button>
+    </form>
+    <!-- Link back to the list of all products -->
+    <a href="/products" class="button" style="margin-left: 10px;">Back to Products</a>
+</p>

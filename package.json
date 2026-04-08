@@ -1,0 +1,31 @@
+{
+  "name": "product-management-app",
+  "version": "1.0.0",
+  "description": "A simple product management application built with Node.js, Express, Sequelize, and EJS.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "db:migrate": "node -r dotenv/config config/database.js sync",
+    "db:seed": "node -r dotenv/config config/database.js seed"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "sequelize",
+    "ejs",
+    "crud"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "sequelize": "^6.37.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

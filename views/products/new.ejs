@@ -1,0 +1,48 @@
+<% layout('layout') -%>
+<!-- Sets the layout template for this view -->
+
+<h1><%= title %></h1>
+
+<!-- Display error message if present -->
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="error-message">
+        <p><%= error %></p>
+    </div>
+<% } %>
+
+<!-- Form to create a new product -->
+<form action="/products" method="POST">
+    <div class="form-group">
+        <label for="name">Product Name:</label>
+        <!-- Pre-fill with submitted data if available, useful after validation errors -->
+        <input type="text" id="name" name="name" value="<%= product.name || '' %>" required minlength="3" maxlength="100">
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <!-- Pre-fill with submitted data -->
+        <textarea id="description" name="description" maxlength="500"><%= product.description || '' %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <!-- Type "number" for better input validation, step="0.01" for two decimal places -->
+        <input type="number" id="price" name="price" value="<%= product.price || '0.00' %>" min="0" step="0.01" required>
+    </div>
+
+    <div class="form-group">
+        <label for="stock">Stock Quantity:</label>
+        <!-- Type "number" for better input validation, integer only -->
+        <input type="number" id="stock" name="stock" value="<%= product.stock || '0' %>" min="0" step="1" required>
+    </div>
+
+    <div class="form-group">
+        <input type="checkbox" id="isActive" name="isActive" <%= product.isActive === false ? '' : 'checked' %>>
+        <label for="isActive">Is Active</label>
+        <!-- Checkbox to toggle product availability. By default, it's checked. -->
+        <!-- The 'checked' attribute means it starts as checked. 'isActive === false' specifically unchecks it if set. -->
+    </div>
+
+    <button type="submit" class="button">Add Product</button>
+    <a href="/products" class="button red">Cancel</a>
+</form>

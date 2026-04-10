@@ -90,27 +90,15 @@ app.get('/', (req, res) => {
     res.redirect('/items');
 });
 
-// --- Database Synchronization and Server Start ---
-
 /**
- * Synchronizes all defined Sequelize models with the database.
- * If `force` is true, it will drop existing tables and recreate them (useful for development).
- * In production, migrations are preferred.
- * After synchronization, the server starts listening for requests.
- * @returns {Promise<void>}
+ * Test route to explicitly trigger the global error handler for testing purposes.
+ * This route should typically not be present in a production application.
  */
-db.sequelize.sync()
-    .then(() => {
-        // Start the server only after the database connection and models are synced
-        app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
-        });
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-        // Exit the process if database connection fails
-        process.exit(1);
-    });
+app.get('/test-error', (req, res, next) => {
+    next(new Error('This is a test error for the global handler.'));
+});
+
+// --- Database Synchronization and Server Start ---
 
 /**
  * Global error handling middleware.
@@ -123,5 +111,36 @@ db.sequelize.sync()
  */
 app.use((err, req, res, next) => {
     console.error(err.stack); // Log the error stack for debugging
-    res.status(500).send('Something broke!'); // Send a generic 500 error response
+    // Render the 'error' view for 500 errors
+    res.status(500).render('error', {
+        message: 'Something broke!',
+        // Provide error details only in development environment
+        error: process.env.NODE_ENV === 'development' ? err : {}
+    });
 });
+
+// Export app and db for testing purposes.
+// The actual server start will be handled conditionally or by test runners.
+module.exports = app;
+module.exports.db = db;
+
+/**
+ * Synchronizes all defined Sequelize models with the database and starts the server.
+ * This block is executed only if the environment is NOT 'test', allowing test runners
+ * to control the server lifecycle.
+ * @returns {Promise<void>}
+ */
+if (process.env.NODE_ENV !== 'test') {
+    db.sequelize.sync()
+        .then(() => {
+            // Start the server only after the database connection and models are synced
+            app.listen(PORT, () => {
+                console.log(`Server is running on http://localhost:${PORT}`);
+            });
+        })
+        .catch(err => {
+            console.error('Unable to connect to the database:', err);
+            // Exit the process if database connection fails
+            process.exit(1);
+        });
+}

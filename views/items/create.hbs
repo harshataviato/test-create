@@ -1,0 +1,27 @@
+<h2>Create New Item</h2>
+
+<!-- Display error messages if any are passed from the controller -->
+{{#if error}}
+    <div class="error-message">{{error}}</div>
+{{/if}}
+
+<!-- Form to submit new item data. It posts to the /items route. -->
+<form action="/items" method="POST">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <!-- Input field for item name. `value="{{item.name}}"` repopulates the field if there was an error. -->
+        <input type="text" id="name" name="name" value="{{item.name}}" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <!-- Textarea for item description. `{{item.description}}` repopulates the field. -->
+        <textarea id="description" name="description">{{item.description}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <!-- Input field for item price. `type="number"` with `step="0.01"` for decimal input. -->
+        <input type="number" id="price" name="price" step="0.01" min="0.01" value="{{item.price}}" required>
+    </div>
+    <button type="submit" class="button">Create Item</button>
+    <a href="/items" class="button" style="background-color: #6c757d;">Cancel</a>
+</form>

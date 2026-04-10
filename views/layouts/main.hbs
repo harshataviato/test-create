@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarshaTaviato - {{title}}</title>
+    <!-- Simple inline styles for demonstration purposes. In a real app, use external CSS files. -->
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 960px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2, h3 { color: #0056b3; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .button {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button.edit { background-color: #ffc107; color: #333; }
+        .button.delete { background-color: #dc3545; }
+        .button:hover { opacity: 0.9; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't increase width */
+        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .error-message { color: red; margin-bottom: 10px; padding: 10px; border: 1px solid red; background-color: #ffe6e6; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .text-right { text-align: right; }
+        .d-flex { display: flex; gap: 5px; }
+    </style>
+</head>
+<body>
+    {{> header}} <!-- Include the header partial -->
+
+    <div class="container">
+        <!-- Render specific view content here -->
+        {{{body}}}
+    </div>
+</body>
+</html>

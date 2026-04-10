@@ -1,0 +1,13 @@
+<div style="text-align: center; padding: 50px;">
+    <h1>Oops! Something went wrong.</h1>
+    <p>We're sorry, but an unexpected error occurred.</p>
+    <p>{{message}}</p>
+    {{#if error}}
+        <!-- Display detailed error information in development mode only -->
+        <p style="color: #666; font-size: 0.9em;">
+            Error Details: <br>
+            <code>{{error.message}}</code>
+        </p>
+    {{/if}}
+    <p><a href="/items" class="button" style="background-color: #007bff;">Go to Item List</a></p>
+</div>

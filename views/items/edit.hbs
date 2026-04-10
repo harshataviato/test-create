@@ -1,0 +1,28 @@
+<h2>Edit Item: {{item.name}}</h2>
+
+<!-- Display error messages if any are passed from the controller -->
+{{#if error}}
+    <div class="error-message">{{error}}</div>
+{{/if}}
+
+<!-- Form to edit an existing item.
+     It posts to /items/:id and uses method-override to simulate a PUT request. -->
+<form action="/items/{{item.id}}?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <!-- Input field for item name, pre-filled with the current item's name. -->
+        <input type="text" id="name" name="name" value="{{item.name}}" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <!-- Textarea for item description, pre-filled with the current item's description. -->
+        <textarea id="description" name="description">{{item.description}}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <!-- Input field for item price, pre-filled with the current item's price. -->
+        <input type="number" id="price" name="price" step="0.01" min="0.01" value="{{item.price}}" required>
+    </div>
+    <button type="submit" class="button">Update Item</button>
+    <a href="/items" class="button" style="background-color: #6c757d;">Cancel</a>
+</form>

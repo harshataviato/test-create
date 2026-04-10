@@ -1,0 +1,36 @@
+{
+  "name": "harshataviato-test-create-ebb4653",
+  "version": "1.0.0",
+  "description": "A simple Node.js application demonstrating MVC pattern with Express, Sequelize, and Handlebars.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all",
+    "seed:all": "npx sequelize-cli db:seed:all"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "sequelize",
+    "handlebars",
+    "mvc",
+    "sqlite"
+  ],
+  "author": "Google Senior Engineer",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "method-override": "^3.0.0",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

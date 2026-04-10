@@ -1,0 +1,41 @@
+<h2>Item List</h2>
+
+<!-- Link to navigate to the item creation page -->
+<p><a href="/items/create" class="button">Add New Item</a></p>
+
+{{#if items.length}}
+    <!-- Table to display all items if any exist -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th class="text-right">Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterate over each item in the 'items' array -->
+            {{#each items}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.description}}</td>
+                    <td class="text-right">${{this.price}}</td>
+                    <td class="d-flex">
+                        <!-- Link to edit a specific item -->
+                        <a href="/items/{{this.id}}/edit" class="button edit">Edit</a>
+                        <!-- Form for deleting an item. Uses POST with _method=DELETE for browser compatibility. -->
+                        <form action="/items/{{this.id}}?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <button type="submit" class="button delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <!-- Message displayed if no items are found in the database -->
+    <p>No items found. Start by adding a new one!</p>
+{{/if}}

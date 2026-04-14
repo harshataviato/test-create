@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="<%= __locales[__locale].lang %>">
+<head>
+  <%- include('../fragments/head', { title: __('layoutTitle'), menu: 'owners' }) %>
+</head>
+<body>
+  <%- include('../fragments/header', { menu: 'owners' }) %>
+
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <h2 class="mt-4"><%= __('ownerInformation') %></h2>
+
+      <table class="table table-striped">
+        <tr>
+          <th><%= __('name') %></th>
+          <td><b><%= owner.firstName + ' ' + owner.lastName %></b></td>
+        </tr>
+        <tr>
+          <th><%= __('address') %></th>
+          <td><%= owner.address %></td>
+        </tr>
+        <tr>
+          <th><%= __('city') %></th>
+          <td><%= owner.city %></td>
+        </tr>
+        <tr>
+          <th><%= __('telephone') %></th>
+          <td><%= owner.telephone %></td>
+        </tr>
+      </table>
+
+      <a href="/owners/<%= owner.id %>/edit" class="btn btn-primary mt-3"><%= __('editOwner') %></a>
+      <a href="/owners/<%= owner.id %>/pets/new" class="btn btn-primary mt-3"><%= __('addNewPet') %></a>
+
+      <br />
+      <br />
+      <br />
+      <h2 class="mt-4"><%= __('petsAndVisits') %></h2>
+
+      <table class="table table-striped">
+        <% owner.getPets().forEach(pet => { %>
+          <tr>
+            <td valign="top">
+              <dl class="dl-horizontal">
+                <dt><%= __('name') %></dt>
+                <dd><%= pet.name %></dd>
+                <dt><%= __('birthDate') %></dt>
+                <dd><%= moment(pet.birthDate).format('YYYY-MM-DD') %></dd>
+                <dt><%= __('type') %></dt>
+                <dd><%= pet.type ? pet.type.name : '' %></dd>
+              </dl>
+            </td>
+            <td valign="top">
+              <table class="table-condensed">
+                <thead>
+                  <tr>
+                    <th><%= __('visitDate') %></th>
+                    <th><%= __('description') %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% pet.getVisits().forEach(visit => { %>
+                    <tr>
+                      <td><%= moment(visit.date).format('YYYY-MM-DD') %></td>
+                      <td><%= visit.description %></td>
+                    </tr>
+                  <% }); %>
+                  <tr>
+                    <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/edit"><%= __('editPet') %></a></td>
+                    <td><a href="/owners/<%= owner.id %>/pets/<%= pet.id %>/visits/new"><%= __('addVisit') %></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        <% }); %>
+      </table>
+    </div>
+  </div>
+
+  <%- include('../fragments/footer') %>
+</body>
+</html>

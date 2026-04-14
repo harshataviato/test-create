@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="<%= __locales[__locale].lang %>">
+<head>
+  <%- include('../fragments/head', { title: __('layoutTitle'), menu: 'owners' }) %>
+</head>
+<body>
+  <%- include('../fragments/header', { menu: 'owners' }) %>
+
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <h2 class="mt-4"><%= __('owner') %></h2>
+      <form action="/owners/<%= owner.isNew() ? 'new' : owner.id + '/edit' %>" class="form-horizontal" id="add-owner-form" method="post">
+        <div class="form-group has-feedback">
+          <%- include('../fragments/inputField', {
+            label: __('firstName'),
+            name: 'firstName',
+            type: 'text',
+            value: owner.firstName,
+            errors: locals.errors,
+            __: __
+          }) %>
+          <%- include('../fragments/inputField', {
+            label: __('lastName'),
+            name: 'lastName',
+            type: 'text',
+            value: owner.lastName,
+            errors: locals.errors,
+            __: __
+          }) %>
+          <%- include('../fragments/inputField', {
+            label: __('address'),
+            name: 'address',
+            type: 'text',
+            value: owner.address,
+            errors: locals.errors,
+            __: __
+          }) %>
+          <%- include('../fragments/inputField', {
+            label: __('city'),
+            name: 'city',
+            type: 'text',
+            value: owner.city,
+            errors: locals.errors,
+            __: __
+          }) %>
+          <%- include('../fragments/inputField', {
+            label: __('telephone'),
+            name: 'telephone',
+            type: 'text',
+            value: owner.telephone,
+            errors: locals.errors,
+            __: __
+          }) %>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <input type="hidden" name="id" value="<%= owner.id || '' %>">
+            <button class="btn btn-primary mt-3" type="submit">
+              <%= owner.isNew() ? __('addOwner') : __('updateOwner') %>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <%- include('../fragments/footer') %>
+</body>
+</html>

@@ -1,0 +1,36 @@
+services:
+  # PostgreSQL database service
+  postgres:
+    image: postgres:16.2-alpine # Using a stable and lightweight Alpine image for PostgreSQL
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    environment:
+      - POSTGRES_PASSWORD=petclinic # Set the PostgreSQL password for the 'petclinic' user
+      - POSTGRES_USER=petclinic     # Set the PostgreSQL user
+      - POSTGRES_DB=petclinic       # Set the default database name
+    volumes:
+      - pg_data:/var/lib/postgresql/data # Persist PostgreSQL data to a named volume
+
+  # Node.js application service
+  app:
+    build: . # Build the Docker image from the current directory (where Dockerfile is located)
+    ports:
+      - "8080:8080" # Map host port 8080 to container port 8080 (where Express.js runs)
+    environment:
+      - NODE_ENV=development # Set Node.js environment to development
+      - PORT=8080            # Application port
+      - DB_HOST=postgres     # Database host (Docker service name)
+      - DB_USER=petclinic    # Database user
+      - DB_PASSWORD=petclinic # Database password
+      - DB_NAME=petclinic    # Database name
+      - DB_PORT=5432         # Database port
+    depends_on:
+      - postgres # Ensure PostgreSQL starts before the application
+    volumes:
+      - ./src:/app/src # Mount the local src directory to the container for live development
+      - ./db:/app/db   # Mount database scripts
+    # Override default command to run nodemon for live reloading in development
+    command: ["npm", "run", "dev"]
+
+volumes:
+  pg_data: # Define the named volume for PostgreSQL data persistence

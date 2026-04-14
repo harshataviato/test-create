@@ -1,0 +1,45 @@
+<%
+  // inputField.ejs: Renders a form input field with labels and validation feedback.
+  // Parameters:
+  // - label: The human-readable label for the input field.
+  // - name: The name attribute for the input field, corresponding to the model property.
+  // - type: The HTML input type (e.g., 'text', 'date').
+  // - value: The current value of the input field (for pre-filling forms).
+  // - errors: An object containing validation errors, keyed by field name.
+  // - locale: Current locale for i18n messages (provided by i18n-node).
+  // - __: i18n translation function (provided by i18n-node).
+
+  const fieldName = name;
+  const fieldErrors = errors && errors[fieldName];
+  const isValid = !fieldErrors || fieldErrors.length === 0;
+
+  let inputValue = value;
+  if (type === 'date' && value instanceof Date && !isNaN(value)) {
+    // Format Date object to 'YYYY-MM-DD' for date input type
+    inputValue = value.toISOString().split('T')[0];
+  } else if (value === null || value === undefined) {
+    inputValue = ''; // Ensure null/undefined values don't break input
+  }
+%>
+
+<div class="form-group has-feedback <%= isValid ? '' : 'has-error' %>">
+  <label for="<%= fieldName %>" class="col-sm-2 control-label"><%= label %></label>
+  <div class="col-sm-10">
+    <% if (type === 'text') { %>
+      <input class="form-control" type="text" id="<%= fieldName %>" name="<%= fieldName %>" value="<%= inputValue %>" />
+    <% } else if (type === 'date') { %>
+      <input class="form-control" type="date" id="<%= fieldName %>" name="<%= fieldName %>" value="<%= inputValue %>" />
+    <% } %>
+
+    <% if (isValid) { %>
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    <% } else { %>
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      <span class="help-inline text-danger">
+        <% fieldErrors.forEach(error => { %>
+          <%= error %>
+        <% }); %>
+      </span>
+    <% } %>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+  <nav class="navbar navbar-expand-lg navbar-dark" role="navigation">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'home' ? 'active' : '' %>" href="/" title="<%= __('home page') %>">
+              <i class="fa-solid fa-house"></i>
+              <span><%= __('home') %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'owners' ? 'active' : '' %>" href="/owners/find" title="<%= __('find owners') %>">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span><%= __('findOwners') %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'vets' ? 'active' : '' %>" href="/vets.html" title="<%= __('veterinarians') %>">
+              <i class="fa-solid fa-list-ul"></i>
+              <span><%= __('vets') %></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'error' ? 'active' : '' %>" href="/oups" title="<%= __('trigger a RuntimeException to see how it is handled') %>">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span><%= __('error') %></span>
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= __locales[__locale].name %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownLang">
+              <% __locales.forEach(function(localeObj) { %>
+                <li><a class="dropdown-item <%= __locale === localeObj.lang ? 'active' : '' %>" href="?lang=<%= localeObj.lang %>"><%= localeObj.name %></a></li>
+              <% }); %>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="container xd-container">
+
+      <% if (messages && messages.success && messages.success.length > 0) { %>
+        <div class="alert alert-success" id="success-message">
+          <span><%= messages.success.join('<br/>') %></span>
+        </div>
+      <% } %>
+      <% if (messages && messages.error && messages.error.length > 0) { %>
+        <div class="alert alert-danger" id="error-message">
+          <span><%= messages.error.join('<br/>') %></span>
+        </div>
+      <% } %>

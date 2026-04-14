@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="<%= __locales[__locale].lang %>" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
+<head>
+  <%- include('fragments/head', { title: __('layoutTitle'), menu: 'home' }) %>
+</head>
+<body>
+  <%- include('fragments/header', { menu: 'home' }) %>
+
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <h2 class="mt-4"><%= __('welcome') %></h2>
+      <div class="row">
+        <div class="col-md-12">
+          <img class="img-responsive" src="/resources/images/pets.png" alt="Pets" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('fragments/footer') %>
+</body>
+</html>

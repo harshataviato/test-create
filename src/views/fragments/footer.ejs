@@ -1,0 +1,24 @@
+    <script src="/webjars/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Function to hide the success and error messages after 3 seconds, if they exist
+      function hideFlashMessages() {
+        const successMessage = document.getElementById("success-message");
+        const errorMessage = document.getElementById("error-message");
+
+        if (successMessage) {
+          setTimeout(function () {
+            successMessage.style.display = "none";
+          }, 3000); // 3000 milliseconds (3 seconds)
+        }
+        if (errorMessage) {
+          setTimeout(function () {
+            errorMessage.style.display = "none";
+          }, 3000); // 3000 milliseconds (3 seconds)
+        }
+      }
+
+      // Call the function to hide messages when the page loads
+      document.addEventListener("DOMContentLoaded", hideFlashMessages);
+    </script>
+  </body>
+</html>

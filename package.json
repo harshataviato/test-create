@@ -1,0 +1,30 @@
+{
+  "name": "petclinic-node",
+  "version": "1.0.0",
+  "description": "Spring PetClinic equivalent in Node.js with Express.js and PostgreSQL",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "db:init:postgres": "psql -U petclinic -d petclinic -h localhost -f db/postgres/schema.sql && psql -U petclinic -d petclinic -h localhost -f db/postgres/data.sql",
+    "db:init:mysql": "mysql -u petclinic -ppetclinic -h localhost petclinic < db/mysql/schema.sql && mysql -u petclinic -ppetclinic -h localhost petclinic < db/mysql/data.sql"
+  },
+  "keywords": [],
+  "author": "Google Senior Engineer",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.0.1",
+    "i18n": "^0.15.1",
+    "moment": "^2.30.1",
+    "node-cache": "^5.1.2",
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

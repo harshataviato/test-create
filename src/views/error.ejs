@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="<%= __locales[__locale].lang %>" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+<head>
+  <%- include('fragments/head', { title: __('error'), menu: 'error' }) %>
+</head>
+<body>
+  <%- include('fragments/header', { menu: 'error' }) %>
+
+  <div class="container-fluid">
+    <div class="container xd-container">
+      <img src="/resources/images/pets.png" alt="Pets" />
+      <!-- Title: Something happened -->
+      <h2 class="mt-4"><%= __('somethingHappened') %></h2>
+
+      <!-- Status-specific error message -->
+      <p>
+        <% if (status === 404) { %>
+          <span class="error-message"><%= __('error.404') %></span>
+        <% } else if (status === 500) { %>
+          <span class="error-message"><%= __('error.500') %></span>
+        <% } else { %>
+          <span class="error-message"><%= __('error.general') %></span>
+        <% } %>
+      </p>
+
+      <!-- Exception message (for developers) -->
+      <p class="error-detail"><b>Message: </b><%= message %></p>
+      <% if (error) { %>
+        <pre class="error-stack"><code><%= error %></code></pre>
+      <% } %>
+    </div>
+  </div>
+
+  <%- include('fragments/footer') %>
+</body>
+</html>

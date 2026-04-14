@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="<%= __locales[__locale].lang %>">
+  <head>
+    <%- include('fragments/head', { title: __('layoutTitle'), menu: menu }) %>
+  </head>
+  <body>
+    <%- include('fragments/header', { menu: menu }) %>
+
+    <div class="container-fluid">
+      <div class="container xd-container">
+        <!-- The main content template will be inserted here -->
+        <%- body %>
+
+        <br />
+        <br />
+        <div class="container">
+          <div class="row">
+            <div class="col-12 text-center">
+              <img src="/resources/images/spring-logo.svg" alt="VMware Tanzu Logo" class="logo">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('fragments/footer') %>
+  </body>
+</html>

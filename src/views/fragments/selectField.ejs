@@ -1,0 +1,37 @@
+<%
+  // selectField.ejs: Renders a form select (dropdown) field with labels and validation feedback.
+  // Parameters:
+  // - label: The human-readable label for the select field.
+  // - name: The name attribute for the select field, corresponding to the model property.
+  // - items: An array of objects to populate the dropdown. Each object should have 'id' and 'name' properties.
+  // - selectedValue: The value of the item that should be pre-selected in the dropdown.
+  // - errors: An object containing validation errors, keyed by field name.
+  // - locale: Current locale for i18n messages (provided by i18n-node).
+  // - __: i18n translation function (provided by i18n-node).
+
+  const fieldName = name;
+  const fieldErrors = errors && errors[fieldName];
+  const isValid = !fieldErrors || fieldErrors.length === 0;
+%>
+
+<div class="form-group has-feedback <%= isValid ? '' : 'has-error' %>">
+  <label for="<%= fieldName %>" class="col-sm-2 control-label"><%= label %></label>
+  <div class="col-sm-10">
+    <select class="form-control" id="<%= fieldName %>" name="<%= fieldName %>">
+      <% items.forEach(item => { %>
+        <option value="<%= item.name %>" <%= selectedValue === item.name ? 'selected' : '' %>><%= item.name %></option>
+      <% }); %>
+    </select>
+
+    <% if (isValid) { %>
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    <% } else { %>
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      <span class="help-inline text-danger">
+        <% fieldErrors.forEach(error => { %>
+          <%= error %>
+        <% }); %>
+      </span>
+    <% } %>
+  </div>
+</div>

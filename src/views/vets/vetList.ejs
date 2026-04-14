@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= __locales[__locale].lang %>">
+<html lang="<%= __locales.find(loc => loc.lang === __locale)?.lang || __locale %>">
 <head>
   <%- include('../fragments/head', { title: __('layoutTitle'), menu: 'vets' }) %>
 </head>
@@ -81,3 +81,4 @@
   <%- include('../fragments/footer') %>
 </body>
 </html>
+

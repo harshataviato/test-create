@@ -54,3 +54,4 @@ class Person extends BaseEntity {
 }
 
 module.exports = Person;
+

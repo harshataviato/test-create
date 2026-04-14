@@ -34,8 +34,8 @@ app.set('view engine', 'ejs'); // Use EJS as the templating engine
 
 // Middleware for static files
 app.use('/resources', express.static(path.join(__dirname, 'public/resources'))); // Serve static assets from 'public/resources' under '/resources' URL path
-app.use('/webjars', express.static(path.join(__dirname, 'node_modules/webjars-bootstrap/dist'))); // Serve Bootstrap from node_modules
-app.use('/webjars/font-awesome', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free'))); // Serve Font Awesome from node_modules
+app.use('/webjars', express.static(path.join(__dirname, '../node_modules/bootstrap/dist'))); // Serve Bootstrap from node_modules
+app.use('/webjars/font-awesome', express.static(path.join(__dirname, '../node_modules/@fortawesome/fontawesome-free'))); // Serve Font Awesome from node_modules
 
 // Middleware for parsing request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies (for form submissions)
@@ -74,18 +74,25 @@ app.locals.moment = require('moment');
 // Mount all application routes
 app.use('/', routes);
 
-// Global error handler middleware
+// Global error handler middleware - for 404s
+app.use(errorHandler.handleNotFound);
+// Global error handler middleware - for 500s and other errors
 app.use(errorHandler.handleErrors);
 
-// Start the server
-const PORT = appConfig.port;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Access the application at http://localhost:${PORT}`);
-});
+// Start the server only if this file is run directly (not imported as a module for testing)
+if (require.main === module) {
+  const PORT = appConfig.port;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Access the application at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
 
 /**
  * PetClinic Node.js Application.
  *
  * @author Google Senior Engineer
  */
+

@@ -19,3 +19,4 @@ class Specialty extends NamedEntity {
 }
 
 module.exports = Specialty;
+

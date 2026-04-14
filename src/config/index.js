@@ -30,7 +30,7 @@ const config = {
   // Internationalization (i18n) configuration
   i18n: {
     locales: ['en', 'de', 'es', 'fa', 'ko', 'pt', 'ru', 'tr'], // Supported locales
-    directory: '../config/messages', // Directory containing translation files (relative to current file)
+    directory: './messages', // Directory containing translation files (relative to current file)
     defaultLocale: 'en', // Default locale if not specified
     queryParameter: 'lang' // URL query parameter for changing locale
   },
@@ -42,3 +42,4 @@ const config = {
 };
 
 module.exports = config;
+

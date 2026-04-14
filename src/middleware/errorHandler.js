@@ -19,7 +19,8 @@ function handleNotFound(req, res, next) {
   res.status(HttpStatus.StatusCodes.NOT_FOUND).render('error', {
     status: HttpStatus.StatusCodes.NOT_FOUND,
     message: res.__('error.404'), // Use i18n for error messages
-    title: res.__('error') // Title for the error page
+    title: res.__('error'), // Title for the error page
+    error: process.env.NODE_ENV === 'development' ? new Error('Not Found').stack : undefined
   });
 }
 
@@ -44,7 +45,7 @@ function handleErrors(err, req, res, next) {
     status,
     message,
     // Provide full error stack in development for debugging
-    error: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    error: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ? err.stack : undefined,
     title: res.__('error')
   });
 }
@@ -53,3 +54,4 @@ module.exports = {
   handleNotFound,
   handleErrors
 };
+

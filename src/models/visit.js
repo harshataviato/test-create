@@ -55,3 +55,4 @@ class Visit extends BaseEntity {
 }
 
 module.exports = Visit;
+

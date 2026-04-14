@@ -34,7 +34,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <%= __locales[__locale].name %>
+              <%= __locales.find(loc => loc.lang === __locale)?.name || __locale.toUpperCase() %>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownLang">
               <% __locales.forEach(function(localeObj) { %>
@@ -59,3 +59,4 @@
           <span><%= messages.error.join('<br/>') %></span>
         </div>
       <% } %>
+

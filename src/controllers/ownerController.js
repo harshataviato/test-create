@@ -35,7 +35,7 @@ async function findOwner(req, res, next, ownerId) {
       const owner = await ownerRepository.findById(parseInt(ownerId));
       if (!owner) {
         // Owner not found, pass an error to the error handler
-        const error = new Error(`Owner not found with id: ${ownerId}. Please ensure the ID is correct and the owner exists in the database.`);
+        const error = new Error(res.__('owner') + ' ' + res.__('notFound'));
         error.statusCode = 404; // Set a 404 status code
         return next(error);
       }
@@ -83,7 +83,7 @@ async function processCreationForm(req, res, next) {
 
     const savedOwner = await ownerRepository.save(owner); // Save the new owner
 
-    req.flash('message', res.__('message', res.__('new'), res.__('owner'))); // Flash success message
+    req.flash('message', res.__('new') + ' ' + res.__('owner') + ' ' + res.__('has been added')); // Flash success message
     res.redirect(`/owners/${savedOwner.getId()}`); // Redirect to owner details page
   } catch (error) {
     next(error); // Pass database errors to the error handler
@@ -219,3 +219,4 @@ module.exports = {
   processUpdateOwnerForm,
   showOwner
 };
+

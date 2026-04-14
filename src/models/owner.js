@@ -99,7 +99,10 @@ class Owner extends Person {
    * @param {Pet} pet - The pet to add.
    */
   addPet(pet) {
-    if (pet.isNew()) {
+    // Only add if the pet is new (not yet persisted with an ID)
+    // or if a pet with the same name/id doesn't already exist to avoid duplicates in the array.
+    // The repository handles actual persistence and ID assignment.
+    if (pet.isNew() || !this.pets.some(p => p.getId() === pet.getId())) {
       this.pets.push(pet);
     }
   }
@@ -149,6 +152,8 @@ class Owner extends Person {
     const pet = this.getPetById(petId);
 
     if (pet === null) {
+      // In web flow, this should ideally be caught before reaching this point by param binding.
+      // For robustness, an error is thrown.
       throw new Error(`Invalid Pet identifier: Pet with id ${petId} not found.`);
     }
 
@@ -165,3 +170,4 @@ class Owner extends Person {
 }
 
 module.exports = Owner;
+

@@ -33,6 +33,14 @@ function localeResolver() {
     // Make i18n functions available to response locals (for EJS templates)
     res.locals.__ = res.__;
     res.locals.__n = res.__n;
+
+    // Provide __locales and __locale for EJS dropdown
+    res.locals.__locales = config.i18n.locales.map(lang => ({
+      lang: lang,
+      name: i18n.getCatalog(lang)['welcome'] ? i18n.getCatalog(lang)['welcome'] : lang.toUpperCase() // Just an example, ideally map to full language names
+    }));
+    res.locals.__locale = locale;
+
     next();
   };
 }
@@ -55,3 +63,4 @@ module.exports = {
   localeResolver,
   localeChangeInterceptor
 };
+

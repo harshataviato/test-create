@@ -28,14 +28,14 @@ async function loadPetWithVisit(req, res, next, petId) {
   const owner = req.locals.owner; // Owner object from `ownerController.findOwner` middleware
 
   if (!owner) {
-    const error = new Error(`Owner not found for id: ${ownerId}`);
+    const error = new Error(res.__('owner') + ' ' + res.__('notFound'));
     error.statusCode = 404;
     return next(error);
   }
 
   const pet = owner.getPets().find(p => p.getId() === parseInt(petId));
   if (!pet) {
-    const error = new Error(`Pet with id ${petId} not found for owner with id ${ownerId}.`);
+    const error = new Error(res.__('pet') + ' ' + res.__('notFound'));
     error.statusCode = 404;
     return next(error);
   }
@@ -111,3 +111,4 @@ module.exports = {
   initNewVisitForm,
   processNewVisitForm
 };
+

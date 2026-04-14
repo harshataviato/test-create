@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= __locales[__locale].lang %>" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+<html lang="<%= __locales[__locale].lang %>">
 <head>
   <%- include('fragments/head', { title: __('error'), menu: 'error' }) %>
 </head>
@@ -34,3 +34,4 @@
   <%- include('fragments/footer') %>
 </body>
 </html>
+

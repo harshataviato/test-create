@@ -36,7 +36,7 @@ function mapRowsToVets(rows) {
     const vet = vetsMap.get(row.vet_id);
 
     // If specialty exists for this row and not yet added to vet's specialties
-    if (row.specialty_id && !Array.from(vet.specialties).some(s => s.id === row.specialty_id)) {
+    if (row.specialty_id && !Array.from(vet.getSpecialties()).some(s => s.id === row.specialty_id)) { // Check against getSpecialties() for existing
       vet.addSpecialty(new Specialty(row.specialty_id, row.specialty_name));
     }
   });
@@ -53,7 +53,7 @@ function mapRowsToVets(rows) {
 async function findAll() {
   const cachedVets = vetCache.get('allVets');
   if (cachedVets) {
-    console.log('Serving vets from cache');
+    // console.log('Serving vets from cache');
     return cachedVets;
   }
 
@@ -85,7 +85,7 @@ async function findAllPaginated(page, pageSize) {
   const cacheKey = `vetsPage_${page}_${pageSize}`;
   const cachedResult = vetCache.get(cacheKey);
   if (cachedResult) {
-    console.log(`Serving vets for page ${page} from cache`);
+    // console.log(`Serving vets for page ${page} from cache`);
     return cachedResult;
   }
 
@@ -96,19 +96,40 @@ async function findAllPaginated(page, pageSize) {
   const totalItems = parseInt(countRes.rows[0].total_count, 10);
   const totalPages = Math.ceil(totalItems / pageSize);
 
-  // Then, fetch the vets for the current page
-  const vetsRes = await query(`
+  // Then, fetch the vet IDs for the current page
+  const vetIdsOnPageRes = await query(`
+    SELECT id
+    FROM vets
+    ORDER BY last_name, first_name
+    LIMIT $1 OFFSET $2;
+  `, [pageSize, offset]);
+
+  const vetIdsOnPage = vetIdsOnPageRes.rows.map(row => row.id);
+
+  if (vetIdsOnPage.length === 0) {
+    const result = {
+      totalItems,
+      listVets: [],
+      totalPages,
+      currentPage: page
+    };
+    vetCache.set(cacheKey, result);
+    return result;
+  }
+
+  // Fetch all details for vets on the current page, including their specialties
+  const vetsWithDetailsRes = await query(`
     SELECT
       v.id AS vet_id, v.first_name AS vet_first_name, v.last_name AS vet_last_name,
       s.id AS specialty_id, s.name AS specialty_name
     FROM vets v
     LEFT JOIN vet_specialties vs ON v.id = vs.vet_id
     LEFT JOIN specialties s ON vs.specialty_id = s.id
-    ORDER BY v.last_name, v.first_name, s.name
-    LIMIT $1 OFFSET $2;
-  `, [pageSize, offset]);
+    WHERE v.id = ANY($1::int[])
+    ORDER BY v.last_name, v.first_name, s.name;
+  `, [vetIdsOnPage]);
 
-  const vets = mapRowsToVets(vetsRes.rows);
+  const vets = mapRowsToVets(vetsWithDetailsRes.rows);
 
   const result = {
     totalItems,
@@ -123,5 +144,7 @@ async function findAllPaginated(page, pageSize) {
 
 module.exports = {
   findAll,
-  findAllPaginated
+  findAllPaginated,
+  vetCache // Export cache for testing purposes (clearing it)
 };
+

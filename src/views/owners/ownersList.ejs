@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= __locales[__locale].lang %>">
+<html lang="<%= __locales.find(loc => loc.lang === __locale)?.lang || __locale %>">
 <head>
   <%- include('../fragments/head', { title: __('layoutTitle'), menu: 'owners' }) %>
 </head>
@@ -43,7 +43,7 @@
           <span>[</span>
           <% for (let i = 1; i <= totalPages; i++) { %>
             <% if (currentPage !== i) { %>
-              <a href="/owners?page=<%= i %>"><%= i %></a>
+              <a href="/owners?page=<%= i %><% if (locals.owner && locals.owner.lastName) { %>&lastName=<%= locals.owner.lastName %><% } %>"><%= i %></a>
             <% } else { %>
               <span><%= i %></span>
             <% } %>
@@ -51,28 +51,28 @@
           <span>]&nbsp;</span>
           <span>
             <% if (currentPage > 1) { %>
-              <a href="/owners?page=1" title="<%= __('first') %>" class="fa fa-fast-backward"></a>
+              <a href="/owners?page=1<% if (locals.owner && locals.owner.lastName) { %>&lastName=<%= locals.owner.lastName %><% } %>" title="<%= __('first') %>" class="fa fa-fast-backward"></a>
             <% } else { %>
               <span class="fa fa-fast-backward disabled-link"></span>
             <% } %>
           </span>
           <span>
             <% if (currentPage > 1) { %>
-              <a href="/owners?page=<%= currentPage - 1 %>" title="<%= __('previous') %>" class="fa fa-step-backward"></a>
+              <a href="/owners?page=<%= currentPage - 1 %><% if (locals.owner && locals.owner.lastName) { %>&lastName=<%= locals.owner.lastName %><% } %>" title="<%= __('previous') %>" class="fa fa-step-backward"></a>
             <% } else { %>
               <span class="fa fa-step-backward disabled-link"></span>
             <% } %>
           </span>
           <span>
             <% if (currentPage < totalPages) { %>
-              <a href="/owners?page=<%= currentPage + 1 %>" title="<%= __('next') %>" class="fa fa-step-forward"></a>
+              <a href="/owners?page=<%= currentPage + 1 %><% if (locals.owner && locals.owner.lastName) { %>&lastName=<%= locals.owner.lastName %><% } %>" title="<%= __('next') %>" class="fa fa-step-forward"></a>
             <% } else { %>
               <span class="fa fa-step-forward disabled-link"></span>
             <% } %>
           </span>
           <span>
             <% if (currentPage < totalPages) { %>
-              <a href="/owners?page=<%= totalPages %>" title="<%= __('last') %>" class="fa fa-fast-forward"></a>
+              <a href="/owners?page=<%= totalPages %><% if (locals.owner && locals.owner.lastName) { %>&lastName=<%= locals.owner.lastName %><% } %>" title="<%= __('last') %>" class="fa fa-fast-forward"></a>
             <% } else { %>
               <span class="fa fa-fast-forward disabled-link"></span>
             <% } %>
@@ -85,3 +85,4 @@
   <%- include('../fragments/footer') %>
 </body>
 </html>
+

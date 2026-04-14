@@ -18,7 +18,7 @@ const Visit = require('../models/visit');
  * @returns {Owner|null} A fully constructed `Owner` object or null if no rows.
  */
 function mapRowsToOwner(rows) {
-  if (rows.length === 0) {
+  if (rows.length === 0 || !rows[0].owner_id) { // Check for actual owner data
     return null;
   }
 
@@ -43,11 +43,11 @@ function mapRowsToOwner(rows) {
         id: row.pet_id,
         name: row.pet_name,
         birthDate: row.pet_birth_date,
-        type: new PetType(row.type_id, row.type_name),
+        type: row.type_id ? new PetType(row.type_id, row.type_name) : null,
         visits: []
       });
       petsMap.set(row.pet_id, pet);
-      owner.pets.push(pet); // Add pet to owner
+      owner.addPet(pet); // Use addPet to properly manage pet collection
     }
 
     // Process visits
@@ -58,7 +58,7 @@ function mapRowsToOwner(rows) {
         date: row.visit_date,
         description: row.visit_description
       });
-      pet.addVisit(visit); // Add visit to corresponding pet
+      pet.addVisit(visit); // Use addVisit to properly manage visit collection
     }
   });
 
@@ -89,20 +89,20 @@ function mapRowsToOwnersList(rows) {
     const owner = ownersMap.get(row.owner_id);
 
     // If pet exists for this row and not yet added to owner's pets
-    if (row.pet_id && !owner.pets.some(p => p.id === row.pet_id)) {
+    if (row.pet_id && !owner.getPets().some(p => p.getId() === row.pet_id)) {
       const pet = new Pet({
         id: row.pet_id,
         name: row.pet_name,
         birthDate: row.pet_birth_date,
-        type: new PetType(row.type_id, row.type_name),
+        type: row.type_id ? new PetType(row.type_id, row.type_name) : null,
         visits: []
       });
-      owner.pets.push(pet);
+      owner.addPet(pet);
     }
-    const pet = owner.pets.find(p => p.id === row.pet_id);
+    const pet = owner.getPets().find(p => p.getId() === row.pet_id);
 
     // If visit exists for this row and not yet added to pet's visits
-    if (row.visit_id && pet && !Array.from(pet.visits).some(v => v.id === row.visit_id)) {
+    if (row.visit_id && pet && !pet.getVisits().some(v => v.getId() === row.visit_id)) {
       const visit = new Visit({
         id: row.visit_id,
         date: row.visit_date,
@@ -162,7 +162,28 @@ async function findByLastNameStartingWith(lastName, page, pageSize) {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   // Query to get paginated owners with their pets and visits
-  const ownersRes = await query(`
+  // We need to fetch all related pets/visits for the owners on the current page.
+  // This means fetching all rows for these owners and then aggregating them.
+  const ownersOnPageRes = await query(`
+    SELECT DISTINCT o.id
+    FROM owners o
+    WHERE o.last_name ILIKE $1
+    ORDER BY o.id
+    LIMIT $2 OFFSET $3;
+  `, [searchPattern, pageSize, offset]);
+
+  const ownerIdsOnPage = ownersOnPageRes.rows.map(row => row.id);
+
+  if (ownerIdsOnPage.length === 0) {
+    return {
+      totalItems: totalCount,
+      listOwners: [],
+      totalPages,
+      currentPage: page
+    };
+  }
+
+  const ownersWithDetailsRes = await query(`
     SELECT
       o.id AS owner_id, o.first_name AS owner_first_name, o.last_name AS owner_last_name,
       o.address AS owner_address, o.city AS owner_city, o.telephone AS owner_telephone,
@@ -173,13 +194,13 @@ async function findByLastNameStartingWith(lastName, page, pageSize) {
     LEFT JOIN pets p ON o.id = p.owner_id
     LEFT JOIN types pt ON p.type_id = pt.id
     LEFT JOIN visits v ON p.id = v.pet_id
-    WHERE o.last_name ILIKE $1
-    ORDER BY o.last_name, o.first_name, p.name, v.visit_date
-    LIMIT $2 OFFSET $3;
-  `, [searchPattern, pageSize, offset]);
+    WHERE o.id = ANY($1::int[])
+    ORDER BY o.last_name, o.first_name, p.name, v.visit_date;
+  `, [ownerIdsOnPage]);
+
 
   // Reconstruct owner objects from flat results
-  const owners = mapRowsToOwnersList(ownersRes.rows);
+  const owners = mapRowsToOwnersList(ownersWithDetailsRes.rows);
 
   return {
     totalItems: totalCount,
@@ -316,3 +337,4 @@ module.exports = {
   saveVisitForPet,
   updateVisitForPet
 };
+

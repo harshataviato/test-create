@@ -51,7 +51,7 @@ async function findPet(req, res, next, petId) {
     // If petId is provided, try to find the existing pet
     const pet = owner.getPets().find(p => p.getId() === parseInt(petId));
     if (!pet) {
-      const error = new Error(`Pet with id ${petId} not found for owner with id ${ownerId}.`);
+      const error = new Error(res.__('pet') + ' ' + res.__('notFound'));
       error.statusCode = 404;
       return next(error);
     }
@@ -75,7 +75,8 @@ async function findPet(req, res, next, petId) {
 function initCreationForm(req, res) {
   const owner = req.locals.owner;
   const pet = req.locals.pet; // This is a new Pet() object from findPet middleware
-  owner.addPet(pet); // Associate the new pet with the owner for form submission structure
+  // We don't need to add to owner.pets here, as it's a new, unsaved pet.
+  // The association happens when processCreationForm calls owner.addPet.
   res.render(VIEWS_PETS_CREATE_OR_UPDATE_FORM, { owner, pet, types: res.locals.types });
 }
 
@@ -152,7 +153,7 @@ async function processUpdateForm(req, res, next) {
     const existingPet = owner.getPets().find(p => p.getId() === petId);
 
     if (!existingPet) {
-      const error = new Error(`Pet with id ${petId} not found for owner with id ${owner.getId()}.`);
+      const error = new Error(res.__('pet') + ' ' + res.__('notFound'));
       error.statusCode = 404;
       return next(error);
     }
@@ -179,3 +180,4 @@ module.exports = {
   initUpdateForm,
   processUpdateForm
 };
+

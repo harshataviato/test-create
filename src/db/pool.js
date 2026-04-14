@@ -22,7 +22,10 @@ const pool = new Pool({
 // Event listener for database connection errors
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
-  process.exit(-1); // Exit the process if a fatal database error occurs
+  // Do not exit process in test environment, let Jest handle it.
+  if (process.env.NODE_ENV !== 'test') {
+    process.exit(-1);
+  }
 });
 
 /**
@@ -44,4 +47,6 @@ async function query(text, params) {
 // Export the query function for use in repositories
 module.exports = {
   query,
+  pool // Export the pool itself for direct management in test setup/teardown
 };
+

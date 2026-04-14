@@ -74,8 +74,12 @@ class Pet extends NamedEntity {
    * @param {Visit} visit - The visit to add.
    */
   addVisit(visit) {
-    this.visits.add(visit);
+    // Only add if the visit is new or if a visit with the same ID doesn't already exist
+    if (visit.isNew() || !Array.from(this.visits).some(v => v.getId() === visit.getId())) {
+      this.visits.add(visit);
+    }
   }
 }
 
 module.exports = Pet;
+

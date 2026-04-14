@@ -7,7 +7,9 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "db:init:postgres": "psql -U petclinic -d petclinic -h localhost -f db/postgres/schema.sql && psql -U petclinic -d petclinic -h localhost -f db/postgres/data.sql",
-    "db:init:mysql": "mysql -u petclinic -ppetclinic -h localhost petclinic < db/mysql/schema.sql && mysql -u petclinic -ppetclinic -h localhost petclinic < db/mysql/data.sql"
+    "db:init:mysql": "mysql -u petclinic -ppetclinic -h localhost petclinic < db/mysql/schema.sql && mysql -u petclinic -ppetclinic -h localhost petclinic < db/mysql/data.sql",
+    "test:setup": "node scripts/test-db-setup.js",
+    "test": "npm run test:setup && jest --verbose --runInBand --forceExit"
   },
   "keywords": [],
   "author": "Google Senior Engineer",
@@ -25,6 +27,10 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^6.3.4"
   }
 }
+

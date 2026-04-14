@@ -19,3 +19,4 @@ class PetType extends NamedEntity {
 }
 
 module.exports = PetType;
+

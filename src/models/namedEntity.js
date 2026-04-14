@@ -44,3 +44,4 @@ class NamedEntity extends BaseEntity {
 }
 
 module.exports = NamedEntity;
+

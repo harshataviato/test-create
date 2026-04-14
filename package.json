@@ -1,0 +1,30 @@
+{
+  "name": "node-petclinic",
+  "version": "1.0.0",
+  "description": "PetClinic application in Node.js",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "db:migrate": "sequelize db:migrate --config src/config/sequelizeConfig.js",
+    "db:seed": "sequelize db:seed:all --config src/config/sequelizeConfig.js",
+    "db:reset": "sequelize db:migrate:undo:all --config src/config/sequelizeConfig.js && sequelize db:migrate --config src/config/sequelizeConfig.js && sequelize db:seed:all --config src/config/sequelizeConfig.js"
+  },
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.0.1",
+    "i18n": "^0.15.1",
+    "method-override": "^3.0.0",
+    "moment": "^2.30.1",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "sequelize-cli": "^6.6.2"
+  }
+}

@@ -1,0 +1,63 @@
+<%- include('../fragments/layout', { template: 'owners_list_content', menu: 'owners' }) %>
+
+<% function owners_list_content() { %>
+  <h2><%= i18n.__('owners') %></h2>
+
+  <table id="owners" class="table table-striped">
+    <thead>
+      <tr>
+        <th style="width: 150px;"><%= i18n.__('name') %></th>
+        <th style="width: 200px;"><%= i18n.__('address') %></th>
+        <th><%= i18n.__('city') %></th>
+        <th style="width: 120px"><%= i18n.__('telephone') %></th>
+        <th><%= i18n.__('pets') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% listOwners.forEach(owner => { %>
+        <tr>
+          <td>
+            <a href="/owners/<%= owner.id %>"><%= owner.firstName + ' ' + owner.lastName %></a>
+          </td>
+          <td><%= owner.address %></td>
+          <td><%= owner.city %></td>
+          <td><%= owner.telephone %></td>
+          <td>
+            <% if (owner.pets && owner.pets.length > 0) { %>
+              <%= owner.pets.map(pet => pet.name).join(', ') %>
+            <% } else { %>
+              <%= i18n.__('none') %>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (totalPages > 1) { %>
+    <div>
+      <span><%= i18n.__('pages') %>:</span>
+      <span>[</span>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (currentPage !== i) { %>
+          <a href="/owners?page=<%= i %>"><%= i %></a>
+        <% } else { %>
+          <span><%= i %></span>
+        <% } %>
+      <% } %>
+      <span>]&nbsp;</span>
+      <span>
+        <a href="/owners?page=1" title="<%= i18n.__('first') %>" class="fa fa-fast-backward"></a>
+      </span>
+      <span>
+        <a href="/owners?page=<%= currentPage > 1 ? currentPage - 1 : 1 %>" title="<%= i18n.__('previous') %>" class="fa fa-step-backward"></a>
+      </span>
+      <span>
+        <a href="/owners?page=<%= currentPage < totalPages ? currentPage + 1 : totalPages %>" title="<%= i18n.__('next') %>" class="fa fa-step-forward"></a>
+      </span>
+      <span>
+        <a href="/owners?page=<%= totalPages %>" title="<%= i18n.__('last') %>" class="fa fa-fast-forward"></a>
+      </span>
+    </div>
+  <% } %>
+<% } %>

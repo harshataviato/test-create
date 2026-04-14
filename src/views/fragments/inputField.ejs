@@ -1,0 +1,49 @@
+<%
+// fragments/inputField.ejs
+// Renders a form input field with optional validation feedback.
+//
+// Parameters:
+//   label: The human-readable label for the input field (e.g., "First Name").
+//   name: The name attribute for the input field, corresponding to the model property (e.g., "firstName").
+//   type: The HTML input type (e.g., "text", "date").
+//   model: The model object that contains the field value (e.g., 'owner' or 'pet').
+//   errors: An array of validation errors, typically from express-validator.
+//   i18n: The i18n instance for message translation.
+
+// Determine if the field has validation errors
+const fieldErrors = errors ? errors.filter(err => err.param === name) : [];
+const isValid = fieldErrors.length === 0;
+
+// Get the actual value to display in the input, prioritizing submitted body data
+// This is crucial for form re-population on validation errors.
+const fieldValue = (model && model[name]) !== undefined ? model[name] : ''; // From model
+const submittedValue = req.body[name] !== undefined ? req.body[name] : fieldValue; // From submitted data
+%>
+
+<div class="form-group<%= isValid ? '' : ' has-error' %>">
+  <label for="<%= name %>" class="col-sm-2 control-label"><%= i18n.__(label) %></label>
+  <div class="col-sm-10">
+    <% if (type === 'text') { %>
+      <input class="form-control" type="text" id="<%= name %>" name="<%= name %>" value="<%= submittedValue %>" />
+    <% } else if (type === 'date') {
+      // For date fields, format the date to 'YYYY-MM-DD' if it's a Date object
+      let displayDate = submittedValue;
+      if (submittedValue instanceof Date) {
+        displayDate = sequelize.ejs.moment(submittedValue).format('YYYY-MM-DD');
+      }
+      %>
+      <input class="form-control" type="date" id="<%= name %>" name="<%= name %>" value="<%= displayDate %>" />
+    <% } %>
+
+    <% if (isValid) { %>
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    <% } else { %>
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      <span class="help-inline">
+        <% fieldErrors.forEach(err => { %>
+          <%= i18n.__(err.msg) %>
+        <% }); %>
+      </span>
+    <% } %>
+  </div>
+</div>

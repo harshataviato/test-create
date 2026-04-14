@@ -1,0 +1,24 @@
+<%- include('../fragments/layout', { template: 'owner_form_content', menu: 'owners' }) %>
+
+<% function owner_form_content() { %>
+  <h2><%= owner.isNew() ? i18n.__('addOwner') : i18n.__('updateOwner') %></h2>
+  <form action="/owners<%= owner.isNew() ? '/new' : '/' + owner.id + '/edit' %>" class="form-horizontal" id="add-owner-form" method="post">
+    <% if (!owner.isNew()) { %>
+      <input type="hidden" name="id" value="<%= owner.id %>" />
+    <% } %>
+    <div class="form-group has-feedback">
+      <%- include('../fragments/inputField', { label: 'firstName', name: 'firstName', type: 'text', model: owner, errors: errors, i18n: i18n }) %>
+      <%- include('../fragments/inputField', { label: 'lastName', name: 'lastName', type: 'text', model: owner, errors: errors, i18n: i18n }) %>
+      <%- include('../fragments/inputField', { label: 'address', name: 'address', type: 'text', model: owner, errors: errors, i18n: i18n }) %>
+      <%- include('../fragments/inputField', { label: 'city', name: 'city', type: 'text', model: owner, errors: errors, i18n: i18n }) %>
+      <%- include('../fragments/inputField', { label: 'telephone', name: 'telephone', type: 'text', model: owner, errors: errors, i18n: i18n }) %>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-primary" type="submit">
+          <%= owner.isNew() ? i18n.__('addOwner') : i18n.__('updateOwner') %>
+        </button>
+      </div>
+    </div>
+  </form>
+<% } %>

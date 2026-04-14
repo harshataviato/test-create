@@ -1,0 +1,46 @@
+<%
+// fragments/selectField.ejs
+// Renders a form select field with options from a collection and optional validation feedback.
+//
+// Parameters:
+//   label: The human-readable label for the select field (e.g., "Type").
+//   name: The name attribute for the select field, corresponding to the model property (e.g., "type").
+//   items: An array of objects to populate the select options. Each item is expected to have a 'name' property.
+//   model: The model object that contains the field value (e.g., 'pet').
+//   errors: An array of validation errors, typically from express-validator.
+//   i18n: The i18n instance for message translation.
+
+// Determine if the field has validation errors
+const fieldErrors = errors ? errors.filter(err => err.param === name) : [];
+const isValid = fieldErrors.length === 0;
+
+// Get the currently selected value. Prioritize submitted data for re-population on error.
+let selectedValue = (model && model[name] && model[name].name) ? model[name].name : ''; // For existing model objects (e.g., pet.type.name)
+if (req.body[name] !== undefined) {
+  selectedValue = req.body[name]; // Use submitted value if available
+}
+%>
+
+<div class="form-group<%= isValid ? '' : ' has-error' %>">
+  <label for="<%= name %>" class="col-sm-2 control-label"><%= i18n.__(label) %></label>
+
+  <div class="col-sm-10">
+    <select id="<%= name %>" name="<%= name %>" class="form-control">
+      <% items.forEach(item => { %>
+        <option value="<%= item.name %>" <%= item.name === selectedValue ? 'selected' : '' %>>
+          <%= item.name %>
+        </option>
+      <% }); %>
+    </select>
+    <% if (isValid) { %>
+      <span class="fa fa-ok form-control-feedback" aria-hidden="true"></span>
+    <% } else { %>
+      <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+      <span class="help-inline">
+        <% fieldErrors.forEach(err => { %>
+          <%= i18n.__(err.msg) %>
+        <% }); %>
+      </span>
+    <% } %>
+  </div>
+</div>

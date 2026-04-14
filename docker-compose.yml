@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:18.1
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persist PostgreSQL data
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://petclinic:petclinic@postgres:5432/petclinic
+      - PORT=8080
+    depends_on:
+      - postgres
+    volumes:
+      - ./src:/app/src # Mount source code for live reloading
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+    command: npm run dev # Use nodemon for development
+volumes:
+  pgdata:

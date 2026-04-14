@@ -1,0 +1,10 @@
+<%- include('fragments/layout', { template: 'welcome_content', menu: 'home' }) %>
+
+<% function welcome_content() { %>
+  <h2><%= i18n.__('welcome') %></h2>
+  <div class="row">
+    <div class="col-md-12">
+      <img class="img-responsive" src="/resources/images/pets.png" alt="Pets" />
+    </div>
+  </div>
+<% } %>

@@ -1,0 +1,55 @@
+<%- include('../fragments/layout', { template: 'vets_list_content', menu: 'vets' }) %>
+
+<% function vets_list_content() { %>
+  <h2><%= i18n.__('vets') %></h2>
+
+  <table id="vets" class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= i18n.__('name') %></th>
+        <th><%= i18n.__('specialties') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% listVets.forEach(vet => { %>
+        <tr>
+          <td><%= vet.firstName + ' ' + vet.lastName %></td>
+          <td>
+            <% if (vet.specialties && vet.specialties.length > 0) { %>
+              <%= vet.specialties.map(specialty => specialty.name).join(', ') %>
+            <% } else { %>
+              <%= i18n.__('none') %>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (totalPages > 1) { %>
+    <div>
+      <span><%= i18n.__('pages') %>:</span>
+      <span>[</span>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (currentPage !== i) { %>
+          <a href="/vets/vets.html?page=<%= i %>"><%= i %></a>
+        <% } else { %>
+          <span><%= i %></span>
+        <% } %>
+      <% } %>
+      <span>]&nbsp;</span>
+      <span>
+        <a href="/vets/vets.html?page=1" title="<%= i18n.__('first') %>" class="fa fa-fast-backward"></a>
+      </span>
+      <span>
+        <a href="/vets/vets.html?page=<%= currentPage > 1 ? currentPage - 1 : 1 %>" title="<%= i18n.__('previous') %>" class="fa fa-step-backward"></a>
+      </span>
+      <span>
+        <a href="/vets/vets.html?page=<%= currentPage < totalPages ? currentPage + 1 : totalPages %>" title="<%= i18n.__('next') %>" class="fa fa-step-forward"></a>
+      </span>
+      <span>
+        <a href="/vets/vets.html?page=<%= totalPages %>" title="<%= i18n.__('last') %>" class="fa fa-fast-forward"></a>
+      </span>
+    </div>
+  <% } %>
+<% } %>

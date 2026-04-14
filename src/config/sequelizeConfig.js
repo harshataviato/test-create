@@ -21,6 +21,19 @@ module.exports = {
       // }
     }
   },
+  test: { // Added for testing environment
+    url: process.env.DATABASE_URL_TEST || 'postgres://petclinic:petclinic@localhost:5432/petclinic_test',
+    dialect: 'postgres',
+    migrationStorageTableName: 'sequelize_meta_test', // Separate meta table for test
+    seederStorageTableName: 'sequelize_data_test', // Separate data table for test
+    logging: false, // Suppress SQL logging during tests
+    dialectOptions: {
+      // ssl: {
+      //   require: true,
+      //   rejectUnauthorized: false
+      // }
+    }
+  },
   production: {
     url: process.env.DATABASE_URL, // DATABASE_URL should be set in production environment
     dialect: 'postgres',

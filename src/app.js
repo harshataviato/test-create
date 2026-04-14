@@ -17,6 +17,7 @@ const i18n = require('i18n'); // Internationalization library
 
 // Initialize database and models
 const sequelize = require('./config/database');
+const { models } = require('./config/database'); // Import models for testing purposes
 
 // Import route modules
 const systemRoutes = require('./routes/systemRoutes');
@@ -87,41 +88,76 @@ app.set('views', path.join(__dirname, 'views')); // Specify views directory
 // Middleware to allow POST, PUT, DELETE operations via a hidden input field
 app.use(methodOverride('_method'));
 
+// Health check endpoint (can be added outside the sync block)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Database synchronization and server start
-sequelize.sync({ alter: true }) // 'alter: true' updates the schema to match models
-  .then(() => {
-    console.log('Database synced successfully. Starting server...');
+// In test environment, skip auto-sync as migrations are handled by sequelize-cli in test/setup.js
+if (process.env.NODE_ENV !== 'test') {
+  sequelize.sync({ alter: true }) // 'alter: true' updates the schema to match models
+    .then(() => {
+      console.log('Database synced successfully. Starting server...');
 
-    // Register routes
-    app.use('/', systemRoutes);
-    app.use('/owners', ownerRoutes);
-    app.use('/owners/:ownerId/pets', petRoutes); // Nested route
-    app.use('/owners/:ownerId/pets/:petId/visits', visitRoutes); // Nested route
-    app.use('/vets', vetRoutes);
+      // Register routes
+      app.use('/', systemRoutes);
+      app.use('/owners', ownerRoutes);
+      app.use('/owners/:ownerId/pets', petRoutes); // Nested route
+      app.use('/owners/:ownerId/pets/:petId/visits', visitRoutes); // Nested route
+      app.use('/vets', vetRoutes);
 
-    // Global error handler middleware
-    app.use((err, req, res, next) => {
-      console.error(err.stack); // Log the error stack for debugging
-      const status = err.status || 500;
-      const message = err.message || req.__('error.general'); // Default general error message
+      // Global error handler middleware
+      app.use((err, req, res, next) => {
+        console.error(err.stack); // Log the error stack for debugging
+        const status = err.status || 500;
+        const message = err.message || req.__('error.general'); // Default general error message
 
-      // Pass error details to the error view
-      res.status(status).render('error', {
-        status,
-        message,
-        path: req.originalUrl,
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined // Show stack only in dev
+        // Pass error details to the error view
+        res.status(status).render('error', {
+          status,
+          message,
+          path: req.originalUrl,
+          stack: process.env.NODE_ENV === 'development' ? err.stack : undefined // Show stack only in dev
+        });
       });
-    });
 
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+      // Start the server
+      app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+      });
+    })
+    .catch(err => {
+      console.error('Failed to sync database:', err);
+      process.exit(1); // Exit process if database connection fails
     });
-  })
-  .catch(err => {
-    console.error('Failed to sync database:', err);
-    process.exit(1); // Exit process if database connection fails
+} else {
+  // In test environment, assume database is already migrated/seeded by test setup.
+  // Proceed directly to route registration and error handler setup.
+  console.log('Skipping database sync in test environment.');
+  // Register routes
+  app.use('/', systemRoutes);
+  app.use('/owners', ownerRoutes);
+  app.use('/owners/:ownerId/pets', petRoutes); // Nested route
+  app.use('/owners/:ownerId/pets/:petId/visits', visitRoutes); // Nested route
+  app.use('/vets', vetRoutes);
+
+  // Global error handler middleware
+  app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error stack for debugging
+    const status = err.status || 500;
+    const message = err.message || req.__('error.general'); // Default general error message
+
+    // Pass error details to the error view
+    res.status(status).render('error', {
+      status,
+      message,
+      path: req.originalUrl,
+      stack: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ? err.stack : undefined // Show stack in dev and test
+    });
   });
+}
 
 module.exports = app; // Export app for testing
+module.exports.sequelize = sequelize; // Export sequelize instance for testing
+module.exports.models = models; // Export models for testing

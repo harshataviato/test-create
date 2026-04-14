@@ -42,22 +42,21 @@ router.get('/create', productController.showCreateForm);
  */
 router.post('/', productController.createProduct);
 
-// --- Product Update Routes (Example - not fully implemented in views for simplicity) ---
+// --- Product Update Routes ---
+/**
+ * @route POST /products/:id/update
+ * @description Route to handle the submission of an update form for an existing product.
+ * Mapped to the `updateProduct` function in `productController`.
+ */
+router.post('/:id/update', productController.updateProduct);
 
-// In a full application, you'd typically have:
-// router.get('/:id/edit', productController.showEditForm); // Displays edit form
-// router.post('/:id/update', productController.updateProduct); // Handles edit form submission
 
-// For this example, we'll only provide the POST update route for API like interaction if needed
-// Or assume a POST to /products/:id could handle updates directly (though less RESTful for forms)
-// For simplicity in this example, direct update from a form is not explicitly linked,
-// but the controller method `updateProduct` is available if linked from a view.
-
-// --- Product Deletion Route (Example - not fully implemented in views for simplicity) ---
-
-// In a full application, you'd typically have a POST or DELETE method for deletion
-// For this example, we'll provide a POST route for deletion.
-// A more robust UI would confirm deletion and might use a dedicated DELETE HTTP verb.
-// router.post('/:id/delete', productController.deleteProduct);
+// --- Product Deletion Route ---
+/**
+ * @route POST /products/:id/delete
+ * @description Route to handle the deletion of a product.
+ * Mapped to the `deleteProduct` function in `productController`.
+ */
+router.post('/:id/delete', productController.deleteProduct);
 
 module.exports = router;

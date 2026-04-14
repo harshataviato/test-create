@@ -8,9 +8,10 @@
 const express = require('express');
 const path = require('path');
 const productRoutes = require('./routes/productRoutes'); // Import product routes
+const engine = require('ejs-mate'); // Import ejs-mate for layout support
 
 const app = express();
-const port = 3000; // Define the port for the server to listen on
+const port = process.env.PORT || 3000; // Define the port, allowing environment variable override
 
 // --- Middleware Configuration ---
 
@@ -31,6 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // --- View Engine Setup ---
+
+// Configure ejs-mate as the view engine
+app.engine('ejs', engine);
 
 /**
  * @property {string} 'views'
@@ -95,14 +99,20 @@ app.use((err, req, res, next) => {
 
 // --- Server Start ---
 
-/**
- * @function app.listen
- * @description Starts the Express server and makes it listen for incoming requests
- * on the specified port.
- * @param {number} port - The port number to listen on.
- * @param {function} callback - A callback function executed once the server starts.
- */
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-    console.log(`Open http://localhost:${port}/products in your browser.`);
-});
+// Conditional server start: Only listen if app.js is run directly (not imported as a module for testing)
+if (require.main === module) {
+    /**
+     * @function app.listen
+     * @description Starts the Express server and makes it listen for incoming requests
+     * on the specified port.
+     * @param {number} port - The port number to listen on.
+     * @param {function} callback - A callback function executed once the server starts.
+     */
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+        console.log(`Open http://localhost:${port}/products in your browser.`);
+    });
+} else {
+    // Export the app instance for testing frameworks like Supertest
+    module.exports = app;
+}

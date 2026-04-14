@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World App</title>
+    <!-- Basic inline styling for a centered "Hello World" display -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333; /* Dark grey text */
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 50px 70px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Subtle shadow */
+        }
+        h1 {
+            color: #007bff; /* Blue heading */
+            font-size: 3em;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- The message variable is passed from the controller and rendered here by EJS -->
+        <h1><%= message %></h1>
+    </div>
+</body>
+</html>

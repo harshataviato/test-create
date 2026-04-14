@@ -1,0 +1,38 @@
+<!--
+    File: products/create.ejs
+    Description: This EJS template provides a form for creating a new product.
+    It extends the main layout (`layout.ejs`) and handles displaying validation errors
+    if they are passed from the controller.
+    The form submits data to the POST /products route.
+-->
+<%- layout('layout') %>
+
+<h2><%= title %></h2>
+
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="error-message">
+        <strong>Error:</strong> <%= error %>
+    </div>
+<% } %>
+
+<form action="/products" method="POST">
+    <div>
+        <label for="name">Product Name:</label><br>
+        <input type="text" id="name" name="name" value="<%= typeof product.name !== 'undefined' ? product.name : '' %>" required>
+    </div>
+    <br>
+    <div>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4"><%= typeof product.description !== 'undefined' ? product.description : '' %></textarea>
+    </div>
+    <br>
+    <div>
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" step="0.01" value="<%= typeof product.price !== 'undefined' ? product.price : '' %>" required>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Create Product</button>
+        <a href="/products">Cancel</a>
+    </div>
+</form>

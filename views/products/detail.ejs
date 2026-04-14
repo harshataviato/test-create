@@ -1,0 +1,31 @@
+<!--
+    File: products/detail.ejs
+    Description: This EJS template displays the detailed information of a single product.
+    It extends the main layout (`layout.ejs`) and uses the `product` object passed
+    from the controller to render its properties.
+    It also provides a link to go back to the product list.
+-->
+<%- layout('layout') %>
+
+<h2><%= title %></h2>
+
+<% if (product) { %>
+    <div>
+        <p><strong>ID:</strong> <%= product.id %></p>
+        <p><strong>Name:</strong> <%= product.name %></p>
+        <p><strong>Description:</strong> <%= product.description %></p>
+        <p><strong>Price:</strong> $<%= product.price.toFixed(2) %></p>
+    </div>
+    <p>
+        <a href="/products">Back to Product List</a>
+        <!-- Add edit/delete buttons here if those features are exposed in UI -->
+        <!-- Example: <a href="/products/<%= product.id %>/edit">Edit Product</a> -->
+        <!-- Example:
+            <form action="/products/<%= product.id %>/delete" method="POST" style="display:inline;">
+                <button type="submit">Delete Product</button>
+            </form>
+        -->
+    </p>
+<% } else { %>
+    <p>Product not found.</p>
+<% } %>

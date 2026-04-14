@@ -1,0 +1,40 @@
+<!--
+    File: products/list.ejs
+    Description: This EJS template displays a list of all products.
+    It extends the main layout (`layout.ejs`) and iterates over the `products` array
+    passed from the controller to render each product's name and price.
+    It also provides links to view product details and create a new product.
+-->
+<%- layout('layout') %>
+
+<h2><%= title %></h2>
+
+<% if (products && products.length > 0) { %>
+    <table border="1" style="width:100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="padding: 8px; text-align: left;">ID</th>
+                <th style="padding: 8px; text-align: left;">Name</th>
+                <th style="padding: 8px; text-align: left;">Price</th>
+                <th style="padding: 8px; text-align: left;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% products.forEach(product => { %>
+                <tr>
+                    <td style="padding: 8px;"><%= product.id %></td>
+                    <td style="padding: 8px;"><%= product.name %></td>
+                    <td style="padding: 8px;">$<%= product.price.toFixed(2) %></td>
+                    <td style="padding: 8px;">
+                        <a href="/products/<%= product.id %>">View Details</a>
+                        <!-- Add edit/delete links here if those features are exposed in UI -->
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } else { %>
+    <p>No products found. <a href="/products/create">Create a new product</a>.</p>
+<% } %>
+
+<p><a href="/products/create">Add New Product</a></p>

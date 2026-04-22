@@ -1,0 +1,32 @@
+<h2><%= __('vets') %></h2>
+<table id="vets" class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= __('name') %></th>
+      <th><%= __('specialties') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% listVets.forEach(vet => { %>
+      <tr>
+        <td><%= vet.firstName %> <%= vet.lastName %></td>
+        <td>
+          <% if(vet.Specialties && vet.Specialties.length > 0) { %>
+            <%= vet.Specialties.map(s => s.name).join(', ') %>
+          <% } else { %>
+            <%= __('none') %>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<% if (totalPages > 1) { %>
+  <div class="pagination">
+    <span><%= __('pages') %>: </span>
+    <% for(let i=1; i<=totalPages; i++) { %>
+      <a href="/vets?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>">[<%= i %>]</a>
+    <% } %>
+  </div>
+<% } %>

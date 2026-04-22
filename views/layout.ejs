@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= __('layoutTitle') %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/resources/css/petclinic.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><span></span></a>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'home' ? 'active' : '' %>" href="/">
+              <span class="fa fa-home"></span> <%= __('home') %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'owners' ? 'active' : '' %>" href="/owners/find">
+              <span class="fa fa-search"></span> <%= __('findOwners') %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= menu === 'vets' ? 'active' : '' %>" href="/vets">
+              <span class="fa fa-th-list"></span> <%= __('vets') %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/oups">
+              <span class="fa fa-exclamation-triangle"></span> <%= __('error') %>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container xd-container">
+    <%- body %>
+  </div>
+
+  <footer class="container mt-5 text-center">
+    <img src="/resources/images/spring-logo.svg" width="200" alt="Logo">
+  </footer>
+</body>
+</html>

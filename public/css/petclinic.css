@@ -1,0 +1,8 @@
+/* Placeholder for the styles provided in the Java source. 
+   Senior Engineer Note: In production, we'd use a SASS processor. */
+body { background-color: #f1f1f1; font-family: sans-serif; color: #34302d; }
+.navbar { border-top: 4px solid #6db33f; background-color: #34302d; }
+.btn-primary { background-color: #34302d; border-color: #6db33f; color: #fff; }
+.xd-container { margin-top: 40px; margin-bottom: 100px; }
+.active { font-weight: bold; color: #6db33f !important; }
+.navbar-brand span { display: block; width: 229px; height: 46px; background: url("../images/spring-logo-dataflow.png") no-repeat; }

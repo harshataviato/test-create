@@ -1,21 +1,26 @@
 # Node.js PetClinic
 
-This is a Node.js implementation of the famous Spring PetClinic sample application.
+A Node.js port of the famous Spring PetClinic demonstration application using Express, Sequelize, and EJS.
 
-## Prerequisites
-- Node.js (v16 or higher)
-- npm
-
-## Environment Setup
-The application uses SQLite by default for simplicity. No external database installation is required for a quick start.
+## Features
+- Manage Owners and their Pets.
+- Record Visit information for Pets.
+- View Veterinarians and their Specialties.
+- Multi-language support (i18n).
+- SQLite integration for easy setup.
 
 ## Installation
+
 1. Install dependencies:
    ```bash
    npm install
-   This will create a `petclinic.sqlite` file in the root directory.
 
-## Running the Server
-1. Start the application:
+3. Start the application:
    ```bash
    npm start
+npm test
+npm install --save-dev nyc
+npx nyc npm test
+
+---
+

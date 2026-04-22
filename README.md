@@ -1,38 +1,30 @@
-# Aviato Startup Manager (Node.js Implementation)
+# Aviato Startup Manager
 
-A pragmatic, fully functional CRUD application built with Node.js, Express, and Sequelize. This project replicates a typical Startup Management system (MVC architecture) converted from a Java Spring Boot style to a modern JavaScript backend.
+A pragmatic Node.js implementation for tracking startups, built with Express, Sequelize, and SQLite.
 
 ## Prerequisites
+- Node.js (v14 or higher)
+- npm
 
-- **Node.js** (v14 or higher)
-- **npm** (comes with Node.js)
+## Installation
+1. Install dependencies:
+   ```bash
+   npm install
 
-## Environment Setup
+## Running the Application
+To start the server:
+The server will be available at `http://localhost:3000`.
 
-1. Create a project directory and navigate into it.
-2. Copy all the provided files into the directory according to the file structure.
+## Running Tests
+The project includes a robust suite of automated tests covering models and routes.
 
-## Dependency Installation
+To execute all tests:
 
-Run the following command to install Express, Sequelize, EJS, and SQLite3:
+To run tests with a detailed reporter:
 
-
-## Database Setup & Migrations
-
-This project uses **SQLite** for a zero-config setup. 
-- No manual database creation is required. 
-- The `sequelize.sync()` method in `app.js` will automatically create the `database.sqlite` file and the `Startups` table upon the first launch.
-
-## Running the Server
-
-To start the application:
-
-
-Once started, the server will be available at:
-**http://localhost:3000**
-
-## Project Features
-- **MVC Pattern**: Clear separation of concerns between Models, Views, and Controllers.
-- **Persistence**: Data is saved to a local SQLite database.
-- **RESTful Design**: Uses standard HTTP verbs for CRUD operations.
-- **Google Standards**: Concise documentation, modular code, and error handling.
+## Project Structure
+- `models/`: Sequelize data models.
+- `controllers/`: Logic for handling requests.
+- `routes/`: Express route definitions.
+- `views/`: EJS templates for the UI.
+- `test/`: Automated test suite.

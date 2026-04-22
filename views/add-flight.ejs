@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Flight - Aviato</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 300px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-save { background-color: #004a99; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Register New Flight</h1>
+    <form action="/add" method="POST">
+        <div class="form-group">
+            <label>Flight Number:</label>
+            <input type="text" name="flightNumber" placeholder="e.g. AV123" required>
+        </div>
+        <div class="form-group">
+            <label>Origin City:</label>
+            <input type="text" name="origin" placeholder="e.g. San Francisco" required>
+        </div>
+        <div class="form-group">
+            <label>Destination City:</label>
+            <input type="text" name="destination" placeholder="e.g. New York" required>
+        </div>
+        <div class="form-group">
+            <label>Departure Time:</label>
+            <input type="datetime-local" name="departureTime" required>
+        </div>
+        <div class="form-group">
+            <label>Status:</label>
+            <select name="status">
+                <option value="On Time">On Time</option>
+                <option value="Delayed">Delayed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-save">Save Flight</button>
+        <a href="/">Cancel</a>
+    </form>
+</body>
+</html>

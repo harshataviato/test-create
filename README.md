@@ -1,31 +1,27 @@
-# Aviato Flight Management System (Node.js Port)
+# Aviato Flight Manager
 
-This project is a pragmatic Node.js implementation of a Flight Management System, migrated from a Java Spring Boot architecture to an Express/Sequelize MVC pattern.
+A Node.js flight management system using Express, Sequelize, and EJS.
 
-## Prerequisites
-- Node.js (v14 or higher)
-- npm (Node Package Manager)
+## Installation
 
-## Environment Setup
-The application uses a `.env` file for configuration. The default configuration uses a local SQLite database for zero-config setup.
+1. Install dependencies:
+   ```bash
+   npm install
 
-1. Create a `.env` file in the root directory (optional, defaults are set in `app.js`).
+## Running the Application
 
-## Dependency Installation
-Install the necessary Node.js packages:
+- Start for production:
+  ```bash
+  npm start
 
-## Database Setup & Migrations
-This project uses **Sequelize ORM**. On the first run, the system will automatically create the `database.sqlite` file and the necessary tables. No manual SQL scripts are required.
+## Running Tests
 
-## Running the Server
-To start the application in production mode:
+The test suite is built with Mocha, Chai, and Supertest. It uses an in-memory SQLite database to ensure tests are isolated and don't affect your local database file.
 
-To start the application in development mode (with auto-reload):
 
-The application will be accessible at: `http://localhost:3000`
-
-## Project Features
-- **MVC Architecture**: Clear separation of Models (Sequelize), Views (EJS), and Controllers (Express logic).
-- **CRUD Operations**: Create, Read, and Delete flights.
-- **Auto-Sync**: Database schema is automatically synchronized with the Javascript models.
-- **Validation**: Business logic prevents creating flights with identical origin and destination.
+## Project Structure
+- `models/`: Sequelize database models.
+- `controllers/`: Request handling and business logic.
+- `routes/`: Express route definitions.
+- `views/`: EJS templates for the UI.
+- `test/`: Automated test suites.

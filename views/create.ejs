@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Startup | Aviato</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select { width: 300px; padding: 8px; }
+        .btn-save { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Register New Startup</h1>
+    <form action="/startups" method="POST">
+        <div class="form-group">
+            <label>Startup Name</label>
+            <input type="text" name="name" required placeholder="e.g. Pied Piper">
+        </div>
+        <div class="form-group">
+            <label>Industry</label>
+            <input type="text" name="industry" required placeholder="e.g. Data Compression">
+        </div>
+        <div class="form-group">
+            <label>Valuation (USD)</label>
+            <input type="number" name="valuation" step="0.01" required value="0">
+        </div>
+        <div class="form-group">
+            <label>Funding Status</label>
+            <select name="status">
+                <option value="Stealth">Stealth</option>
+                <option value="Seed">Seed</option>
+                <option value="Series A">Series A</option>
+                <option value="IPO">IPO</option>
+                <option value="Acquired">Acquired</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-save">Save Startup</button>
+        <a href="/">Cancel</a>
+    </form>
+</body>
+</html>

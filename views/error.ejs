@@ -6,9 +6,12 @@
     <h2 class="error-heading"><%= title %></h2>
     <div class="message error">
         <p><strong>Error:</strong> <%= message %></p>
-        <% if (typeof error !== 'undefined' && error && error.message) { %>
+        <% if (typeof error !== 'undefined' && error && (error.stack || error.message)) { %>
             <!-- Display detailed error message in development environment -->
             <p>Details: <%= error.message %></p>
+            <% if (error.stack) { %>
+                <pre><code><%= error.stack %></code></pre>
+            <% } %>
         <% } %>
     </div>
     <p>Please try again later or contact support if the issue persists.</p>

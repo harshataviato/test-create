@@ -7,18 +7,17 @@ const sqlite3 = require('sqlite3').verbose(); // Import sqlite3, using verbose m
 const path = require('path');                 // Import path module for resolving file paths
 const fs = require('fs');                     // Import fs module for file system operations
 
-/**
- * @constant {string} DB_PATH
- * @description The absolute path to the SQLite database file.
- *              The database file will be stored in the `db` directory.
- */
-const DB_PATH = path.join(__dirname, '..', 'db', 'tasks.db');
+let dbInstance = null; // Holds the single database instance
 
 /**
- * @constant {string} INIT_SCHEMA_SQL_PATH
- * @description The absolute path to the SQL script for initializing the database schema.
+ * @function getDbPath
+ * @description Determines the database file path based on the current environment.
+ * @returns {string} The absolute path to the SQLite database file.
  */
-const INIT_SCHEMA_SQL_PATH = path.join(__dirname, '..', 'db', 'init.sql');
+function getDbPath() {
+    const dbFileName = process.env.NODE_ENV === 'test' ? 'test_tasks.db' : 'tasks.db';
+    return path.join(__dirname, '..', 'db', dbFileName);
+}
 
 /**
  * @function connectDb
@@ -28,6 +27,7 @@ const INIT_SCHEMA_SQL_PATH = path.join(__dirname, '..', 'db', 'init.sql');
  */
 async function connectDb() {
     return new Promise((resolve, reject) => {
+        const DB_PATH = getDbPath(); // Use dynamic path here
         // Ensure the directory for the database exists
         const dbDir = path.dirname(DB_PATH);
         if (!fs.existsSync(dbDir)) {
@@ -43,7 +43,7 @@ async function connectDb() {
                 console.error('Error connecting to database:', err.message);
                 return reject(err);
             }
-            console.log('Connected to the SQLite database.');
+            console.log(`Connected to the SQLite database: ${DB_PATH}`);
 
             // Check if the database is new and needs schema initialization
             db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='tasks'", (err, row) => {
@@ -73,6 +73,7 @@ async function connectDb() {
  */
 async function initializeSchema(db) {
     return new Promise((resolve, reject) => {
+        const INIT_SCHEMA_SQL_PATH = path.join(__dirname, '..', 'db', 'init.sql');
         fs.readFile(INIT_SCHEMA_SQL_PATH, 'utf8', (err, sql) => {
             if (err) {
                 console.error('Error reading init.sql:', err.message);
@@ -97,13 +98,48 @@ async function initializeSchema(db) {
  *              It ensures that the database is connected and initialized before returning the instance.
  * @returns {Promise<sqlite3.Database>} A promise that resolves with the database instance.
  */
-let dbInstance = null; // Holds the single database instance
-
 async function getDb() {
     if (!dbInstance) {
         dbInstance = await connectDb();
     }
     return dbInstance;
+}
+
+/**
+ * @function closeDb
+ * @description Closes the active database connection.
+ * @returns {Promise<void>} A promise that resolves when the database connection is closed.
+ */
+async function closeDb() {
+    if (dbInstance) {
+        return new Promise((resolve, reject) => {
+            dbInstance.close((err) => {
+                if (err) {
+                    console.error('Error closing database:', err.message);
+                    return reject(err);
+                }
+                console.log('Closed the SQLite database connection.');
+                dbInstance = null; // Clear the instance
+                resolve();
+            });
+        });
+    }
+    return Promise.resolve(); // If no instance, resolve immediately
+}
+
+/**
+ * @function deleteTestDbFile
+ * @description Deletes the test database file if NODE_ENV is 'test'.
+ * @returns {void}
+ */
+function deleteTestDbFile() {
+    if (process.env.NODE_ENV === 'test') {
+        const testDbPath = getDbPath();
+        if (fs.existsSync(testDbPath)) {
+            console.log(`Deleting test database file: ${testDbPath}`);
+            fs.unlinkSync(testDbPath);
+        }
+    }
 }
 
 // If this script is run directly (e.g., via `npm run db:init`), connect and initialize.
@@ -115,5 +151,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-    getDb
+    getDb,
+    closeDb,
+    deleteTestDbFile
 };

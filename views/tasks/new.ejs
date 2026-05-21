@@ -14,12 +14,12 @@
     <div>
         <label for="title">Task Title:</label>
         <!-- The 'value' attribute is pre-filled if 'task.title' exists (e.g., after a validation error) -->
-        <input type="text" id="title" name="title" value="<%= typeof task !== 'undefined' ? task.title : '' %>" required>
+        <input type="text" id="title" name="title" value="<%= typeof task !== 'undefined' && task ? task.title : '' %>" required>
     </div>
     <div>
         <label for="description">Description:</label>
         <!-- The content inside textarea tags is pre-filled -->
-        <textarea id="description" name="description" rows="5"><%= typeof task !== 'undefined' ? task.description : '' %></textarea>
+        <textarea id="description" name="description" rows="5"><%= typeof task !== 'undefined' && task ? task.description : '' %></textarea>
     </div>
     <div>
         <button type="submit" class="btn">Create Task</button>

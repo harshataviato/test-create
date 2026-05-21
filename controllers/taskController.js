@@ -19,7 +19,7 @@ exports.getAllTasks = async (req, res) => {
         res.render('tasks/index', { title: 'All Tasks', tasks: tasks }); // Render the tasks index view with data
     } catch (error) {
         console.error('Error fetching tasks:', error);
-        res.status(500).render('error', { title: 'Error', message: 'Failed to load tasks.', error: error });
+        res.status(500).render('error', { title: 'Error', message: 'Failed to load tasks.', error: process.env.NODE_ENV === 'development' ? error : {} });
     }
 };
 
@@ -45,10 +45,10 @@ exports.createTask = async (req, res) => {
     const { title, description } = req.body; // Extract title and description from the request body
 
     // Basic validation for title presence
-    if (!title) {
+    if (!title || typeof title !== 'string' || title.trim() === '') {
         return res.status(400).render('tasks/new', {
             title: 'Create New Task',
-            error: 'Title is required.',
+            error: 'Title is required and cannot be empty.',
             task: { title, description } // Pass back entered data for user convenience
         });
     }
@@ -61,7 +61,8 @@ exports.createTask = async (req, res) => {
         res.status(500).render('tasks/new', { // Render the form again with an error message
             title: 'Create New Task',
             error: 'Failed to create task.',
-            task: { title, description } // Keep user input in the form
+            task: { title, description }, // Keep user input in the form
+            errorDetails: process.env.NODE_ENV === 'development' ? error : {}
         });
     }
 };
@@ -77,20 +78,20 @@ exports.getEditTaskForm = async (req, res) => {
     const taskId = parseInt(req.params.id, 10); // Get task ID from URL parameters and convert to integer
 
     // Validate if taskId is a valid number
-    if (isNaN(taskId)) {
-        return res.status(400).render('error', { title: 'Error', message: 'Invalid Task ID provided.' });
+    if (isNaN(taskId) || taskId <= 0) {
+        return res.status(400).render('error', { title: 'Error', message: 'Invalid Task ID provided.', error: {} });
     }
 
     try {
         const task = await Task.findById(taskId); // Find the task by its ID
         if (!task) {
             // If task is not found, redirect or show a 404 page
-            return res.status(404).render('error', { title: 'Task Not Found', message: `Task with ID ${taskId} not found.` });
+            return res.status(404).render('error', { title: 'Task Not Found', message: `Task with ID ${taskId} not found.`, error: {} });
         }
         res.render('tasks/edit', { title: `Edit Task: ${task.title}`, task: task }); // Render the edit form with task data
     } catch (error) {
         console.error(`Error fetching task ${taskId} for edit:`, error);
-        res.status(500).render('error', { title: 'Error', message: 'Failed to load task for editing.', error: error });
+        res.status(500).render('error', { title: 'Error', message: 'Failed to load task for editing.', error: process.env.NODE_ENV === 'development' ? error : {} });
     }
 };
 
@@ -109,15 +110,33 @@ exports.updateTask = async (req, res) => {
     const isCompleted = completed === 'on' ? true : false;
 
     // Basic validation for taskId and title
-    if (isNaN(taskId) || !title) {
-        return res.status(400).render('error', { title: 'Error', message: 'Invalid Task ID or missing title.' });
+    if (isNaN(taskId) || taskId <= 0) {
+        return res.status(400).render('error', { title: 'Error', message: 'Invalid Task ID provided for update.', error: {} });
+    }
+    if (!title || typeof title !== 'string' || title.trim() === '') {
+        // Need to fetch the existing task to pre-fill the form if validation fails
+        let existingTask = { id: taskId, title: '', description: '', completed: isCompleted };
+        try {
+            const taskFound = await Task.findById(taskId);
+            if (taskFound) {
+                existingTask = { ...taskFound, title, description, completed: isCompleted }; // Pre-fill with new data where available, otherwise old
+            }
+        } catch (fetchError) {
+            console.warn(`Could not fetch task ${taskId} to re-render form after validation error:`, fetchError.message);
+        }
+
+        return res.status(400).render('tasks/edit', {
+            title: `Edit Task: ${existingTask.title || 'Error'}`,
+            error: 'Title is required and cannot be empty.',
+            task: existingTask // Pass back entered data for user convenience
+        });
     }
 
     try {
         const updated = await Task.update(taskId, title, description, isCompleted); // Update the task
         if (!updated) {
             // If update returns false, it means the task was not found
-            return res.status(404).render('error', { title: 'Task Not Found', message: `Task with ID ${taskId} not found for update.` });
+            return res.status(404).render('error', { title: 'Task Not Found', message: `Task with ID ${taskId} not found for update.`, error: {} });
         }
         res.redirect('/tasks'); // Redirect to the list of tasks after successful update
     } catch (error) {
@@ -126,7 +145,8 @@ exports.updateTask = async (req, res) => {
         res.status(500).render('tasks/edit', {
             title: `Edit Task: ${title}`,
             error: 'Failed to update task.',
-            task: { id: taskId, title, description, completed: isCompleted } // Pass back entered data
+            task: { id: taskId, title, description, completed: isCompleted }, // Pass back entered data
+            errorDetails: process.env.NODE_ENV === 'development' ? error : {}
         });
     }
 };
@@ -142,19 +162,19 @@ exports.deleteTask = async (req, res) => {
     const taskId = parseInt(req.params.id, 10); // Get task ID from URL parameters
 
     // Validate if taskId is a valid number
-    if (isNaN(taskId)) {
-        return res.status(400).render('error', { title: 'Error', message: 'Invalid Task ID provided for deletion.' });
+    if (isNaN(taskId) || taskId <= 0) {
+        return res.status(400).render('error', { title: 'Error', message: 'Invalid Task ID provided for deletion.', error: {} });
     }
 
     try {
         const deleted = await Task.delete(taskId); // Delete the task
         if (!deleted) {
             // If delete returns false, it means the task was not found
-            return res.status(404).render('error', { title: 'Task Not Found', message: `Task with ID ${taskId} not found for deletion.` });
+            return res.status(404).render('error', { title: 'Task Not Found', message: `Task with ID ${taskId} not found for deletion.`, error: {} });
         }
         res.redirect('/tasks'); // Redirect to the list of tasks after successful deletion
     } catch (error) {
         console.error(`Error deleting task with ID ${taskId}:`, error);
-        res.status(500).render('error', { title: 'Error', message: 'Failed to delete task.', error: error });
+        res.status(500).render('error', { title: 'Error', message: 'Failed to delete task.', error: process.env.NODE_ENV === 'development' ? error : {} });
     }
 };

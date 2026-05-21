@@ -18,14 +18,14 @@
 <form action="/tasks/<%= task.id %>?_method=PUT" method="POST">
     <div>
         <label for="title">Task Title:</label>
-        <input type="text" id="title" name="title" value="<%= task.title %>" required>
+        <input type="text" id="title" name="title" value="<%= typeof task !== 'undefined' ? task.title : '' %>" required>
     </div>
     <div>
         <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="5"><%= task.description %></textarea>
+        <textarea id="description" name="description" rows="5"><%= typeof task !== 'undefined' ? task.description : '' %></textarea>
     </div>
     <div>
-        <input type="checkbox" id="completed" name="completed" <%= task.completed ? 'checked' : '' %>>
+        <input type="checkbox" id="completed" name="completed" <%= typeof task !== 'undefined' && task.completed ? 'checked' : '' %>>
         <label for="completed">Completed</label>
     </div>
     <div>

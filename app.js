@@ -97,7 +97,11 @@ app.use((err, req, res, next) => {
  * @param {number} PORT - The port number to listen on.
  * @param {function} callback - A function to execute once the server starts successfully.
  */
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
 
+// Export the app for testing purposes
+module.exports = app;

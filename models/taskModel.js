@@ -12,10 +12,10 @@ const { getDb } = require('../config/db'); // Import the database connection uti
 class Task {
     /**
      * @constructor
+     * @param {number} [id] - The unique identifier of the task (optional, for existing tasks).
      * @param {string} title - The title of the task.
      * @param {string} description - The description of the task.
      * @param {boolean} completed - The completion status of the task (true/false).
-     * @param {number} [id] - The unique identifier of the task (optional, for existing tasks).
      * @param {string} [createdAt] - The timestamp when the task was created (optional).
      * @param {string} [updatedAt] - The timestamp when the task was last updated (optional).
      */

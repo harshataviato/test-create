@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task App | <%= title %></title>
+    <!-- Basic CSS styling for a clean look -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        header h1 {
+            margin: 0;
+            border-bottom: none;
+        }
+        nav ul {
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #ccc;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #777;
+            border-top: 1px solid #eee;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .btn {
+            display: inline-block;
+            background: #007bff;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-right: 5px;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        form {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        form input[type="text"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        form input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        form button {
+            margin-top: 10px;
+        }
+        .task-item {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-item.completed {
+            background: #e6ffe6; /* Light green for completed tasks */
+            border-left: 5px solid #28a745; /* Green border */
+        }
+        .task-item .task-details {
+            flex-grow: 1;
+        }
+        .task-item .task-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .task-item .task-description {
+            color: #555;
+            font-size: 0.9em;
+        }
+        .task-item .task-actions {
+            margin-left: 20px;
+            white-space: nowrap; /* Prevent buttons from wrapping */
+        }
+        .task-item .task-actions form {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            background: none;
+        }
+        .task-item .task-actions .btn {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Task Management App</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/tasks">View Tasks</a></li>
+                    <li><a href="/tasks/new">Add New Task</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Render specific view content here -->
+        <%- body %>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <%= new Date().getFullYear() %> Task App. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<%- layout('layout') %>
+<!-- views/tasks/edit.ejs -->
+<!-- This view provides a form for editing an existing task. -->
+
+<h2><%= title %></h2>
+
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="message error">
+        <%= error %>
+    </div>
+<% } %>
+
+<!--
+    The form action uses a query parameter `_method=PUT` which, along with the `method-override` middleware,
+    allows this POST request to be interpreted as a PUT request by Express.
+    This is necessary because HTML forms only support GET and POST methods natively.
+-->
+<form action="/tasks/<%= task.id %>?_method=PUT" method="POST">
+    <div>
+        <label for="title">Task Title:</label>
+        <input type="text" id="title" name="title" value="<%= task.title %>" required>
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="5"><%= task.description %></textarea>
+    </div>
+    <div>
+        <input type="checkbox" id="completed" name="completed" <%= task.completed ? 'checked' : '' %>>
+        <label for="completed">Completed</label>
+    </div>
+    <div>
+        <button type="submit" class="btn">Update Task</button>
+        <a href="/tasks" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

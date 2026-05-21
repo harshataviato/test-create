@@ -1,0 +1,17 @@
+<%- layout('layout') %>
+<!-- views/error.ejs -->
+<!-- This view displays general error messages. -->
+
+<div class="container">
+    <h2 class="error-heading"><%= title %></h2>
+    <div class="message error">
+        <p><strong>Error:</strong> <%= message %></p>
+        <% if (typeof error !== 'undefined' && error && error.message) { %>
+            <!-- Display detailed error message in development environment -->
+            <p>Details: <%= error.message %></p>
+        <% } %>
+    </div>
+    <p>Please try again later or contact support if the issue persists.</p>
+    <p><a href="/" class="btn">Go to Home</a></p>
+    <p><a href="/tasks" class="btn btn-secondary">View Tasks</a></p>
+</div>

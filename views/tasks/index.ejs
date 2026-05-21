@@ -1,0 +1,40 @@
+<%- layout('layout') %>
+<!-- views/tasks/index.ejs -->
+<!-- This view displays a list of all tasks. -->
+
+<h2><%= title %></h2>
+
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="message error">
+        <%= error %>
+    </div>
+<% } %>
+
+<p><a href="/tasks/new" class="btn">Add New Task</a></p>
+
+<% if (tasks && tasks.length > 0) { %>
+    <div class="task-list">
+        <% tasks.forEach(task => { %>
+            <div class="task-item <%= task.completed ? 'completed' : '' %>">
+                <div class="task-details">
+                    <div class="task-title"><%= task.title %></div>
+                    <div class="task-description"><%= task.description %></div>
+                    <small>Created: <%= new Date(task.createdAt).toLocaleString() %></small><br>
+                    <small>Last Updated: <%= new Date(task.updatedAt).toLocaleString() %></small>
+                </div>
+                <div class="task-actions">
+                    <a href="/tasks/<%= task.id %>/edit" class="btn btn-secondary">Edit</a>
+                    <!--
+                        Using method-override for DELETE request.
+                        The hidden input '_method' with value 'DELETE' tells method-override to treat this POST request as a DELETE.
+                    -->
+                    <form action="/tasks/<%= task.id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this task?');">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <p>No tasks found. Why not <a href="/tasks/new">add a new one</a>?</p>
+<% } %>

@@ -7,16 +7,19 @@ const { getDb, closeDb, deleteTestDbFile } = require('../../config/db');
 describe('Database Configuration', () => {
     const TEST_DB_PATH = path.join(__dirname, '../../db', 'test_tasks.db');
     const INIT_SQL_PATH = path.join(__dirname, '../../db', 'init.sql');
+    let originalNodeEnv;
 
     beforeEach(() => {
+        originalNodeEnv = process.env.NODE_ENV;
         process.env.NODE_ENV = 'test';
-        deleteTestDbFile(); // Ensure a clean slate
+        deleteTestDbFile(); // Ensure a clean slate before each test
     });
 
     afterEach(async () => {
         await closeDb(); // Close connection
         deleteTestDbFile(); // Delete the test database file
-        delete process.env.NODE_ENV; // Clean up env variable
+        process.env.NODE_ENV = originalNodeEnv; // Restore original env variable
+        sinon.restore(); // Clean up any stubs
     });
 
     it('should connect to the test database and initialize schema if it does not exist', async () => {
@@ -34,6 +37,15 @@ describe('Database Configuration', () => {
             });
         });
         expect(tableExists).to.be.true;
+
+        // Verify that the 'update_tasks_updated_at' trigger exists
+        const triggerExists = await new Promise((resolve, reject) => {
+            db.get("SELECT name FROM sqlite_master WHERE type='trigger' AND name='update_tasks_updated_at'", (err, row) => {
+                if (err) return reject(err);
+                resolve(!!row);
+            });
+        });
+        expect(triggerExists).to.be.true;
     });
 
     it('should return the same database instance on subsequent calls to getDb (singleton)', async () => {
@@ -54,11 +66,22 @@ describe('Database Configuration', () => {
         expect(db).to.exist;
         expect(consoleLogSpy.calledWithMatch('Tasks table already exists. Database ready.')).to.be.true;
         expect(consoleLogSpy.calledWithMatch('Initializing schema...')).to.be.false;
-
-        consoleLogSpy.restore();
     });
 
-    it('should handle errors during database connection', async () => {
+    it('should handle errors during database connection (e.g., bad path)', async () => {
+        // Temporarily modify getDbPath to return a bad path
+        sinon.stub(path, 'join').callThrough();
+        path.join.withArgs(__dirname, '..', 'db', sinon.match.string).returns('/nonexistent/path/test.db');
+
+        try {
+            await getDb();
+            expect.fail('Expected getDb to throw an error due to bad connection path');
+        } catch (error) {
+            expect(error.message).to.include('unable to open database file');
+        }
+    });
+
+    it('should handle errors when init.sql is missing during schema initialization', async () => {
         // Temporarily rename init.sql to simulate missing file
         const tempInitSqlPath = INIT_SQL_PATH + '.temp';
         fs.renameSync(INIT_SQL_PATH, tempInitSqlPath);
@@ -68,18 +91,21 @@ describe('Database Configuration', () => {
             expect.fail('Expected getDb to throw an error due to missing init.sql');
         } catch (error) {
             expect(error.message).to.include('Error reading init.sql');
+            expect(error.message).to.include('ENOENT'); // File not found error code
         } finally {
             fs.renameSync(tempInitSqlPath, INIT_SQL_PATH); // Restore the file
         }
     });
 
     it('should handle errors during schema initialization (bad SQL)', async () => {
-        const originalReadFile = fs.readFile;
-        sinon.stub(fs, 'readFile').callsFake((path, encoding, callback) => {
-            if (path === INIT_SQL_PATH) {
-                callback(null, 'CREATE TABLE tasks (id INTEGER PRIMARY KEY, bad_column_type BLOB NOT NULL);'); // Bad SQL
+        // Stub fs.readFile to return malformed SQL for init.sql
+        sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
+            if (filePath === INIT_SQL_PATH) {
+                // Provide intentionally bad SQL
+                callback(null, 'CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT NOT NULL, completed BOOLEAN DEFAULT 0, created_at DATETIME, updated_at DATETIME); INSERT INTO bad_table (col) VALUES (1);');
             } else {
-                originalReadFile(path, encoding, callback);
+                // Call original function for other files
+                sinon.wrappedMethod.apply(fs, [filePath, encoding, callback]);
             }
         });
 
@@ -88,8 +114,7 @@ describe('Database Configuration', () => {
             expect.fail('Expected getDb to throw an error due to bad SQL');
         } catch (error) {
             expect(error.message).to.include('Error initializing database schema');
-        } finally {
-            fs.readFile.restore();
+            expect(error.message).to.include('no such table: bad_table');
         }
     });
 
@@ -101,15 +126,15 @@ describe('Database Configuration', () => {
         await closeDb();
 
         expect(closeSpy.calledOnce).to.be.true;
-        closeSpy.restore();
-        // Subsequent getDb should create a new instance
+        // Subsequent getDb should create a new instance as dbInstance was nulled
         const newDb = await getDb();
-        expect(newDb).to.not.equal(db);
+        expect(newDb).to.not.equal(db); // Verify it's a new instance
     });
 
     it('should not throw error if closeDb is called when no connection is open', async () => {
-        // Ensure no connection is open
+        // Ensure no connection is open by closing it first if it was
         await closeDb();
+        // Calling closeDb again should not throw
         await expect(closeDb()).to.not.be.rejected;
     });
 
@@ -123,7 +148,7 @@ describe('Database Configuration', () => {
 
     it('should do nothing if deleteTestDbFile is called when file does not exist', async () => {
         expect(fs.existsSync(TEST_DB_PATH)).to.be.false;
-        deleteTestDbFile(); // Should not throw
+        deleteTestDbFile(); // Should not throw an error
         expect(fs.existsSync(TEST_DB_PATH)).to.be.false;
     });
 });

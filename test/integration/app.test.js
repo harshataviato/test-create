@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const app = require('../../app');
 const Task = require('../../models/taskModel');
 const { getDb, closeDb, deleteTestDbFile } = require('../../config/db');
+const path = require('path'); // Required for route cleanup
 
 describe('Application Integration Tests', () => {
     let agent;

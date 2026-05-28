@@ -25,7 +25,7 @@ describe('Database Configuration', () => {
     });
 
     afterEach(async () => {
-        sinon.restore(); // Clean up any sinon stubs
+        sinon.restore(); // Clean up any stubs
         await closeDb(); // Close connection
         await deleteTestDbFile(); // Delete the test database file
         process.env.NODE_ENV = originalNodeEnv; // Restore original env variable
@@ -105,19 +105,28 @@ describe('Database Configuration', () => {
         await closeDb();
         // Ensure the dbInstance is nullified for the next getDb call to trigger schema init
         // (repeated to ensure consistency in case of specific test run order)
-        let { closeDb: rawCloseDb } = require('../../config/db');
+        const { closeDb: rawCloseDb } = require('../../config/db'); // Re-require to get fresh instance access if needed
         await rawCloseDb(); 
 
         // Temporarily rename init.sql to simulate a missing file
+        const originalReadFile = fs.readFile; // Keep original for restoration
         const tempInitSqlPath = INIT_SQL_PATH + '.temp';
+        
+        // Ensure the file exists before attempting to rename it
+        if (!fs.existsSync(INIT_SQL_PATH)) {
+            // Create a dummy init.sql if it doesn't exist for the rename to work
+            fs.writeFileSync(INIT_SQL_PATH, '-- dummy sql');
+        }
+
         let renameSucceeded = false;
         try {
             fs.renameSync(INIT_SQL_PATH, tempInitSqlPath);
             renameSucceeded = true;
             const consoleErrorSpy = sinon.spy(console, 'error');
 
-            await expect(getDb()).to.be.rejectedWith('ENOENT');
+            await expect(getDb()).to.be.rejectedWith(sinon.match.has('message', sinon.match(/ENOENT/)));
             expect(consoleErrorSpy.calledWithMatch('Error reading init.sql:')).to.be.true;
+            consoleErrorSpy.restore();
             
         } finally {
             // Restore the file even if test fails
@@ -132,10 +141,10 @@ describe('Database Configuration', () => {
         await getDb();
         await closeDb();
         // Ensure dbInstance is truly cleared
-        let { closeDb: rawCloseDb } = require('../../config/db');
+        const { closeDb: rawCloseDb } = require('../../config/db'); // Re-require to get fresh instance access if needed
         await rawCloseDb(); 
 
-        const originalFsReadFile = fs.readFile; // Keep original for restoration in stub
+        const originalFsReadFile = fs.readFile; // Keep reference to original fs.readFile
         sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
             if (filePath === INIT_SQL_PATH) {
                 // Provide intentionally bad SQL that db.exec will choke on
@@ -146,7 +155,7 @@ describe('Database Configuration', () => {
         });
         const consoleErrorSpy = sinon.spy(console, 'error');
 
-        await expect(getDb()).to.be.rejectedWith('SQLITE_ERROR: no such table: non_existent_table');
+        await expect(getDb()).to.be.rejectedWith(sinon.match.has('message', sinon.match(/SQLITE_ERROR: no such table: non_existent_table/)));
         expect(consoleErrorSpy.calledWithMatch('Error initializing database schema:')).to.be.true;
         consoleErrorSpy.restore();
     });

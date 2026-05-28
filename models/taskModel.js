@@ -49,7 +49,7 @@ class Task {
                     return reject(new Error('Could not create task.'));
                 }
                 // Fetch the newly created task to get all its properties including timestamps
-                // `this.lastID` is the ID of the last inserted row, available via `function` keyword
+                // `this.lastID` contains the ID of the last inserted row, available via `function` keyword
                 Task.findById(this.lastID)
                     .then(resolve)
                     .catch(reject);

@@ -56,6 +56,11 @@ app.set('views', path.join(__dirname, 'views'));
  */
 app.use(expressLayouts);
 
+/**
+ * @description Set the default layout file for express-ejs-layouts.
+ */
+app.set('layout', 'layout'); // Explicitly set the default layout file
+
 // --- Routes Setup ---
 
 /**

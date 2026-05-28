@@ -48,9 +48,11 @@ class Task {
                     console.error('Error creating task:', err.message);
                     return reject(new Error('Could not create task.'));
                 }
-                // 'this.lastID' contains the ID of the last inserted row
-                // 'this.changes' contains the number of rows changed (should be 1 for insert)
-                resolve(new Task(this.lastID, title, description, completed));
+                // Fetch the newly created task to get all its properties including timestamps
+                // `this.lastID` is the ID of the last inserted row, available via `function` keyword
+                Task.findById(this.lastID)
+                    .then(resolve)
+                    .catch(reject);
             });
         });
     }

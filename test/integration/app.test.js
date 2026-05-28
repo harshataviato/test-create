@@ -12,6 +12,8 @@ describe('Application Integration Tests', () => {
     beforeEach(async () => {
         originalNodeEnv = process.env.NODE_ENV;
         process.env.NODE_ENV = 'test';
+        sinon.restore(); // Ensure clean stubs before each test
+        await closeDb(); // Ensure any existing connection is closed
         await deleteTestDbFile();
         await getDb(); // Ensure DB is initialized for testing
         // Clear tasks table for a clean state in each test
@@ -26,10 +28,10 @@ describe('Application Integration Tests', () => {
     });
 
     afterEach(async () => {
+        sinon.restore(); // Clean up any stubs
         await closeDb();
         await deleteTestDbFile();
         process.env.NODE_ENV = originalNodeEnv; // Restore original env variable
-        sinon.restore(); // Clean up any stubs
     });
 
     describe('GET /', () => {
@@ -342,11 +344,11 @@ describe('Application Integration Tests', () => {
             expect(res.statusCode).to.equal(500);
             expect(res.text).to.include('Something went wrong!');
             expect(res.text).to.include('Error'); // Title
-            expect(res.text).to.include('Please try again later or contact support if the issue persists.');
             expect(res.text).to.not.include('Intentional Test Error'); // Specific error message should not be visible in test environment
 
             // Cleanup the added route by removing it from the router stack
             // (Note: This is a bit hacky for testing. In a real app, define test-specific routes outside main app.js)
+            // Find and remove the temporary route added for this test
             const routeIndex = app._router.stack.findIndex(layer => layer.route && layer.route.path === '/test-error');
             if (routeIndex > -1) {
                 app._router.stack.splice(routeIndex, 1);

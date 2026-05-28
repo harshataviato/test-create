@@ -85,8 +85,8 @@ describe('Task Model', () => {
         it('should handle database errors gracefully during creation', async () => {
             // Temporarily break the `run` method of the DB
             const dbRunStub = sinon.stub(db, 'run');
-            // db.run is called with (sql, params, callback). Callback is the 3rd arg (index 2).
-            dbRunStub.callsArgWith(2, new Error('Simulated DB error during insert')); // Call callback with error
+            // Use .yields() which is more robust for callback errors regardless of argument count variations
+            dbRunStub.yields(new Error('Simulated DB error during insert')); 
 
             try {
                 await Task.create('Failing Task', 'This should fail');
@@ -257,8 +257,7 @@ describe('Task Model', () => {
         it('should handle database errors gracefully during update', async () => {
             // Temporarily break the `run` method of the DB
             const dbRunStub = sinon.stub(db, 'run');
-            // db.run is called with (sql, params, callback). Callback is the 3rd arg (index 2).
-            dbRunStub.callsArgWith(2, new Error('Simulated DB error during update'));
+            dbRunStub.yields(new Error('Simulated DB error during update'));
 
             try {
                 await Task.update(taskToUpdate.id, 'Failing Update', 'Desc', true);
@@ -298,8 +297,7 @@ describe('Task Model', () => {
         it('should handle database errors gracefully during deletion', async () => {
             // Temporarily break the `run` method of the DB
             const dbRunStub = sinon.stub(db, 'run');
-            // db.run is called with (sql, params, callback). Callback is the 3rd arg (index 2).
-            dbRunStub.callsArgWith(2, new Error('Simulated DB error during delete'));
+            dbRunStub.yields(new Error('Simulated DB error during delete'));
 
             try {
                 await Task.delete(taskToDelete.id);

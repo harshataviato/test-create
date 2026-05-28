@@ -1,13 +1,20 @@
 #!/bin/bash
 
 # Navigate to the project root directory
+# Assuming the codebase is located at /tmp0ckw981m/
 echo "Navigating to /tmp0ckw981m/"
 cd /tmp0ckw981m/
+
+# Check if the directory change was successful
+if [ $? -ne 0 ]; then
+  echo "Error: Failed to change directory to /tmp0ckw981m/. Please ensure the codebase is at this path."
+  exit 1
+fi
 
 # Step 1: Install Node.js dependencies
 # This command reads the package.json file and installs all listed
 # 'dependencies' and 'devDependencies'. This includes Express, EJS,
-# SQLite3, method-override, and test utilities like Mocha, Chai, Sinon, and Supertest.
+# SQLite3, method-override, express-ejs-layouts, and test utilities like Mocha, Chai, Sinon, and Supertest.
 echo "Installing Node.js dependencies..."
 npm install
 

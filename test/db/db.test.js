@@ -108,7 +108,7 @@ describe('Database Configuration', () => {
             expect.fail('Expected getDb to throw an error due to missing init.sql');
         } catch (error) {
             // The error propagated from fs.readFile is 'ENOENT: no such file or directory'
-            expect(error.message).to.include('ENOENT: no such file or directory');
+            expect(error.message).to.include('ENOENT'); // Only check for ENOENT, as the full message can vary
         } finally {
             fs.renameSync(tempInitSqlPath, INIT_SQL_PATH); // Restore the file
         }
@@ -118,16 +118,15 @@ describe('Database Configuration', () => {
         // First ensure DB is setup, then close it for next `getDb` call to re-init
         await getDb();
         await closeDb();
+        await deleteTestDbFile(); // delete so it will re-initialize
 
-        const readFileStub = sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
+        const originalReadFile = fs.readFile; // Keep reference to original fs.readFile
+        sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
             if (filePath === INIT_SQL_PATH) {
-                // Provide intentionally bad SQL
-                callback(null, 'CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT NOT NULL, completed BOOLEAN DEFAULT 0, created_at DATETIME, updated_at DATETIME); INSERT INTO bad_table (col) VALUES (1);');
+                // Provide intentionally bad SQL that db.exec will choke on
+                callback(null, 'CREATE TABLE bad_table_syntax (id INTEGER PRIMARY KEY, title TEXT NOT NULL); INSERT INTO non_existent_table (col) VALUES (1);');
             } else {
-                // For any other file paths, use the original readFile
-                sinon.restore(); // Restore fs.readFile to avoid infinite recursion or unexpected behavior
-                fs.readFile(filePath, encoding, callback);
-                readFileStub = sinon.stub(fs, 'readFile').callsFake(readFileStub.wrappedMethod); // Re-stub with original method
+                originalReadFile(filePath, encoding, callback); // Use original for other files
             }
         });
 
@@ -136,7 +135,8 @@ describe('Database Configuration', () => {
             expect.fail('Expected getDb to throw an error due to bad SQL');
         } catch (error) {
             // The error propagated from db.exec will be SQLITE_ERROR
-            expect(error.message).to.include('SQLITE_ERROR: no such table: bad_table');
+            expect(error.message).to.include('SQLITE_ERROR');
+            expect(error.message).to.include('no such table: non_existent_table');
         }
     });
 
@@ -156,8 +156,8 @@ describe('Database Configuration', () => {
     it('should not throw error if closeDb is called when no connection is open', async () => {
         // Ensure no connection is open by closing it first if it was
         await closeDb();
-        // Calling closeDb again should not throw
-        await closeDb(); // This line should execute without rejecting
+        // Calling closeDb again should not throw, simply resolve
+        await closeDb(); 
     });
 
     it('should delete the test database file', async () => {

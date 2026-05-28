@@ -218,8 +218,8 @@ describe('Task Model', () => {
         });
 
         it('should update an existing task successfully', async () => {
-            // Wait for a second to ensure CURRENT_TIMESTAMP produces a different value
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Wait for a short period to ensure CURRENT_TIMESTAMP generates a different value upon update
+            await new Promise(resolve => setTimeout(resolve, 50)); 
             
             const updated = await Task.update(taskToUpdate.id, 'New Title', 'New Description', true);
             expect(updated).to.be.true;
@@ -229,8 +229,8 @@ describe('Task Model', () => {
             expect(foundTask.description).to.equal('New Description');
             expect(foundTask.completed).to.be.true;
             // Check that updatedAt is indeed different from createdAt
-            expect(foundTask.updatedAt).to.not.equal(taskToUpdate.createdAt); // Compare to original created task's createdAt
-            // Optionally, check that updatedAt is later than createdAt
+            expect(foundTask.updatedAt).to.not.equal(taskToUpdate.createdAt); 
+            // Ensure updatedAt is a later timestamp than createdAt
             expect(new Date(foundTask.updatedAt).getTime()).to.be.greaterThan(new Date(taskToUpdate.createdAt).getTime());
         });
 

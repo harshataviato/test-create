@@ -7,6 +7,7 @@
 const express = require('express'); // Import the Express framework
 const path = require('path');       // Import the path module for working with file and directory paths
 const methodOverride = require('method-override'); // Import method-override for PUT and DELETE requests from forms
+const expressLayouts = require('express-ejs-layouts'); // Import express-ejs-layouts for EJS layouts
 const taskRoutes = require('./routes/taskRoutes'); // Import task routes
 
 const app = express(); // Create an Express application instance
@@ -48,6 +49,12 @@ app.set('view engine', 'ejs');
  *              `path.join(__dirname, 'views')` ensures the views directory is found correctly.
  */
 app.set('views', path.join(__dirname, 'views'));
+
+/**
+ * @function expressLayouts
+ * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
+ */
+app.use(expressLayouts);
 
 // --- Routes Setup ---
 

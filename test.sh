@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Navigate to the project root directory
-# The codebase is specified to be in /tmp0ckw981m/ (meaning /tmp/tmp0ckw981m/)
-echo "Navigating to /tmp/tmp0ckw981m/"
-cd /tmp/tmp0ckw981m/
+# The codebase is specified to be in /tmp/tmpc4dw_b02/
+echo "Navigating to /tmp/tmpc4dw_b02/"
+cd /tmp/tmpc4dw_b02/
 
 # Check if the directory change was successful
 if [ $? -ne 0 ]; then
-  echo "Error: Failed to change directory to /tmp/tmp0ckw981m/. Please ensure the codebase is at this path."
+  echo "Error: Failed to change directory to /tmp/tmpc4dw_b02/. Please ensure the codebase is at this path."
   exit 1
 fi
 

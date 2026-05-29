@@ -13,6 +13,30 @@ const taskRoutes = require('./routes/taskRoutes'); // Import task routes
 const app = express(); // Create an Express application instance
 const PORT = process.env.PORT || 3000; // Define the port the server will listen on
 
+// --- View Engine Setup (should be done early) ---
+
+/**
+ * @description Set EJS as the template engine for rendering views.
+ */
+app.set('view engine', 'ejs');
+
+/**
+ * @description Specify the directory where the view templates are located.
+ *              `path.join(__dirname, 'views')` ensures the views directory is found correctly.
+ */
+app.set('views', path.join(__dirname, 'views'));
+
+/**
+ * @function expressLayouts
+ * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
+ */
+app.use(expressLayouts);
+
+/**
+ * @description Set the default layout file for express-ejs-layouts.
+ */
+app.set('layout', 'layout'); // Explicitly set the default layout file
+
 // --- Middleware Setup ---
 
 /**
@@ -37,29 +61,6 @@ app.use(methodOverride('_method'));
  */
 app.use(express.static(path.join(__dirname, 'public')));
 
-// --- View Engine Setup ---
-
-/**
- * @description Set EJS as the template engine for rendering views.
- */
-app.set('view engine', 'ejs');
-
-/**
- * @description Specify the directory where the view templates are located.
- *              `path.join(__dirname, 'views')` ensures the views directory is found correctly.
- */
-app.set('views', path.join(__dirname, 'views'));
-
-/**
- * @function expressLayouts
- * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
- */
-app.use(expressLayouts);
-
-/**
- * @description Set the default layout file for express-ejs-layouts.
- */
-app.set('layout', 'layout'); // Explicitly set the default layout file
 
 // --- Routes Setup ---
 
@@ -117,4 +118,3 @@ if (require.main === module) {
 
 // Export the app for testing purposes
 module.exports = app;
-

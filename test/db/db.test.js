@@ -15,17 +15,33 @@ describe('Database Configuration', () => {
     const TEST_DB_PATH = path.join(__dirname, '../../db', 'test_tasks.db');
     const INIT_SQL_PATH = path.join(__dirname, '../../db', 'init.sql');
     let originalNodeEnv;
+    let originalFsReadFile; // To store original fs.readFile
+    let originalSqlite3Database; // To store original sqlite3.Database
 
     beforeEach(async () => {
         originalNodeEnv = process.env.NODE_ENV;
         process.env.NODE_ENV = 'test';
         sinon.restore(); // Ensure all stubs are restored from previous tests
+
+        // Store original functions before any stubs are applied
+        originalFsReadFile = fs.readFile;
+        originalSqlite3Database = sqlite3.Database;
+
         await closeDb(); // Ensure any existing connection is closed and dbInstance is null
         await deleteTestDbFile(); // Ensure a clean slate before each test
     });
 
     afterEach(async () => {
         sinon.restore(); // Clean up any stubs
+
+        // Explicitly restore original functions if they were stubbed
+        if (fs.readFile !== originalFsReadFile) {
+            fs.readFile = originalFsReadFile;
+        }
+        if (sqlite3.Database !== originalSqlite3Database) {
+            sqlite3.Database = originalSqlite3Database;
+        }
+
         await closeDb(); // Close connection
         await deleteTestDbFile(); // Delete the test database file
         process.env.NODE_ENV = originalNodeEnv; // Restore original env variable
@@ -79,9 +95,7 @@ describe('Database Configuration', () => {
     });
 
     it('should handle errors during database connection (e.g., bad path)', async () => {
-        // Stub the sqlite3.Database constructor to immediately call its callback with an error.
-        // This simulates a failure to open the database file due to permission issues or a bad path.
-        sinon.stub(sqlite3, 'Database').callsFake(function(filename, mode, callback) {
+        const dbStub = sinon.stub(sqlite3, 'Database').callsFake(function(filename, mode, callback) {
             if (typeof mode === 'function') { // Handle optional mode argument
                 callback = mode;
             }
@@ -96,68 +110,53 @@ describe('Database Configuration', () => {
         });
 
         // Use chai-as-promised for clearer assertion of promise rejection
-        await expect(getDb()).to.be.rejectedWith('unable to open database file: permission denied');
+        await expect(getDb()).to.be.rejectedWith(Error, 'unable to open database file: permission denied');
+        dbStub.restore(); // Restore the stub after the test
     });
 
     it('should handle errors when init.sql is missing during schema initialization', async () => {
-        // Establish initial connection so the DB file exists, then close it.
-        await getDb();
+        // Ensure the db is clean so initializeSchema is called
         await closeDb();
-        // Ensure the dbInstance is nullified for the next getDb call to trigger schema init
-        // (repeated to ensure consistency in case of specific test run order)
-        const { closeDb: rawCloseDb } = require('../../config/db'); // Re-require to get fresh instance access if needed
-        await rawCloseDb(); 
+        await deleteTestDbFile();
 
-        // Temporarily rename init.sql to simulate a missing file
-        const originalReadFile = fs.readFile; // Keep original for restoration
-        const tempInitSqlPath = INIT_SQL_PATH + '.temp';
-        
-        // Ensure the file exists before attempting to rename it
-        if (!fs.existsSync(INIT_SQL_PATH)) {
-            // Create a dummy init.sql if it doesn't exist for the rename to work
-            fs.writeFileSync(INIT_SQL_PATH, '-- dummy sql');
-        }
-
-        let renameSucceeded = false;
-        try {
-            fs.renameSync(INIT_SQL_PATH, tempInitSqlPath);
-            renameSucceeded = true;
-            const consoleErrorSpy = sinon.spy(console, 'error');
-
-            await expect(getDb()).to.be.rejectedWith(sinon.match.has('message', sinon.match(/ENOENT/)));
-            expect(consoleErrorSpy.calledWithMatch('Error reading init.sql:')).to.be.true;
-            consoleErrorSpy.restore();
-            
-        } finally {
-            // Restore the file even if test fails
-            if (renameSucceeded && fs.existsSync(tempInitSqlPath)) {
-                fs.renameSync(tempInitSqlPath, INIT_SQL_PATH); 
+        // Stub fs.readFile to simulate ENOENT for init.sql
+        const readFileStub = sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
+            if (filePath === INIT_SQL_PATH) {
+                const error = new Error(`ENOENT: no such file or directory, open '${filePath}'`);
+                error.code = 'ENOENT'; // Add code for more realistic error
+                return callback(error);
             }
-        }
+            return originalFsReadFile(filePath, encoding, callback); // Use original for other files
+        });
+        const consoleErrorSpy = sinon.spy(console, 'error');
+
+        await expect(getDb()).to.be.rejectedWith(Error, /ENOENT/);
+        expect(consoleErrorSpy.calledWithMatch('Error reading init.sql:')).to.be.true;
+        
+        consoleErrorSpy.restore();
+        readFileStub.restore(); // Restore stub
     });
 
     it('should handle errors during schema initialization (bad SQL)', async () => {
-        // Establish initial connection, then close it to force re-initialization
-        await getDb();
+        // Ensure the db is clean so initializeSchema is called
         await closeDb();
-        // Ensure dbInstance is truly cleared
-        const { closeDb: rawCloseDb } = require('../../config/db'); // Re-require to get fresh instance access if needed
-        await rawCloseDb(); 
+        await deleteTestDbFile();
 
-        const originalFsReadFile = fs.readFile; // Keep reference to original fs.readFile
-        sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
+        const readFileStub = sinon.stub(fs, 'readFile').callsFake((filePath, encoding, callback) => {
             if (filePath === INIT_SQL_PATH) {
                 // Provide intentionally bad SQL that db.exec will choke on
                 callback(null, 'CREATE TABLE tasks (id INTEGER PRIMARY KEY, title TEXT NOT NULL, completed BOOLEAN DEFAULT 0); INSERT INTO non_existent_table (col) VALUES (1);');
             } else {
-                originalFsReadFile(filePath, encoding, callback); // Use original for other files
+                return originalFsReadFile(filePath, encoding, callback); // Use original for other files
             }
         });
         const consoleErrorSpy = sinon.spy(console, 'error');
 
-        await expect(getDb()).to.be.rejectedWith(sinon.match.has('message', sinon.match(/SQLITE_ERROR: no such table: non_existent_table/)));
+        await expect(getDb()).to.be.rejectedWith(Error, /SQLITE_ERROR: no such table: non_existent_table/);
         expect(consoleErrorSpy.calledWithMatch('Error initializing database schema:')).to.be.true;
+        
         consoleErrorSpy.restore();
+        readFileStub.restore(); // Restore stub
     });
 
     it('should explicitly close the database connection', async () => {

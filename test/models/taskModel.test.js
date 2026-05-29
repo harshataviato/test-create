@@ -2,6 +2,13 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { getDb, closeDb, deleteTestDbFile } = require('../../config/db');
 const Task = require('../../models/taskModel');
+const sqlite3 = require('sqlite3'); // For direct DB access in tests
+const fs = require('fs'); // For stubbing in db.test.js, declared here for consistency
+
+
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 describe('Task Model', () => {
     let db;
@@ -10,6 +17,8 @@ describe('Task Model', () => {
     beforeEach(async () => {
         originalNodeEnv = process.env.NODE_ENV;
         process.env.NODE_ENV = 'test';
+        sinon.restore(); // Clean up any previous stubs
+        await closeDb(); // Ensure a clean database state
         await deleteTestDbFile(); // Ensure a clean test database file
         db = await getDb(); // Get a fresh database connection
         // Clear all tasks for isolated test execution
@@ -22,10 +31,10 @@ describe('Task Model', () => {
     });
 
     afterEach(async () => {
+        sinon.restore(); // Clean up any sinon stubs
         await closeDb(); // Close the database connection
         await deleteTestDbFile(); // Delete the test database file
         process.env.NODE_ENV = originalNodeEnv; // Restore original env variable
-        sinon.restore(); // Clean up any sinon stubs
     });
 
     describe('Task.create', () => {
@@ -65,37 +74,20 @@ describe('Task Model', () => {
         });
 
         it('should throw an error if title is null', async () => {
-            try {
-                await Task.create(null, 'Description');
-                expect.fail('Expected Task.create to throw an error for null title');
-            } catch (error) {
-                expect(error.message).to.equal('Could not create task.');
-            }
+            await expect(Task.create(null, 'Description')).to.be.rejectedWith('Could not create task.');
         });
 
         it('should throw an error if title is undefined', async () => {
-            try {
-                await Task.create(undefined, 'Description');
-                expect.fail('Expected Task.create to throw an error for undefined title');
-            } catch (error) {
-                expect(error.message).to.equal('Could not create task.');
-            }
+            await expect(Task.create(undefined, 'Description')).to.be.rejectedWith('Could not create task.');
         });
 
         it('should handle database errors gracefully during creation', async () => {
-            // Temporarily break the `run` method of the DB
             const dbRunStub = sinon.stub(db, 'run');
             // Use .yields() which is more robust for callback errors regardless of argument count variations
             dbRunStub.yields(new Error('Simulated DB error during insert')); 
 
-            try {
-                await Task.create('Failing Task', 'This should fail');
-                expect.fail('Expected Task.create to throw an error');
-            } catch (error) {
-                expect(error.message).to.equal('Could not create task.');
-            } finally {
-                dbRunStub.restore();
-            }
+            await expect(Task.create('Failing Task', 'This should fail')).to.be.rejectedWith('Could not create task.');
+            dbRunStub.restore();
         });
     });
 
@@ -112,7 +104,7 @@ describe('Task Model', () => {
 
             // Insert 'First Task'
             await new Promise((resolve, reject) => {
-                const createdAt1 = new Date(now.getTime() - 2000).toISOString(); // 2 seconds ago
+                const createdAt1 = new Date(now.getTime() - 3000).toISOString(); // 3 seconds ago
                 db.run(sql, ['First Task', '1st', 0, createdAt1, createdAt1], function(err) {
                     if (err) return reject(err);
                     resolve(this.lastID);
@@ -121,7 +113,7 @@ describe('Task Model', () => {
 
             // Insert 'Second Task'
             await new Promise((resolve, reject) => {
-                const createdAt2 = new Date(now.getTime() - 1000).toISOString(); // 1 second ago
+                const createdAt2 = new Date(now.getTime() - 2000).toISOString(); // 2 seconds ago
                 db.run(sql, ['Second Task', '2nd', 0, createdAt2, createdAt2], function(err) {
                     if (err) return reject(err);
                     resolve(this.lastID);
@@ -130,7 +122,7 @@ describe('Task Model', () => {
 
             // Insert 'Third Task'
             await new Promise((resolve, reject) => {
-                const createdAt3 = now.toISOString(); // Now
+                const createdAt3 = new Date(now.getTime() - 1000).toISOString(); // 1 second ago
                 db.run(sql, ['Third Task', '3rd', 0, createdAt3, createdAt3], function(err) {
                     if (err) return reject(err);
                     resolve(this.lastID);
@@ -154,14 +146,8 @@ describe('Task Model', () => {
             const dbAllStub = sinon.stub(db, 'all');
             dbAllStub.callsArgWith(2, new Error('Simulated DB error during select all')); // Callback is 3rd arg (index 2)
 
-            try {
-                await Task.findAll();
-                expect.fail('Expected Task.findAll to throw an error');
-            } catch (error) {
-                expect(error.message).to.equal('Could not retrieve tasks.');
-            } finally {
-                dbAllStub.restore();
-            }
+            await expect(Task.findAll()).to.be.rejectedWith('Could not retrieve tasks.');
+            dbAllStub.restore();
         });
     });
 
@@ -200,21 +186,24 @@ describe('Task Model', () => {
             const dbGetStub = sinon.stub(db, 'get');
             dbGetStub.callsArgWith(2, new Error('Simulated DB error during select by ID')); // Callback is 3rd arg (index 2)
 
-            try {
-                await Task.findById(createdTask.id);
-                expect.fail('Expected Task.findById to throw an error');
-            } catch (error) {
-                expect(error.message).to.equal('Could not retrieve task.');
-            } finally {
-                dbGetStub.restore();
-            }
+            await expect(Task.findById(createdTask.id)).to.be.rejectedWith('Could not retrieve task.');
+            dbGetStub.restore();
         });
     });
 
     describe('Task.update', () => {
         let taskToUpdate;
         beforeEach(async () => {
-            taskToUpdate = await Task.create('Old Title', 'Old Description', false);
+            // Manually insert the task with a predefined old timestamp to ensure updatedAt changes.
+            const oldTimestamp = new Date(Date.now() - 60000).toISOString(); // 1 minute ago
+            const sql = `INSERT INTO tasks (title, description, completed, created_at, updated_at) VALUES (?, ?, ?, ?, ?)`;
+            const lastID = await new Promise((resolve, reject) => {
+                db.run(sql, ['Old Title', 'Old Description', 0, oldTimestamp, oldTimestamp], function(err) {
+                    if (err) return reject(err);
+                    resolve(this.lastID);
+                });
+            });
+            taskToUpdate = await Task.findById(lastID);
         });
 
         it('should update an existing task successfully', async () => {
@@ -228,8 +217,6 @@ describe('Task Model', () => {
             expect(foundTask.title).to.equal('New Title');
             expect(foundTask.description).to.equal('New Description');
             expect(foundTask.completed).to.be.true;
-            // Check that updatedAt is indeed different from createdAt
-            expect(foundTask.updatedAt).to.not.equal(taskToUpdate.createdAt); 
             // Ensure updatedAt is a later timestamp than createdAt
             expect(new Date(foundTask.updatedAt).getTime()).to.be.greaterThan(new Date(taskToUpdate.createdAt).getTime());
         });
@@ -259,14 +246,8 @@ describe('Task Model', () => {
             const dbRunStub = sinon.stub(db, 'run');
             dbRunStub.yields(new Error('Simulated DB error during update'));
 
-            try {
-                await Task.update(taskToUpdate.id, 'Failing Update', 'Desc', true);
-                expect.fail('Expected Task.update to throw an error');
-            } catch (error) {
-                expect(error.message).to.equal('Could not update task.');
-            } finally {
-                dbRunStub.restore();
-            }
+            await expect(Task.update(taskToUpdate.id, 'Failing Update', 'Desc', true)).to.be.rejectedWith('Could not update task.');
+            dbRunStub.restore();
         });
     });
 
@@ -299,14 +280,8 @@ describe('Task Model', () => {
             const dbRunStub = sinon.stub(db, 'run');
             dbRunStub.yields(new Error('Simulated DB error during delete'));
 
-            try {
-                await Task.delete(taskToDelete.id);
-                expect.fail('Expected Task.delete to throw an error');
-            } catch (error) {
-                expect(error.message).to.equal('Could not delete task.');
-            } finally {
-                dbRunStub.restore();
-            }
+            await expect(Task.delete(taskToDelete.id)).to.be.rejectedWith('Could not delete task.');
+            dbRunStub.restore();
         });
     });
 
@@ -329,25 +304,26 @@ describe('Task Model', () => {
                 });
             });
 
-            // Note: findAll orders by created_at DESC, so Task 2 should come first
             const tasks = await Task.findAll();
             expect(tasks).to.have.lengthOf(2);
 
-            const task2 = tasks[0]; 
-            expect(task2.id).to.be.a('number');
-            expect(task2.title).to.equal('Task 2');
-            expect(task2.description).to.equal('Desc 2');
-            expect(task2.completed).to.be.true;
-            expect(task2.createdAt).to.equal(now.toISOString());
-            expect(task2.updatedAt).to.equal(now.toISOString());
+            // Note: findAll orders by created_at DESC, so Task 2 should come first
+            const taskRecent = tasks[0]; 
+            const taskOlder = tasks[1];
 
-            const task1 = tasks[1];
-            expect(task1.id).to.be.a('number');
-            expect(task1.title).to.equal('Task 1');
-            expect(task1.description).to.equal('Desc 1');
-            expect(task1.completed).to.be.false;
-            expect(task1.createdAt).to.equal(older.toISOString());
-            expect(task1.updatedAt).to.equal(older.toISOString());
+            expect(taskRecent.id).to.be.a('number');
+            expect(taskRecent.title).to.equal('Task 2');
+            expect(taskRecent.description).to.equal('Desc 2');
+            expect(taskRecent.completed).to.be.true;
+            expect(taskRecent.createdAt).to.equal(now.toISOString());
+            expect(taskRecent.updatedAt).to.equal(now.toISOString());
+
+            expect(taskOlder.id).to.be.a('number');
+            expect(taskOlder.title).to.equal('Task 1');
+            expect(taskOlder.description).to.equal('Desc 1');
+            expect(taskOlder.completed).to.be.false;
+            expect(taskOlder.createdAt).to.equal(older.toISOString());
+            expect(taskOlder.updatedAt).to.equal(older.toISOString());
         });
     });
 });

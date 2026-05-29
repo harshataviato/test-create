@@ -28,7 +28,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 /**
  * @description Set the default layout file for express-ejs-layouts.
- *              This should ideally be set before `app.use(expressLayouts)` to ensure it's registered.
+ *              This must be called BEFORE app.use(expressLayouts) for the layout to be available.
  */
 app.set('layout', 'layout'); // Explicitly set the default layout file
 

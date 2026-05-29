@@ -16,8 +16,12 @@ const PORT = process.env.PORT || 3000; // Define the port the server will listen
 
 // --- View Engine Setup (should be done early) ---
 
-// Removed explicit app.engine('ejs', ejs.renderFile);
-// Express will implicitly use `require('ejs')` when `app.set('view engine', 'ejs')` is called.
+/**
+ * @description Explicitly register EJS for Express. This can sometimes resolve issues
+ *              where express-ejs-layouts might not properly hook into the rendering process
+ *              if EJS isn't explicitly set as the engine using app.engine.
+ */
+app.engine('ejs', ejs.renderFile); // FIX: Re-added this line to explicitly register the EJS engine
 
 /**
  * @description Set EJS as the default template engine for rendering views.
@@ -41,7 +45,7 @@ app.set('layout', 'layout'); // Explicitly set the default layout file
  * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
  *              This middleware automatically configures EJS to use layouts.
  */
-app.use(expressLayouts); // FIX: Use expressLayouts directly as it's already the middleware function (removed parentheses)
+app.use(expressLayouts); // Use expressLayouts directly as it exports the middleware function
 
 // --- Middleware Setup ---
 

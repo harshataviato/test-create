@@ -27,15 +27,16 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 /**
+ * @description Set the default layout file for express-ejs-layouts.
+ *              This should ideally be set before `app.use(expressLayouts)` to ensure it's registered.
+ */
+app.set('layout', 'layout'); // Explicitly set the default layout file
+
+/**
  * @function expressLayouts
  * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
  */
 app.use(expressLayouts);
-
-/**
- * @description Set the default layout file for express-ejs-layouts.
- */
-app.set('layout', 'layout'); // Explicitly set the default layout file
 
 // --- Middleware Setup ---
 
@@ -118,3 +119,4 @@ if (require.main === module) {
 
 // Export the app for testing purposes
 module.exports = app;
+

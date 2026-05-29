@@ -7,7 +7,7 @@
 const express = require('express'); // Import the Express framework
 const path = require('path');       // Import the path module for working with file and directory paths
 const methodOverride = require('method-override'); // Import method-override for PUT and DELETE requests from forms
-const expressLayouts = require('express-ejs-layouts'); // FIX: Corrected import for express-ejs-layouts
+const expressLayouts = require('express-ejs-layouts'); // Corrected import for express-ejs-layouts
 const taskRoutes = require('./routes/taskRoutes'); // Import task routes
 const ejs = require('ejs'); // Explicitly import EJS for manual engine registration
 
@@ -45,7 +45,7 @@ app.set('layout', 'layout'); // Explicitly set the default layout file
  * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
  *              This middleware automatically configures EJS to use layouts.
  */
-app.use(expressLayouts);
+app.use(expressLayouts()); // FIX: Call expressLayouts as a function to get the middleware instance
 
 // --- Middleware Setup ---
 

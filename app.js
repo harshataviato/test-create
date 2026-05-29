@@ -9,19 +9,15 @@ const path = require('path');       // Import the path module for working with f
 const methodOverride = require('method-override'); // Import method-override for PUT and DELETE requests from forms
 const expressLayouts = require('express-ejs-layouts'); // Corrected import for express-ejs-layouts
 const taskRoutes = require('./routes/taskRoutes'); // Import task routes
-const ejs = require('ejs'); // Explicitly import EJS for manual engine registration
+const ejs = require('ejs'); // Explicitly import EJS (kept for potential direct EJS use, though app.engine is removed)
 
 const app = express(); // Create an Express application instance
 const PORT = process.env.PORT || 3000; // Define the port the server will listen on
 
 // --- View Engine Setup (should be done early) ---
 
-/**
- * @description Explicitly register EJS for Express. This can sometimes resolve issues
- *              where express-ejs-layouts might not properly hook into the rendering process
- *              if EJS isn't explicitly set as the engine using app.engine.
- */
-app.engine('ejs', ejs.renderFile); // Add this line to explicitly register the EJS engine
+// Removed explicit app.engine('ejs', ejs.renderFile);
+// Express will implicitly use `require('ejs')` when `app.set('view engine', 'ejs')` is called.
 
 /**
  * @description Set EJS as the default template engine for rendering views.
@@ -45,7 +41,7 @@ app.set('layout', 'layout'); // Explicitly set the default layout file
  * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
  *              This middleware automatically configures EJS to use layouts.
  */
-app.use(expressLayouts); // FIX: Use expressLayouts directly as it's already the middleware function
+app.use(expressLayouts()); // FIX: Call expressLayouts as a function to get the middleware instance
 
 // --- Middleware Setup ---
 

@@ -45,7 +45,7 @@ app.set('layout', 'layout'); // Explicitly set the default layout file
  * @description Middleware to enable EJS layouts. This must be used after setting the view engine.
  *              This middleware automatically configures EJS to use layouts.
  */
-app.use(expressLayouts()); // FIX: Call expressLayouts as a function to get the middleware instance
+app.use(expressLayouts); // FIX: Use expressLayouts directly as it's already the middleware function
 
 // --- Middleware Setup ---
 
